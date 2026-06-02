@@ -157,9 +157,9 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
-        Friend Shared ReadOnly Property imageHKDisable() As System.Drawing.Bitmap
+        Friend Shared ReadOnly Property ImageDefaults32() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("imageHKDisable", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("ImageDefaults32", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -167,9 +167,19 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
-        Friend Shared ReadOnly Property imageHKEnable() As System.Drawing.Bitmap
+        Friend Shared ReadOnly Property ImageHKDisable32() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("imageHKEnable", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("ImageHKDisable32", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend Shared ReadOnly Property ImageHKEnable32() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("ImageHKEnable32", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -237,9 +247,9 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
-        Friend Shared ReadOnly Property imageRestore() As System.Drawing.Bitmap
+        Friend Shared ReadOnly Property ImageRestore32() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("imageRestore", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("ImageRestore32", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -260,6 +270,16 @@ Namespace My.Resources
         Friend Shared ReadOnly Property imageSelectAll() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("imageSelectAll", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend Shared ReadOnly Property ImageSet32() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("ImageSet32", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

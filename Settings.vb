@@ -297,48 +297,54 @@ Partial Friend Class Settings
 
 	' Methods
 	Friend Sub ShowSettings()
-		Me.SuspendLayout()
-		'SkyeSM
-		'HK
-		Me.txbxHKSM.Text = My.App.HKSyM.Key.ToString
-		Me.txbxHKSM.Tag = My.App.HKSyM
-		Me.txbxHKSM.Font = New Font(Me.Font, FontStyle.Bold)
-		Me.txbxHKSM.ForeColor = Color.Teal
-		Me.btnHKUndo.Enabled = False
-		Me.btnHKSet.Enabled = False
+		SuspendLayout()
+
+		'HotKeys
+		txbxHKSM.Text = App.HKSyM.Key.ToString
+		txbxHKSM.Tag = App.HKSyM
+		txbxHKSM.Font = New Font(Font, FontStyle.Bold)
+		txbxHKSM.ForeColor = Color.Teal
+		btnHKUndo.Enabled = False
+		btnHKSet.Enabled = False
 		If My.App.HKEnabled Then
-			Me.lblHKSM.Enabled = True
-			Me.txbxHKSM.Enabled = True
-			Me.btnHKSMDisable.Enabled = True
-			Me.btnHKEnabled.Text = "Disable"
-			Me.btnHKEnabled.Image = Resources.Resources.imageHKDisable 'DirectCast(My.App.AppResources.GetObject("imageHKDisable"), Image)
+			lblHKSM.Enabled = True
+			txbxHKSM.Enabled = True
+			btnHKSMDisable.Enabled = True
+			btnHKEnabled.Text = "Disable"
+			TipMain.SetText(btnHKEnabled, "Disable HotKeys")
+			TipMain.SetImage(btnHKEnabled, Resources.Resources.ImageHKDisable32)
+			btnHKEnabled.Image = Resources.Resources.ImageHKDisable32
 		Else
-			Me.lblHKSM.Enabled = False
-			Me.txbxHKSM.Enabled = False
-			Me.btnHKSMDisable.Enabled = False
-			Me.btnHKEnabled.Text = "Enable"
-			Me.btnHKEnabled.Image = Resources.Resources.imageHKEnable 'DirectCast(My.App.AppResources.GetObject("imageHKEnable"), Image)
+			lblHKSM.Enabled = False
+			txbxHKSM.Enabled = False
+			btnHKSMDisable.Enabled = False
+			btnHKEnabled.Text = "Enable"
+			TipMain.SetText(btnHKEnabled, "Enable HotKeys")
+			TipMain.SetImage(btnHKEnabled, Resources.Resources.ImageHKEnable32)
+			btnHKEnabled.Image = Resources.Resources.ImageHKEnable32
 		End If
-		'SM
-		Me.chbxSMAutoMinimal.Checked = My.App.SyMAutoMinimal
-		Me.chbxSMAutoClose.Checked = My.App.SyMAutoClose
-		Me.textboxSMUpdateInterval.Text = My.App.SyMUpdateInterval.ToString
-		Me.textboxSMQuickHideInterval.Text = My.App.SyMQuickHideInterval.ToString
-		Me.comboboxSMOpacity.SelectedItem = My.App.SyMOpacity.ToString
-		Me.textboxSMNetworkDownloadMaximum.Text = My.App.SyMNetworkDownloadMaximum.ToString
-		Me.textboxSMNetworkUploadMaximum.Text = My.App.SyMNetworkUploadMaximum.ToString
-		Me.comboboxSMNetworkInstance.Items.Clear()
-		Me.comboboxSMNetworkInstance.Items.AddRange(My.App.SyMGetNetworkInstanceNames)
-		Me.comboboxSMNetworkInstance.SelectedItem = My.App.SyMNetworkInstance
-		Me.btnSMColorBackground.BackColor = My.App.SyMColor.Background
-		Me.btnSMColorForegroundOnBackground.BackColor = My.App.SyMColor.ForegroundOnBackground
-		Me.btnSMColorForeground.BackColor = My.App.SyMColor.Foreground
-		Me.btnSMColorBarBackground.BackColor = My.App.SyMColor.BarBackground
-		Me.btnSMColorBarForeground.BackColor = My.App.SyMColor.BarForeground
-		Me.btnSMColorBarUserForeground.BackColor = My.App.SyMColor.BarProcessorUserForeground
-		Me.btnSMColorBarSystemForeground.BackColor = My.App.SyMColor.BarProcessorSystemForeground
-		Me.ResumeLayout()
-		Me.btnClose.Select()
+
+		'SyM
+		chbxSMAutoMinimal.Checked = App.SyMAutoMinimal
+		chbxSMAutoClose.Checked = App.SyMAutoClose
+		textboxSMUpdateInterval.Text = App.SyMUpdateInterval.ToString
+		textboxSMQuickHideInterval.Text = App.SyMQuickHideInterval.ToString
+		comboboxSMOpacity.SelectedItem = App.SyMOpacity.ToString
+		textboxSMNetworkDownloadMaximum.Text = App.SyMNetworkDownloadMaximum.ToString
+		textboxSMNetworkUploadMaximum.Text = App.SyMNetworkUploadMaximum.ToString
+		comboboxSMNetworkInstance.Items.Clear()
+		comboboxSMNetworkInstance.Items.AddRange(App.SyMGetNetworkInstanceNames)
+		comboboxSMNetworkInstance.SelectedItem = App.SyMNetworkInstance
+		btnSMColorBackground.BackColor = App.SyMColor.Background
+		btnSMColorForegroundOnBackground.BackColor = App.SyMColor.ForegroundOnBackground
+		btnSMColorForeground.BackColor = App.SyMColor.Foreground
+		btnSMColorBarBackground.BackColor = App.SyMColor.BarBackground
+		btnSMColorBarForeground.BackColor = App.SyMColor.BarForeground
+		btnSMColorBarUserForeground.BackColor = App.SyMColor.BarProcessorUserForeground
+		btnSMColorBarSystemForeground.BackColor = App.SyMColor.BarProcessorSystemForeground
+
+		ResumeLayout()
+		btnClose.Select()
 	End Sub
 	Private Sub SyMColorsSetUndo()
 		Me.SMColorsUndo = My.App.SyMColor

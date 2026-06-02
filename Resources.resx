@@ -145,11 +145,14 @@
   <data name="imageCopy" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>My Project\imageCopy.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="imageHKDisable" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>My Project\imageHKDisable.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ImageDefaults32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>My Project\ImageDefaults32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="imageHKEnable" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>My Project\imageHKEnable.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ImageHKDisable32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>My Project\ImageHKDisable32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ImageHKEnable32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>My Project\ImageHKEnable32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="imageInfo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>My Project\imageInfo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -169,14 +172,17 @@
   <data name="imageRemove" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>My Project\imageRemove.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="imageRestore" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>My Project\imageRestore.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ImageRestore32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>My Project\ImageRestore32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="imageSave" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>My Project\imageSave.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="imageSelectAll" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>My Project\imageSelectAll.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ImageSet32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>My Project\ImageSet32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="imageSettings" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>My Project\imageSettings.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
