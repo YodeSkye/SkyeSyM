@@ -90,7 +90,7 @@
         panelSMColors.Controls.Add(lblSMColorBarForeground)
         panelSMColors.Controls.Add(lblSMColorBackground)
         TipMain.SetImage(panelSMColors, Nothing)
-        panelSMColors.Location = New Point(167, 284)
+        panelSMColors.Location = New Point(18, 283)
         panelSMColors.Margin = New Padding(4)
         panelSMColors.Name = "panelSMColors"
         panelSMColors.Size = New Size(487, 193)
@@ -456,11 +456,11 @@
         ' 
         txbxHKSM.Anchor = AnchorStyles.Top
         TipMain.SetImage(txbxHKSM, Nothing)
-        txbxHKSM.Location = New Point(17, 31)
+        txbxHKSM.Location = New Point(4, 28)
         txbxHKSM.Margin = New Padding(4)
         txbxHKSM.Name = "txbxHKSM"
         txbxHKSM.ShortcutsEnabled = False
-        txbxHKSM.Size = New Size(199, 29)
+        txbxHKSM.Size = New Size(212, 29)
         txbxHKSM.TabIndex = 121
         txbxHKSM.TabStop = False
         TipMain.SetText(txbxHKSM, Nothing)
@@ -474,7 +474,7 @@
         btnHKSet.ForeColor = Color.Navy
         btnHKSet.Image = My.Resources.Resources.ImageSet32
         TipMain.SetImage(btnHKSet, My.Resources.Resources.ImageSet32)
-        btnHKSet.Location = New Point(168, 68)
+        btnHKSet.Location = New Point(168, 58)
         btnHKSet.Margin = New Padding(4)
         btnHKSet.Name = "btnHKSet"
         btnHKSet.Size = New Size(48, 48)
@@ -489,7 +489,7 @@
         btnHKUndo.ForeColor = Color.Navy
         btnHKUndo.Image = My.Resources.Resources.ImageRestore32
         TipMain.SetImage(btnHKUndo, My.Resources.Resources.ImageRestore32)
-        btnHKUndo.Location = New Point(17, 68)
+        btnHKUndo.Location = New Point(4, 58)
         btnHKUndo.Margin = New Padding(4)
         btnHKUndo.Name = "btnHKUndo"
         btnHKUndo.Size = New Size(48, 48)
@@ -504,10 +504,10 @@
         btnHKEnabled.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         TipMain.SetImage(btnHKEnabled, Nothing)
         btnHKEnabled.ImageAlign = ContentAlignment.MiddleLeft
-        btnHKEnabled.Location = New Point(17, 124)
+        btnHKEnabled.Location = New Point(4, 139)
         btnHKEnabled.Margin = New Padding(4)
         btnHKEnabled.Name = "btnHKEnabled"
-        btnHKEnabled.Size = New Size(199, 59)
+        btnHKEnabled.Size = New Size(243, 48)
         btnHKEnabled.TabIndex = 1020
         TipMain.SetText(btnHKEnabled, "Enable / Disable HotKeys")
         btnHKEnabled.TextAlign = ContentAlignment.MiddleRight
@@ -518,10 +518,10 @@
         lblHKSM.Anchor = AnchorStyles.Top
         lblHKSM.ForeColor = SystemColors.ControlText
         TipMain.SetImage(lblHKSM, Nothing)
-        lblHKSM.Location = New Point(17, 5)
+        lblHKSM.Location = New Point(4, 1)
         lblHKSM.Margin = New Padding(4, 0, 4, 0)
         lblHKSM.Name = "lblHKSM"
-        lblHKSM.Size = New Size(202, 26)
+        lblHKSM.Size = New Size(212, 26)
         lblHKSM.TabIndex = 120
         lblHKSM.Text = "Toggle System Monitor"
         TipMain.SetText(lblHKSM, Nothing)
@@ -534,7 +534,7 @@
         btnHKSMDisable.ForeColor = Color.Transparent
         btnHKSMDisable.Image = My.Resources.Resources.imageRemove
         TipMain.SetImage(btnHKSMDisable, My.Resources.Resources.imageRemove)
-        btnHKSMDisable.Location = New Point(216, 29)
+        btnHKSMDisable.Location = New Point(216, 26)
         btnHKSMDisable.Margin = New Padding(4)
         btnHKSMDisable.Name = "btnHKSMDisable"
         btnHKSMDisable.Size = New Size(32, 32)
@@ -549,7 +549,7 @@
         btnClose.Font = New Font("Segoe UI Semibold", 9.75F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         btnClose.Image = My.Resources.Resources.ImageOK
         TipMain.SetImage(btnClose, Nothing)
-        btnClose.Location = New Point(378, 733)
+        btnClose.Location = New Point(378, 584)
         btnClose.Margin = New Padding(4)
         btnClose.Name = "btnClose"
         btnClose.Size = New Size(64, 64)
@@ -597,10 +597,10 @@
         panel1.Controls.Add(btnHKUndo)
         panel1.Controls.Add(btnHKSet)
         TipMain.SetImage(panel1, Nothing)
-        panel1.Location = New Point(284, 517)
+        panel1.Location = New Point(550, 283)
         panel1.Margin = New Padding(4)
         panel1.Name = "panel1"
-        panel1.Size = New Size(253, 202)
+        panel1.Size = New Size(253, 193)
         panel1.TabIndex = 60
         TipMain.SetText(panel1, Nothing)
         ' 
@@ -611,12 +611,12 @@
         ' LblBehavior
         ' 
         LblBehavior.AutoSize = True
-        LblBehavior.Font = New Font("Segoe UI", 12F, FontStyle.Underline, GraphicsUnit.Point, CByte(0))
+        LblBehavior.Font = New Font("Segoe UI", 12F, FontStyle.Bold Or FontStyle.Underline)
         TipMain.SetImage(LblBehavior, Nothing)
         LblBehavior.Location = New Point(375, 11)
         LblBehavior.Margin = New Padding(4, 0, 4, 0)
         LblBehavior.Name = "LblBehavior"
-        LblBehavior.Size = New Size(71, 21)
+        LblBehavior.Size = New Size(78, 21)
         LblBehavior.TabIndex = 156
         LblBehavior.Text = "Behavior"
         TipMain.SetText(LblBehavior, Nothing)
@@ -625,12 +625,12 @@
         ' LblNetwork
         ' 
         LblNetwork.AutoSize = True
-        LblNetwork.Font = New Font("Segoe UI", 12F, FontStyle.Underline, GraphicsUnit.Point, CByte(0))
+        LblNetwork.Font = New Font("Segoe UI", 12F, FontStyle.Bold Or FontStyle.Underline)
         TipMain.SetImage(LblNetwork, Nothing)
         LblNetwork.Location = New Point(375, 146)
         LblNetwork.Margin = New Padding(4, 0, 4, 0)
         LblNetwork.Name = "LblNetwork"
-        LblNetwork.Size = New Size(70, 21)
+        LblNetwork.Size = New Size(76, 21)
         LblNetwork.TabIndex = 157
         LblNetwork.Text = "Network"
         TipMain.SetText(LblNetwork, Nothing)
@@ -639,12 +639,12 @@
         ' LblColors
         ' 
         LblColors.AutoSize = True
-        LblColors.Font = New Font("Segoe UI", 12F, FontStyle.Underline, GraphicsUnit.Point, CByte(0))
+        LblColors.Font = New Font("Segoe UI", 12F, FontStyle.Bold Or FontStyle.Underline)
         TipMain.SetImage(LblColors, Nothing)
-        LblColors.Location = New Point(383, 258)
+        LblColors.Location = New Point(234, 257)
         LblColors.Margin = New Padding(4, 0, 4, 0)
         LblColors.Name = "LblColors"
-        LblColors.Size = New Size(55, 21)
+        LblColors.Size = New Size(58, 21)
         LblColors.TabIndex = 158
         LblColors.Text = "Colors"
         TipMain.SetText(LblColors, Nothing)
@@ -653,12 +653,12 @@
         ' LblHotKey
         ' 
         LblHotKey.AutoSize = True
-        LblHotKey.Font = New Font("Segoe UI", 12F, FontStyle.Underline, GraphicsUnit.Point, CByte(0))
+        LblHotKey.Font = New Font("Segoe UI", 12F, FontStyle.Bold Or FontStyle.Underline)
         TipMain.SetImage(LblHotKey, Nothing)
-        LblHotKey.Location = New Point(380, 491)
+        LblHotKey.Location = New Point(646, 257)
         LblHotKey.Margin = New Padding(4, 0, 4, 0)
         LblHotKey.Name = "LblHotKey"
-        LblHotKey.Size = New Size(60, 21)
+        LblHotKey.Size = New Size(66, 21)
         LblHotKey.TabIndex = 159
         LblHotKey.Text = "HotKey"
         TipMain.SetText(LblHotKey, Nothing)
@@ -670,7 +670,7 @@
         AutoScaleMode = AutoScaleMode.Font
         AutoSizeMode = AutoSizeMode.GrowAndShrink
         AutoValidate = AutoValidate.EnablePreventFocusChange
-        ClientSize = New Size(820, 810)
+        ClientSize = New Size(820, 661)
         Controls.Add(LblHotKey)
         Controls.Add(LblColors)
         Controls.Add(LblNetwork)

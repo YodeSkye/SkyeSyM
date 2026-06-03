@@ -354,6 +354,7 @@ Namespace My
         End Sub
 		Friend Sub ShowSettings()
 			If FrmSettings Is Nothing OrElse FrmSettings.IsDisposed Then FrmSettings = New Settings With {.Text = My.Application.Info.ProductName & " Settings"}
+			Dim wa = Screen.FromControl(FrmSettings).WorkingArea
 			FrmSettings.WindowState = FormWindowState.Normal
 			FrmSettings.Show()
 			FrmSettings.Activate()
@@ -590,7 +591,6 @@ Namespace My
 				Skye.Common.Log.Write("System Monitor Loop ON")
 			ElseIf ctsSyM IsNot Nothing Then ' If loop is running, stop it
 				StopSyMLoop()
-				'FrmMain.SyMResetMonitorPanel()
 				Skye.Common.Log.Write("System Monitor Loop OFF")
 			End If
 
