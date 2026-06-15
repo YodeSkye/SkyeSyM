@@ -55,6 +55,9 @@ Partial Friend Class SyM
         Me.tipInfo.SetToolTip(Me.lblProcessProcessor, My.App.SyMGetCounterDescription(My.App.SyMCounters.ProcessProcessor))
         Me.tipInfo.SetToolTip(Me.lblProcessMemoryPhysical, My.App.SyMGetCounterDescription(My.App.SyMCounters.ProcessMemoryPhysical))
         Me.tipInfo.SetToolTip(Me.lblProcessMemoryPhysicalPercent, My.App.SyMGetCounterDescription(My.App.SyMCounters.ProcessMemoryPhysicalPercent))
+        cmSM.Renderer = New Skye.UI.SkyeMenuRenderer
+        CMPI.Renderer = New Skye.UI.SkyeMenuRenderer
+        cmOpacity.Renderer = New Skye.UI.SkyeMenuRenderer
 
         'Initialize Colors
         SetForeColor(True)
