@@ -43,16 +43,17 @@ Inherits System.Windows.Forms.Form
         ' 
         ' contextmenuRTB
         ' 
+        contextmenuRTB.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         contextmenuRTB.Items.AddRange(New ToolStripItem() {cmiCopy, cmiSelectAll, toolStripSeparator1, cmiSaveAs})
         contextmenuRTB.Name = "contextmenuRTB"
-        contextmenuRTB.Size = New Size(165, 76)
+        contextmenuRTB.Size = New Size(200, 88)
         ' 
         ' cmiCopy
         ' 
         cmiCopy.Image = My.Resources.Resources.imageCopy
         cmiCopy.Name = "cmiCopy"
         cmiCopy.ShortcutKeys = Keys.Control Or Keys.C
-        cmiCopy.Size = New Size(164, 22)
+        cmiCopy.Size = New Size(199, 26)
         cmiCopy.Text = "Copy"
         ' 
         ' cmiSelectAll
@@ -60,20 +61,20 @@ Inherits System.Windows.Forms.Form
         cmiSelectAll.Image = My.Resources.Resources.imageSelectAll
         cmiSelectAll.Name = "cmiSelectAll"
         cmiSelectAll.ShortcutKeys = Keys.Control Or Keys.A
-        cmiSelectAll.Size = New Size(164, 22)
+        cmiSelectAll.Size = New Size(199, 26)
         cmiSelectAll.Text = "Select All"
         ' 
         ' toolStripSeparator1
         ' 
         toolStripSeparator1.Name = "toolStripSeparator1"
-        toolStripSeparator1.Size = New Size(161, 6)
+        toolStripSeparator1.Size = New Size(196, 6)
         ' 
         ' cmiSaveAs
         ' 
         cmiSaveAs.Image = My.Resources.Resources.imageSave
         cmiSaveAs.Name = "cmiSaveAs"
         cmiSaveAs.ShortcutKeys = Keys.Control Or Keys.S
-        cmiSaveAs.Size = New Size(164, 22)
+        cmiSaveAs.Size = New Size(199, 26)
         cmiSaveAs.Text = "Save As"
         ' 
         ' btnClose
@@ -94,12 +95,12 @@ Inherits System.Windows.Forms.Form
         tbPostMessage.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
         tbPostMessage.BorderStyle = BorderStyle.None
         tbPostMessage.ContextMenuStrip = contextmenuRTB
-        tbPostMessage.Font = New Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
-        tbPostMessage.Location = New Point(11, 300)
+        tbPostMessage.Font = New Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        tbPostMessage.Location = New Point(11, 297)
         tbPostMessage.Name = "tbPostMessage"
         tbPostMessage.ReadOnly = True
         tbPostMessage.ShortcutsEnabled = False
-        tbPostMessage.Size = New Size(560, 18)
+        tbPostMessage.Size = New Size(560, 22)
         tbPostMessage.TabIndex = 0
         tbPostMessage.TabStop = False
         tbPostMessage.Text = "POSTMESSAGE"
@@ -113,7 +114,7 @@ Inherits System.Windows.Forms.Form
         Controls.Add(rtbMessage)
         Controls.Add(btnClose)
         Controls.Add(tbPostMessage)
-        Font = New Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         Icon = CType(resources.GetObject("$this.Icon"), Icon)
         KeyPreview = True
         MinimumSize = New Size(450, 300)

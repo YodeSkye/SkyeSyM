@@ -1,5 +1,6 @@
 
 Imports System.Diagnostics
+Imports Skye.UI
 Imports SkyeSyM.My
 
 Partial Friend Class MainForm
@@ -24,11 +25,11 @@ Partial Friend Class MainForm
 
         ' Initialize Form
         InitializeComponent()
-        Me.components.Add(ni)
+        cmSM.Renderer = New Skye.UI.SkyeMenuRenderer
+        components.Add(ni)
         ni.ContextMenuStrip = cmSM
-        'Me.Text = My.Application.Info.ProductName + " v" + My.Application.Info.Version.Major.ToString + "." + My.Application.Info.Version.Minor.ToString
-        Me.cmiExitApp.Text = "Exit " + My.Application.Info.ProductName
-        Me.cmiExitApp.ToolTipText = "RightClick = ReStart " + My.Application.Info.ProductName
+        cmiExitApp.Text = "Exit " + My.Application.Info.ProductName
+        cmiExitApp.ToolTipText = "RightClick = ReStart " + My.Application.Info.ProductName
 
     End Sub
     Private Sub FrmShown(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Shown

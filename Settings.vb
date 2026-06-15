@@ -20,6 +20,8 @@ Partial Friend Class Settings
         ' Initialize Form
         InitializeComponent()
         ShowSettings()
+        Skye.UI.ThemeManager.RegisterComponent(TipMain)
+        Skye.UI.ThemeManager.ApplyTheme(Me)
 
     End Sub
     Private Sub FrmMouseDown(ByVal sender As Object, ByVal e As MouseEventArgs) Handles MyBase.MouseDown

@@ -10,12 +10,13 @@ Partial Friend Class Help
 	Friend Sub New()
 		' Initialize Globals
 		' Initialize Locals
-		Me.dialogSaveAs.DefaultExt = "txt"
-		Me.dialogSaveAs.Filter = "Text Files|*.txt"
-		Me.dialogSaveAs.RestoreDirectory = True
-		Me.dialogSaveAs.Title = "Save Message ..."
+		dialogSaveAs.DefaultExt = "txt"
+		dialogSaveAs.Filter = "Text Files|*.txt"
+		dialogSaveAs.RestoreDirectory = True
+		dialogSaveAs.Title = "Save Message ..."
 		' Initialize Form
-		Me.InitializeComponent()
+		InitializeComponent()
+		Skye.UI.ThemeManager.ApplyTheme(Me)
 	End Sub
 	Private Sub FrmPreviewKeyDown(ByVal sender As Object, ByVal e As PreviewKeyDownEventArgs) Handles btnClose.PreviewKeyDown
 		Select Case e.KeyData

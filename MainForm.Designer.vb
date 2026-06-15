@@ -24,36 +24,36 @@ Inherits System.Windows.Forms.Form
         ' 
         ' cmSM
         ' 
-        cmSM.Font = New Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        cmSM.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         cmSM.Items.AddRange(New ToolStripItem() {cmiSM, cmiWindowsMonitor, toolStripSeparator1, cmiHelp, cmiLog, cmiSettings, toolStripSeparator2, cmiExitApp})
         cmSM.Name = "contextmenuWorkSpaceTools"
-        cmSM.Size = New Size(181, 170)
+        cmSM.Size = New Size(206, 194)
         ' 
         ' cmiSM
         ' 
         cmiSM.Image = My.Resources.Resources.imageSM
         cmiSM.Name = "cmiSM"
-        cmiSM.Size = New Size(180, 22)
+        cmiSM.Size = New Size(205, 26)
         cmiSM.Text = "System Monitor"
         ' 
         ' cmiWindowsMonitor
         ' 
         cmiWindowsMonitor.Image = My.Resources.Resources.imageTaskManager
         cmiWindowsMonitor.Name = "cmiWindowsMonitor"
-        cmiWindowsMonitor.Size = New Size(180, 22)
+        cmiWindowsMonitor.Size = New Size(205, 26)
         cmiWindowsMonitor.Text = "Windows Monitor"
         cmiWindowsMonitor.ToolTipText = "LeftClick = Task Manager" & vbCrLf & "RightClick = Resource Monitor" & vbCrLf & "CtrlRightClick = Performance Monitor"
         ' 
         ' toolStripSeparator1
         ' 
         toolStripSeparator1.Name = "toolStripSeparator1"
-        toolStripSeparator1.Size = New Size(177, 6)
+        toolStripSeparator1.Size = New Size(202, 6)
         ' 
         ' cmiHelp
         ' 
         cmiHelp.Image = My.Resources.Resources.imageInfo
         cmiHelp.Name = "cmiHelp"
-        cmiHelp.Size = New Size(180, 22)
+        cmiHelp.Size = New Size(205, 26)
         cmiHelp.Text = "Help && About"
         cmiHelp.ToolTipText = "RightClick = Show Maximized"
         ' 
@@ -61,26 +61,26 @@ Inherits System.Windows.Forms.Form
         ' 
         cmiLog.Image = My.Resources.Resources.imageLog
         cmiLog.Name = "cmiLog"
-        cmiLog.Size = New Size(180, 22)
+        cmiLog.Size = New Size(205, 26)
         cmiLog.Text = "Log"
         ' 
         ' cmiSettings
         ' 
         cmiSettings.Image = My.Resources.Resources.imageSettings
         cmiSettings.Name = "cmiSettings"
-        cmiSettings.Size = New Size(180, 22)
+        cmiSettings.Size = New Size(205, 26)
         cmiSettings.Text = "Settings"
         ' 
         ' toolStripSeparator2
         ' 
         toolStripSeparator2.Name = "toolStripSeparator2"
-        toolStripSeparator2.Size = New Size(177, 6)
+        toolStripSeparator2.Size = New Size(202, 6)
         ' 
         ' cmiExitApp
         ' 
         cmiExitApp.Image = My.Resources.Resources.imageClose
         cmiExitApp.Name = "cmiExitApp"
-        cmiExitApp.Size = New Size(180, 22)
+        cmiExitApp.Size = New Size(205, 26)
         ' 
         ' tableLayoutPanel2
         ' 

@@ -31,20 +31,21 @@ Partial Class SyMPI
         ' 
         TxtBoxSearch.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
         TxtBoxSearch.BorderStyle = BorderStyle.FixedSingle
-        TxtBoxSearch.Location = New Point(7, 8)
+        TxtBoxSearch.Location = New Point(9, 10)
+        TxtBoxSearch.Margin = New Padding(4)
         TxtBoxSearch.Name = "TxtBoxSearch"
         TxtBoxSearch.PlaceholderText = "Search Processes"
-        TxtBoxSearch.Size = New Size(286, 25)
+        TxtBoxSearch.Size = New Size(367, 29)
         TxtBoxSearch.TabIndex = 0
         ' 
         ' ChkBoxShowSystem
         ' 
         ChkBoxShowSystem.Anchor = AnchorStyles.Top Or AnchorStyles.Right
         ChkBoxShowSystem.AutoSize = True
-        ChkBoxShowSystem.Font = New Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        ChkBoxShowSystem.Location = New Point(7, 275)
+        ChkBoxShowSystem.Location = New Point(9, 340)
+        ChkBoxShowSystem.Margin = New Padding(4)
         ChkBoxShowSystem.Name = "ChkBoxShowSystem"
-        ChkBoxShowSystem.Size = New Size(145, 17)
+        ChkBoxShowSystem.Size = New Size(195, 25)
         ChkBoxShowSystem.TabIndex = 4
         ChkBoxShowSystem.Text = "Show System Processes"
         ChkBoxShowSystem.UseVisualStyleBackColor = True
@@ -57,28 +58,30 @@ Partial Class SyMPI
         LBProcesses.FormattingEnabled = True
         LBProcesses.IntegralHeight = False
         LBProcesses.ItemHeight = 22
-        LBProcesses.Location = New Point(7, 39)
+        LBProcesses.Location = New Point(9, 48)
+        LBProcesses.Margin = New Padding(4)
         LBProcesses.Name = "LBProcesses"
-        LBProcesses.Size = New Size(286, 230)
+        LBProcesses.Size = New Size(368, 284)
         LBProcesses.TabIndex = 2
         ' 
         ' SyMPI
         ' 
-        AutoScaleDimensions = New SizeF(7F, 17F)
+        AutoScaleDimensions = New SizeF(9F, 21F)
         AutoScaleMode = AutoScaleMode.Font
-        ClientSize = New Size(300, 300)
+        ClientSize = New Size(386, 371)
         ControlBox = False
         Controls.Add(LBProcesses)
         Controls.Add(ChkBoxShowSystem)
         Controls.Add(TxtBoxSearch)
         DoubleBuffered = True
-        Font = New Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         FormBorderStyle = FormBorderStyle.None
         KeyPreview = True
-        MinimumSize = New Size(300, 300)
+        Margin = New Padding(4)
+        MinimumSize = New Size(386, 371)
         Name = "SyMPI"
         Opacity = 0.98R
-        Padding = New Padding(4, 5, 4, 5)
+        Padding = New Padding(5, 6, 5, 6)
         ShowInTaskbar = False
         StartPosition = FormStartPosition.Manual
         TopMost = True

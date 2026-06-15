@@ -25,6 +25,8 @@ Public Class SyMPI
 
     ' Form Events
     Private Async Sub Frm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Skye.UI.ApplyTheme(Me)
+
         cts = New CancellationTokenSource()
 
         ' Show placeholder

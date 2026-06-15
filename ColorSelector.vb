@@ -3,8 +3,8 @@ Partial Friend Class ColorSelector
 
 	'Form Events
 	Friend Sub New()
-		Me.InitializeComponent()
-		'Me.combobxColor.FillColors
+		InitializeComponent()
+		Skye.UI.ThemeManager.ApplyTheme(Me)
 	End Sub
 
 	'Control Events

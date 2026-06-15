@@ -124,121 +124,120 @@ Inherits System.Windows.Forms.Form
         cmiOpacity.DropDown = cmOpacity
         cmiOpacity.Image = My.Resources.Resources.imageOpacity
         cmiOpacity.Name = "cmiOpacity"
-        cmiOpacity.Size = New Size(180, 22)
+        cmiOpacity.Size = New Size(205, 26)
         cmiOpacity.ToolTipText = "LeftClick = Make Opaque"
         ' 
         ' cmOpacity
         ' 
         cmOpacity.AllowMerge = False
-        cmOpacity.Font = New Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        cmOpacity.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         cmOpacity.Items.AddRange(New ToolStripItem() {cmiOpacity100, cmiOpacity90, cmiOpacity80, cmiOpacity70, cmiOpacity60, cmiOpacity50, cmiOpacity40, cmiOpacity30, cmiOpacity20, cmiOpacity10})
         cmOpacity.Name = "cmOpacity"
-        cmOpacity.OwnerItem = cmiOpacity
         cmOpacity.ShowItemToolTips = False
-        cmOpacity.Size = New Size(113, 224)
+        cmOpacity.Size = New Size(125, 264)
         ' 
         ' cmiOpacity100
         ' 
         cmiOpacity100.Name = "cmiOpacity100"
-        cmiOpacity100.Size = New Size(112, 22)
+        cmiOpacity100.Size = New Size(124, 26)
         cmiOpacity100.Tag = "100"
         cmiOpacity100.Text = "100 %"
         ' 
         ' cmiOpacity90
         ' 
         cmiOpacity90.Name = "cmiOpacity90"
-        cmiOpacity90.Size = New Size(112, 22)
+        cmiOpacity90.Size = New Size(124, 26)
         cmiOpacity90.Tag = "90"
         cmiOpacity90.Text = " 90 %"
         ' 
         ' cmiOpacity80
         ' 
         cmiOpacity80.Name = "cmiOpacity80"
-        cmiOpacity80.Size = New Size(112, 22)
+        cmiOpacity80.Size = New Size(124, 26)
         cmiOpacity80.Tag = "80"
         cmiOpacity80.Text = " 80 %"
         ' 
         ' cmiOpacity70
         ' 
         cmiOpacity70.Name = "cmiOpacity70"
-        cmiOpacity70.Size = New Size(112, 22)
+        cmiOpacity70.Size = New Size(124, 26)
         cmiOpacity70.Tag = "70"
         cmiOpacity70.Text = " 70 %"
         ' 
         ' cmiOpacity60
         ' 
         cmiOpacity60.Name = "cmiOpacity60"
-        cmiOpacity60.Size = New Size(112, 22)
+        cmiOpacity60.Size = New Size(124, 26)
         cmiOpacity60.Tag = "60"
         cmiOpacity60.Text = " 60 %"
         ' 
         ' cmiOpacity50
         ' 
         cmiOpacity50.Name = "cmiOpacity50"
-        cmiOpacity50.Size = New Size(112, 22)
+        cmiOpacity50.Size = New Size(124, 26)
         cmiOpacity50.Tag = "50"
         cmiOpacity50.Text = " 50 %"
         ' 
         ' cmiOpacity40
         ' 
         cmiOpacity40.Name = "cmiOpacity40"
-        cmiOpacity40.Size = New Size(112, 22)
+        cmiOpacity40.Size = New Size(124, 26)
         cmiOpacity40.Tag = "40"
         cmiOpacity40.Text = " 40 %"
         ' 
         ' cmiOpacity30
         ' 
         cmiOpacity30.Name = "cmiOpacity30"
-        cmiOpacity30.Size = New Size(112, 22)
+        cmiOpacity30.Size = New Size(124, 26)
         cmiOpacity30.Tag = "30"
         cmiOpacity30.Text = " 30 %"
         ' 
         ' cmiOpacity20
         ' 
         cmiOpacity20.Name = "cmiOpacity20"
-        cmiOpacity20.Size = New Size(112, 22)
+        cmiOpacity20.Size = New Size(124, 26)
         cmiOpacity20.Tag = "20"
         cmiOpacity20.Text = " 20 %"
         ' 
         ' cmiOpacity10
         ' 
         cmiOpacity10.Name = "cmiOpacity10"
-        cmiOpacity10.Size = New Size(112, 22)
+        cmiOpacity10.Size = New Size(124, 26)
         cmiOpacity10.Tag = "10"
         cmiOpacity10.Text = " 10 %"
         ' 
         ' cmSM
         ' 
-        cmSM.Font = New Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        cmSM.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         cmSM.Items.AddRange(New ToolStripItem() {cmiQuickHide, cmiClose, toolStripSeparator1, cmiWindowsMonitor, cmiProcessInstance, toolStripSeparator3, cmiAutoMinimal, cmiOpacity})
         cmSM.Name = "cmSM"
-        cmSM.Size = New Size(181, 148)
+        cmSM.Size = New Size(206, 172)
         ' 
         ' cmiQuickHide
         ' 
         cmiQuickHide.Image = My.Resources.Resources.imageWindowHide
         cmiQuickHide.Name = "cmiQuickHide"
-        cmiQuickHide.Size = New Size(180, 22)
+        cmiQuickHide.Size = New Size(205, 26)
         cmiQuickHide.Text = "Quick Hide"
         ' 
         ' cmiClose
         ' 
         cmiClose.Image = My.Resources.Resources.imageClose
         cmiClose.Name = "cmiClose"
-        cmiClose.Size = New Size(180, 22)
+        cmiClose.Size = New Size(205, 26)
         cmiClose.Text = "Close"
         ' 
         ' toolStripSeparator1
         ' 
         toolStripSeparator1.Name = "toolStripSeparator1"
-        toolStripSeparator1.Size = New Size(177, 6)
+        toolStripSeparator1.Size = New Size(202, 6)
         ' 
         ' cmiWindowsMonitor
         ' 
         cmiWindowsMonitor.Image = My.Resources.Resources.imageTaskManager
         cmiWindowsMonitor.Name = "cmiWindowsMonitor"
         cmiWindowsMonitor.ShortcutKeyDisplayString = ""
-        cmiWindowsMonitor.Size = New Size(180, 22)
+        cmiWindowsMonitor.Size = New Size(205, 26)
         cmiWindowsMonitor.Text = "Windows Monitor"
         cmiWindowsMonitor.ToolTipText = "LeftClick = Task Manager" & vbCrLf & "RightClick = Resource Monitor" & vbCrLf & "CtrlRightClick = Performance Monitor"
         ' 
@@ -247,51 +246,50 @@ Inherits System.Windows.Forms.Form
         cmiProcessInstance.DropDown = CMPI
         cmiProcessInstance.Image = My.Resources.Resources.imageSMProcessor
         cmiProcessInstance.Name = "cmiProcessInstance"
-        cmiProcessInstance.Size = New Size(180, 22)
+        cmiProcessInstance.Size = New Size(205, 26)
         ' 
         ' CMPI
         ' 
-        CMPI.Font = New Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        CMPI.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         CMPI.Items.AddRange(New ToolStripItem() {TSSPIPins, CMIPIMore, CMIPIAttach, CMIPIPinToggle})
         CMPI.Name = "CMPI"
-        CMPI.OwnerItem = cmiProcessInstance
-        CMPI.Size = New Size(230, 76)
+        CMPI.Size = New Size(261, 88)
         ' 
         ' TSSPIPins
         ' 
         TSSPIPins.Name = "TSSPIPins"
-        TSSPIPins.Size = New Size(226, 6)
+        TSSPIPins.Size = New Size(257, 6)
         ' 
         ' CMIPIMore
         ' 
         CMIPIMore.Image = My.Resources.Resources.imageSMProcessor
         CMIPIMore.Name = "CMIPIMore"
-        CMIPIMore.Size = New Size(229, 22)
+        CMIPIMore.Size = New Size(260, 26)
         CMIPIMore.Text = "More..."
         ' 
         ' CMIPIAttach
         ' 
         CMIPIAttach.Image = My.Resources.Resources.ImageAttach16
         CMIPIAttach.Name = "CMIPIAttach"
-        CMIPIAttach.Size = New Size(229, 22)
+        CMIPIAttach.Size = New Size(260, 26)
         CMIPIAttach.Text = "Attach to Foreground App"
         ' 
         ' CMIPIPinToggle
         ' 
         CMIPIPinToggle.Name = "CMIPIPinToggle"
-        CMIPIPinToggle.Size = New Size(229, 22)
+        CMIPIPinToggle.Size = New Size(260, 26)
         CMIPIPinToggle.Text = "Pin/Unpin"
         ' 
         ' toolStripSeparator3
         ' 
         toolStripSeparator3.Name = "toolStripSeparator3"
-        toolStripSeparator3.Size = New Size(177, 6)
+        toolStripSeparator3.Size = New Size(202, 6)
         ' 
         ' cmiAutoMinimal
         ' 
         cmiAutoMinimal.Image = My.Resources.Resources.imageSMAutoMinimal
         cmiAutoMinimal.Name = "cmiAutoMinimal"
-        cmiAutoMinimal.Size = New Size(180, 22)
+        cmiAutoMinimal.Size = New Size(205, 26)
         cmiAutoMinimal.Text = "Auto Minimal?"
         ' 
         ' lblNetworkUpload

@@ -1,6 +1,6 @@
 
-Imports System.Diagnostics
 Imports System.Threading
+Imports Skye.UI
 
 Namespace My
 
@@ -189,9 +189,14 @@ Namespace My
 		Friend SyMPinnedProcesses As New List(Of String)
 		Friend HKEnabled As Boolean
 		Friend HKSyM As New HKType
+		Friend Theme As Skye.UI.SkyeTheme = Skye.UI.SkyeThemes.Blossom
+		Friend ThemeAuto As Boolean = False
 
 		' Handlers
-		Private Sub OnHotkey(id As Integer)
+		Private Sub OnThemeChanged(sender As Object, e As EventArgs)
+			Skye.UI.ThemeManager.ApplyThemeToAllOpenForms()
+		End Sub
+		Private Sub OnHotKey(id As Integer)
 			HKPerformAction(id)
 		End Sub
 		Private Async Sub StartScreenSaverWatcher()
@@ -255,11 +260,11 @@ Namespace My
 			End Try
 		End Sub
 
-        ' Methods
-        Friend Sub Initialize()
-            Debug.Print(My.Application.Info.ProductName + " Starting...")
+		' Methods
+		Friend Sub Initialize()
+			Debug.Print(My.Application.Info.ProductName + " Starting...")
 #If DEBUG Then
-            Skye.Common.Log.Initialize(My.Computer.FileSystem.SpecialDirectories.Temp + "\" + My.Application.Info.ProductName + "DEV") ' Initialize Log With Path To Log Folder. Log File Will Be Created Automatically When First Log Entry Is Written. Log Folder Will Be Created If It Does Not Exist.
+			Skye.Common.Log.Initialize(My.Computer.FileSystem.SpecialDirectories.Temp + "\" + My.Application.Info.ProductName + "DEV") ' Initialize Log With Path To Log Folder. Log File Will Be Created Automatically When First Log Entry Is Written. Log Folder Will Be Created If It Does Not Exist.
 			Skye.Common.RegistryHelper.BaseKey = "Software\\" + My.Application.Info.ProductName + "DEV" 'BaseKey is the path to the registry key where application settings are stored.
 #Else
             Skye.Common.Log.Initialize(My.Computer.FileSystem.SpecialDirectories.Temp + "\" + My.Application.Info.ProductName) ' Initialize Log With Path To Log Folder. Log File Will Be Created Automatically When First Log Entry Is Written. Log Folder Will Be Created If It Does Not Exist.
@@ -267,12 +272,18 @@ Namespace My
 #End If
 			Skye.Common.Log.Write(My.Application.Info.ProductName + " Started...")
 			GetSettings()
+			If ThemeAuto Then
+				Skye.UI.ThemeManager.SetTheme(DetectWindowsTheme())
+			Else
+				Skye.UI.ThemeManager.CurrentTheme = Theme
+			End If
+			AddHandler Skye.UI.ThemeManager.ThemeChanged, AddressOf OnThemeChanged
 			FrmMain = New MainForm
 			SyMSet()
 			StartScreenSaverWatcher()
 			AddHandler Microsoft.Win32.SystemEvents.SessionSwitch, AddressOf WorkStationLockedHandler
 			FrmHK = New HotKeyWindow
-			AddHandler FrmHK.HotKeyPressed, AddressOf OnHotkey
+			AddHandler FrmHK.HotKeyPressed, AddressOf OnHotKey
 			If HKEnabled Then HKRegister(True)
 		End Sub
 		Friend Sub Finalize()
@@ -320,8 +331,8 @@ Namespace My
 #If DEBUG Then
 			GetSettingsDebug()
 #End If
-            Skye.Common.Log.Write("Settings Loaded")
-        End Sub
+			Skye.Common.Log.Write("Settings Loaded")
+		End Sub
 		Friend Sub SaveSettings()
 
 			' HK
@@ -348,10 +359,10 @@ Namespace My
 			Skye.Common.RegistryHelper.SetInt("SyMColorBarProcessorSystemForeground", SyMColor.BarProcessorSystemForeground.ToArgb)
 			Skye.Common.RegistryHelper.SetInt("SyMLocationX", SyMLocation.X)
 			Skye.Common.RegistryHelper.SetInt("SyMLocationY", SyMLocation.Y)
-            Skye.Common.RegistryHelper.SetStringArray("SyMPinnedProcesses", SyMPinnedProcesses.ToArray)
+			Skye.Common.RegistryHelper.SetStringArray("SyMPinnedProcesses", SyMPinnedProcesses.ToArray)
 
-            Skye.Common.Log.Write("Settings Saved")
-        End Sub
+			Skye.Common.Log.Write("Settings Saved")
+		End Sub
 		Friend Sub ShowSettings()
 			If FrmSettings Is Nothing OrElse FrmSettings.IsDisposed Then FrmSettings = New Settings With {.Text = My.Application.Info.ProductName & " Settings"}
 			Dim wa = Screen.FromControl(FrmSettings).WorkingArea
@@ -399,6 +410,17 @@ Namespace My
 				MsgBox("Cannot Start '" + filepath + "'" + vbCr + ex.Message + vbCr + "Please Check Your Settings And Try Again")
 			End Try
 		End Sub
+		Private Function DetectWindowsTheme() As SkyeTheme
+			Const keyPath As String = "Software\Microsoft\Windows\CurrentVersion\Themes\Personalize"
+			Using key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(keyPath)
+				Dim light As Integer = CInt(key.GetValue("AppsUseLightTheme", 1))
+				If light = 1 Then
+					Return Skye.UI.SkyeThemes.Light
+				Else
+					Return Skye.UI.SkyeThemes.Dark
+				End If
+			End Using
+		End Function
 		<Diagnostics.ConditionalAttribute("DEBUG")> Private Sub GetSettingsDebug()
 			'SkyeSM
 			'HotKeys (HK)
