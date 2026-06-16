@@ -194,7 +194,11 @@ Namespace My
 
 		' Handlers
 		Private Sub OnThemeChanged(sender As Object, e As EventArgs)
-			Skye.UI.ThemeManager.ApplyThemeToAllOpenForms()
+			For Each f As Form In Application.OpenForms
+				If TypeOf f IsNot SyM Then
+					ThemeManager.ApplyTheme(f)
+				End If
+			Next
 		End Sub
 		Private Sub OnHotKey(id As Integer)
 			HKPerformAction(id)
@@ -397,11 +401,12 @@ Namespace My
 		End Sub
 		Friend Sub ShowLog()
 			If FrmLogVisible Then FrmLog.Close()
-			FrmLog = New Skye.UI.Log.LogViewer With {
-				.Icon = Resources.Resources.iconApp,
-				.StartPosition = FormStartPosition.CenterScreen
-			}
-			FrmLog.Show()
+            FrmLog = New Skye.UI.Log.LogViewer With {
+                .Icon = Resources.Resources.iconApp,
+                .StartPosition = FormStartPosition.CenterScreen
+            }
+            Skye.UI.ThemeManager.ApplyTheme(FrmLog)
+            FrmLog.Show()
 		End Sub
 		Friend Sub StartFile(filepath As String)
 			Try : Diagnostics.Process.Start(filepath)

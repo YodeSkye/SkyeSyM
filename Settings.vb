@@ -1,5 +1,6 @@
 
 Imports System.Diagnostics
+Imports Skye.UI
 Imports SkyeSyM.My
 
 Partial Friend Class Settings
@@ -21,6 +22,9 @@ Partial Friend Class Settings
         InitializeComponent()
         Skye.UI.ThemeManager.RegisterComponent(TipMain)
         Skye.UI.ThemeManager.ApplyTheme(Me)
+        For Each thm In SkyeThemes.AllThemes
+            CoBoxTheme.Items.Add(thm.Name)
+        Next
         ShowSettings()
 
     End Sub
@@ -154,6 +158,15 @@ Partial Friend Class Settings
             App.SaveSettings()
         End If
     End Sub
+    Private Sub CoBoxTheme_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CoBoxTheme.SelectedIndexChanged
+        Dim selectedName As String = CoBoxTheme.SelectedItem.ToString()
+        Dim selected As Skye.UI.SkyeTheme = Skye.UI.SkyeThemes.GetTheme(selectedName)
+        App.Theme = selected
+        If Not App.ThemeAuto Then
+            SetTheme(selected)
+            ShowSettings()
+        End If
+    End Sub
     Private Sub ChbxSMAutoMinimalClick(sender As Object, e As EventArgs) Handles chbxSMAutoMinimal.Click
         App.SyMAutoMinimal = Not App.SyMAutoMinimal
         App.SaveSettings()
@@ -162,6 +175,15 @@ Partial Friend Class Settings
     Private Sub ChbxSMAutoCloseClick(sender As Object, e As EventArgs) Handles chbxSMAutoClose.Click
         App.SyMAutoClose = Not App.SyMAutoClose
         App.SaveSettings()
+    End Sub
+    Private Sub ChkBoxThemeAuto_Click(sender As Object, e As EventArgs) Handles ChkBoxThemeAuto.Click
+        App.ThemeAuto = ChkBoxThemeAuto.Checked
+        SetThemesList()
+        If App.ThemeAuto Then
+            Skye.UI.ThemeManager.SetTheme(Skye.UI.ThemeManager.DetectWindowsTheme())
+        Else
+            Skye.UI.ThemeManager.SetTheme(App.Theme)
+        End If
     End Sub
     Private Sub BtnCloseClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnClose.Click
         Close()
@@ -344,8 +366,20 @@ Partial Friend Class Settings
         btnSMColorBarUserForeground.BackColor = App.SyMColor.BarProcessorUserForeground
         btnSMColorBarSystemForeground.BackColor = App.SyMColor.BarProcessorSystemForeground
 
+        'Theme
+        CoBoxTheme.SelectedItem = App.Theme.Name
+        ChkBoxThemeAuto.Checked = App.ThemeAuto
+        SetThemesList()
+
         ResumeLayout()
         btnClose.Select()
+    End Sub
+    Private Sub SetThemesList()
+        If App.ThemeAuto Then
+            CoBoxTheme.Enabled = False
+        Else
+            CoBoxTheme.Enabled = True
+        End If
     End Sub
     Private Sub SyMColorsSetUndo()
         Me.SMColorsUndo = My.App.SyMColor

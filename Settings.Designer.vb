@@ -54,6 +54,9 @@
         LblNetwork = New Label()
         LblColors = New Label()
         LblHotKey = New Label()
+        LblTheme = New Label()
+        CoBoxTheme = New Skye.UI.ComboBox()
+        ChkBoxThemeAuto = New CheckBox()
         panelSMColors.SuspendLayout()
         panel1.SuspendLayout()
         SuspendLayout()
@@ -664,6 +667,42 @@
         TipMain.SetText(LblHotKey, Nothing)
         LblHotKey.TextAlign = ContentAlignment.BottomCenter
         ' 
+        ' LblTheme
+        ' 
+        LblTheme.AutoSize = True
+        LblTheme.Font = New Font("Segoe UI", 12F, FontStyle.Bold Or FontStyle.Underline)
+        TipMain.SetImage(LblTheme, Nothing)
+        LblTheme.Location = New Point(379, 491)
+        LblTheme.Margin = New Padding(4, 0, 4, 0)
+        LblTheme.Name = "LblTheme"
+        LblTheme.Size = New Size(62, 21)
+        LblTheme.TabIndex = 160
+        LblTheme.Text = "Theme"
+        TipMain.SetText(LblTheme, Nothing)
+        LblTheme.TextAlign = ContentAlignment.BottomCenter
+        ' 
+        ' CoBoxTheme
+        ' 
+        CoBoxTheme.FormattingEnabled = True
+        TipMain.SetImage(CoBoxTheme, Nothing)
+        CoBoxTheme.Location = New Point(333, 515)
+        CoBoxTheme.Name = "CoBoxTheme"
+        CoBoxTheme.Size = New Size(155, 30)
+        CoBoxTheme.TabIndex = 161
+        TipMain.SetText(CoBoxTheme, Nothing)
+        ' 
+        ' ChkBoxThemeAuto
+        ' 
+        ChkBoxThemeAuto.AutoSize = True
+        TipMain.SetImage(ChkBoxThemeAuto, Nothing)
+        ChkBoxThemeAuto.Location = New Point(497, 518)
+        ChkBoxThemeAuto.Name = "ChkBoxThemeAuto"
+        ChkBoxThemeAuto.Size = New Size(194, 25)
+        ChkBoxThemeAuto.TabIndex = 162
+        TipMain.SetText(ChkBoxThemeAuto, Nothing)
+        ChkBoxThemeAuto.Text = "Auto Set With Windows"
+        ChkBoxThemeAuto.UseVisualStyleBackColor = True
+        ' 
         ' Settings
         ' 
         AutoScaleDimensions = New SizeF(9F, 21F)
@@ -671,6 +710,9 @@
         AutoSizeMode = AutoSizeMode.GrowAndShrink
         AutoValidate = AutoValidate.EnablePreventFocusChange
         ClientSize = New Size(820, 661)
+        Controls.Add(ChkBoxThemeAuto)
+        Controls.Add(CoBoxTheme)
+        Controls.Add(LblTheme)
         Controls.Add(LblHotKey)
         Controls.Add(LblColors)
         Controls.Add(LblNetwork)
@@ -753,4 +795,7 @@
     Friend WithEvents LblNetwork As Label
     Friend WithEvents LblColors As Label
     Friend WithEvents LblHotKey As Label
+    Friend WithEvents LblTheme As Label
+    Friend WithEvents CoBoxTheme As Skye.UI.ComboBox
+    Friend WithEvents ChkBoxThemeAuto As CheckBox
 End Class
