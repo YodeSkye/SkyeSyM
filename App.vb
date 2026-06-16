@@ -273,7 +273,7 @@ Namespace My
 			Skye.Common.Log.Write(My.Application.Info.ProductName + " Started...")
 			GetSettings()
 			If ThemeAuto Then
-				Skye.UI.ThemeManager.SetTheme(DetectWindowsTheme())
+				Skye.UI.ThemeManager.SetTheme(Skye.UI.ThemeManager.DetectWindowsTheme())
 			Else
 				Skye.UI.ThemeManager.CurrentTheme = Theme
 			End If
@@ -410,17 +410,6 @@ Namespace My
 				MsgBox("Cannot Start '" + filepath + "'" + vbCr + ex.Message + vbCr + "Please Check Your Settings And Try Again")
 			End Try
 		End Sub
-		Private Function DetectWindowsTheme() As SkyeTheme
-			Const keyPath As String = "Software\Microsoft\Windows\CurrentVersion\Themes\Personalize"
-			Using key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(keyPath)
-				Dim light As Integer = CInt(key.GetValue("AppsUseLightTheme", 1))
-				If light = 1 Then
-					Return Skye.UI.SkyeThemes.Light
-				Else
-					Return Skye.UI.SkyeThemes.Dark
-				End If
-			End Using
-		End Function
 		<Diagnostics.ConditionalAttribute("DEBUG")> Private Sub GetSettingsDebug()
 			'SkyeSM
 			'HotKeys (HK)

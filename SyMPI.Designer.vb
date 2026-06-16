@@ -35,7 +35,7 @@ Partial Class SyMPI
         TxtBoxSearch.Margin = New Padding(4)
         TxtBoxSearch.Name = "TxtBoxSearch"
         TxtBoxSearch.PlaceholderText = "Search Processes"
-        TxtBoxSearch.Size = New Size(367, 29)
+        TxtBoxSearch.Size = New Size(368, 29)
         TxtBoxSearch.TabIndex = 0
         ' 
         ' ChkBoxShowSystem
@@ -53,7 +53,6 @@ Partial Class SyMPI
         ' LBProcesses
         ' 
         LBProcesses.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
-        LBProcesses.BorderStyle = BorderStyle.None
         LBProcesses.DrawMode = DrawMode.OwnerDrawFixed
         LBProcesses.FormattingEnabled = True
         LBProcesses.IntegralHeight = False
