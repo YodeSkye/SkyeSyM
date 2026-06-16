@@ -664,6 +664,7 @@
         ' 
         ' CoBoxTheme
         ' 
+        CoBoxTheme.DropDownStyle = ComboBoxStyle.DropDownList
         CoBoxTheme.FormattingEnabled = True
         TipMain.SetImage(CoBoxTheme, Nothing)
         CoBoxTheme.Location = New Point(333, 515)
@@ -686,6 +687,7 @@
         ' 
         ' comboboxSMOpacity
         ' 
+        comboboxSMOpacity.DropDownStyle = ComboBoxStyle.DropDownList
         comboboxSMOpacity.FormattingEnabled = True
         TipMain.SetImage(comboboxSMOpacity, Nothing)
         comboboxSMOpacity.Items.AddRange(New Object() {"100", "90", "80", "70", "60", "50", "40", "30", "20", "10"})
@@ -697,6 +699,7 @@
         ' 
         ' comboboxSMNetworkInstance
         ' 
+        comboboxSMNetworkInstance.DropDownStyle = ComboBoxStyle.DropDownList
         comboboxSMNetworkInstance.FormattingEnabled = True
         TipMain.SetImage(comboboxSMNetworkInstance, Nothing)
         comboboxSMNetworkInstance.Location = New Point(340, 214)
