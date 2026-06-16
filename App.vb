@@ -752,15 +752,17 @@ Namespace My
 		End Function
 		Friend Function SyMGetNetworkInstanceNames() As String()
 			Try
-				For Each pcc As Diagnostics.PerformanceCounterCategory In Diagnostics.PerformanceCounterCategory.GetCategories
-					If pcc.CategoryName = "Network Interface" Then
-						SyMGetNetworkInstanceNames = pcc.GetInstanceNames
-						Array.Sort(SyMGetNetworkInstanceNames)
-						Exit Function
-					End If
-				Next
-				SyMGetNetworkInstanceNames = New String() {"< No Instances >"}
-			Catch : SyMGetNetworkInstanceNames = New String() {"< No Instances >"}
+				Dim nicCat As New Diagnostics.PerformanceCounterCategory("Network Interface")
+				Dim names = nicCat.GetInstanceNames()
+				If names Is Nothing OrElse names.Length = 0 Then
+					Return New String() {"< No Instances >"}
+				End If
+
+				Array.Sort(names)
+				Return names
+
+			Catch ex As Exception
+				Return New String() {"< No Instances >"}
 			End Try
 		End Function
 		Friend Function SyMGetProcessInstanceNames() As String()

@@ -29,9 +29,7 @@
         lblSMColorBackground = New Label()
         textboxSMQuickHideInterval = New TextBox()
         lblSMQuickHideInterval = New Label()
-        comboboxSMOpacity = New ComboBox()
         lblSMOpacity = New Label()
-        comboboxSMNetworkInstance = New ComboBox()
         textboxSMNetworkDownloadMaximum = New TextBox()
         textboxSMNetworkUploadMaximum = New TextBox()
         textboxSMUpdateInterval = New TextBox()
@@ -57,6 +55,8 @@
         LblTheme = New Label()
         CoBoxTheme = New Skye.UI.ComboBox()
         ChkBoxThemeAuto = New CheckBox()
+        comboboxSMOpacity = New Skye.UI.ComboBox()
+        comboboxSMNetworkInstance = New Skye.UI.ComboBox()
         panelSMColors.SuspendLayout()
         panel1.SuspendLayout()
         SuspendLayout()
@@ -313,8 +313,9 @@
         ' 
         ' textboxSMQuickHideInterval
         ' 
+        textboxSMQuickHideInterval.BorderStyle = BorderStyle.FixedSingle
         TipMain.SetImage(textboxSMQuickHideInterval, Nothing)
-        textboxSMQuickHideInterval.Location = New Point(372, 101)
+        textboxSMQuickHideInterval.Location = New Point(372, 102)
         textboxSMQuickHideInterval.Margin = New Padding(4)
         textboxSMQuickHideInterval.MaxLength = 2
         textboxSMQuickHideInterval.Name = "textboxSMQuickHideInterval"
@@ -335,18 +336,6 @@
         TipMain.SetText(lblSMQuickHideInterval, Nothing)
         lblSMQuickHideInterval.TextAlign = ContentAlignment.BottomCenter
         ' 
-        ' comboboxSMOpacity
-        ' 
-        comboboxSMOpacity.DropDownStyle = ComboBoxStyle.DropDownList
-        TipMain.SetImage(comboboxSMOpacity, Nothing)
-        comboboxSMOpacity.Items.AddRange(New Object() {"100", "90", "80", "70", "60", "50", "40", "30", "20", "10"})
-        comboboxSMOpacity.Location = New Point(495, 101)
-        comboboxSMOpacity.Margin = New Padding(4)
-        comboboxSMOpacity.Name = "comboboxSMOpacity"
-        comboboxSMOpacity.Size = New Size(76, 29)
-        comboboxSMOpacity.TabIndex = 14
-        TipMain.SetText(comboboxSMOpacity, "Opacity (Window Visibility Strength)")
-        ' 
         ' lblSMOpacity
         ' 
         TipMain.SetImage(lblSMOpacity, Nothing)
@@ -359,22 +348,11 @@
         TipMain.SetText(lblSMOpacity, Nothing)
         lblSMOpacity.TextAlign = ContentAlignment.BottomLeft
         ' 
-        ' comboboxSMNetworkInstance
-        ' 
-        comboboxSMNetworkInstance.DropDownStyle = ComboBoxStyle.DropDownList
-        comboboxSMNetworkInstance.DropDownWidth = 350
-        TipMain.SetImage(comboboxSMNetworkInstance, Nothing)
-        comboboxSMNetworkInstance.Location = New Point(340, 214)
-        comboboxSMNetworkInstance.Margin = New Padding(4)
-        comboboxSMNetworkInstance.Name = "comboboxSMNetworkInstance"
-        comboboxSMNetworkInstance.Size = New Size(463, 29)
-        comboboxSMNetworkInstance.TabIndex = 20
-        TipMain.SetText(comboboxSMNetworkInstance, "Select a Network Interface")
-        ' 
         ' textboxSMNetworkDownloadMaximum
         ' 
+        textboxSMNetworkDownloadMaximum.BorderStyle = BorderStyle.FixedSingle
         TipMain.SetImage(textboxSMNetworkDownloadMaximum, Nothing)
-        textboxSMNetworkDownloadMaximum.Location = New Point(18, 214)
+        textboxSMNetworkDownloadMaximum.Location = New Point(18, 215)
         textboxSMNetworkDownloadMaximum.Margin = New Padding(4)
         textboxSMNetworkDownloadMaximum.MaxLength = 5
         textboxSMNetworkDownloadMaximum.Name = "textboxSMNetworkDownloadMaximum"
@@ -385,8 +363,9 @@
         ' 
         ' textboxSMNetworkUploadMaximum
         ' 
+        textboxSMNetworkUploadMaximum.BorderStyle = BorderStyle.FixedSingle
         TipMain.SetImage(textboxSMNetworkUploadMaximum, Nothing)
-        textboxSMNetworkUploadMaximum.Location = New Point(178, 214)
+        textboxSMNetworkUploadMaximum.Location = New Point(178, 215)
         textboxSMNetworkUploadMaximum.Margin = New Padding(4)
         textboxSMNetworkUploadMaximum.MaxLength = 5
         textboxSMNetworkUploadMaximum.Name = "textboxSMNetworkUploadMaximum"
@@ -397,8 +376,9 @@
         ' 
         ' textboxSMUpdateInterval
         ' 
+        textboxSMUpdateInterval.BorderStyle = BorderStyle.FixedSingle
         TipMain.SetImage(textboxSMUpdateInterval, Nothing)
-        textboxSMUpdateInterval.Location = New Point(248, 101)
+        textboxSMUpdateInterval.Location = New Point(248, 102)
         textboxSMUpdateInterval.Margin = New Padding(4)
         textboxSMUpdateInterval.MaxLength = 5
         textboxSMUpdateInterval.Name = "textboxSMUpdateInterval"
@@ -458,6 +438,7 @@
         ' txbxHKSM
         ' 
         txbxHKSM.Anchor = AnchorStyles.Top
+        txbxHKSM.BorderStyle = BorderStyle.FixedSingle
         TipMain.SetImage(txbxHKSM, Nothing)
         txbxHKSM.Location = New Point(4, 28)
         txbxHKSM.Margin = New Padding(4)
@@ -703,6 +684,27 @@
         ChkBoxThemeAuto.Text = "Auto Set With Windows"
         ChkBoxThemeAuto.UseVisualStyleBackColor = True
         ' 
+        ' comboboxSMOpacity
+        ' 
+        comboboxSMOpacity.FormattingEnabled = True
+        TipMain.SetImage(comboboxSMOpacity, Nothing)
+        comboboxSMOpacity.Items.AddRange(New Object() {"100", "90", "80", "70", "60", "50", "40", "30", "20", "10"})
+        comboboxSMOpacity.Location = New Point(495, 101)
+        comboboxSMOpacity.Name = "comboboxSMOpacity"
+        comboboxSMOpacity.Size = New Size(76, 30)
+        comboboxSMOpacity.TabIndex = 163
+        TipMain.SetText(comboboxSMOpacity, Nothing)
+        ' 
+        ' comboboxSMNetworkInstance
+        ' 
+        comboboxSMNetworkInstance.FormattingEnabled = True
+        TipMain.SetImage(comboboxSMNetworkInstance, Nothing)
+        comboboxSMNetworkInstance.Location = New Point(340, 214)
+        comboboxSMNetworkInstance.Name = "comboboxSMNetworkInstance"
+        comboboxSMNetworkInstance.Size = New Size(463, 30)
+        comboboxSMNetworkInstance.TabIndex = 164
+        TipMain.SetText(comboboxSMNetworkInstance, Nothing)
+        ' 
         ' Settings
         ' 
         AutoScaleDimensions = New SizeF(9F, 21F)
@@ -710,6 +712,8 @@
         AutoSizeMode = AutoSizeMode.GrowAndShrink
         AutoValidate = AutoValidate.EnablePreventFocusChange
         ClientSize = New Size(820, 661)
+        Controls.Add(comboboxSMNetworkInstance)
+        Controls.Add(comboboxSMOpacity)
         Controls.Add(ChkBoxThemeAuto)
         Controls.Add(CoBoxTheme)
         Controls.Add(LblTheme)
@@ -723,9 +727,7 @@
         Controls.Add(panelSMColors)
         Controls.Add(textboxSMQuickHideInterval)
         Controls.Add(lblSMQuickHideInterval)
-        Controls.Add(comboboxSMOpacity)
         Controls.Add(lblSMOpacity)
-        Controls.Add(comboboxSMNetworkInstance)
         Controls.Add(textboxSMNetworkDownloadMaximum)
         Controls.Add(textboxSMNetworkUploadMaximum)
         Controls.Add(textboxSMUpdateInterval)
@@ -775,13 +777,11 @@
     Private panelSMColors As System.Windows.Forms.Panel
     Private lblSMQuickHideInterval As System.Windows.Forms.Label
     Private WithEvents lblSMOpacity As System.Windows.Forms.Label
-    Private WithEvents comboboxSMOpacity As System.Windows.Forms.ComboBox
     Private WithEvents textboxSMQuickHideInterval As System.Windows.Forms.TextBox
     Private lblSMUpdateInterval As System.Windows.Forms.Label
     Private lblSMNetworkDownloadMaximum As System.Windows.Forms.Label
     Private lblSMNetworkUploadMaximum As System.Windows.Forms.Label
     Private lblSMNetworkInstance As System.Windows.Forms.Label
-    Private WithEvents comboboxSMNetworkInstance As System.Windows.Forms.ComboBox
     Private WithEvents textboxSMNetworkUploadMaximum As System.Windows.Forms.TextBox
     Private WithEvents textboxSMNetworkDownloadMaximum As System.Windows.Forms.TextBox
     Private WithEvents textboxSMUpdateInterval As System.Windows.Forms.TextBox
@@ -798,4 +798,6 @@
     Friend WithEvents LblTheme As Label
     Friend WithEvents CoBoxTheme As Skye.UI.ComboBox
     Friend WithEvents ChkBoxThemeAuto As CheckBox
+    Friend WithEvents comboboxSMOpacity As Skye.UI.ComboBox
+    Friend WithEvents comboboxSMNetworkInstance As Skye.UI.ComboBox
 End Class

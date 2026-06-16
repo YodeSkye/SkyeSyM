@@ -144,21 +144,21 @@ Partial Friend Class Settings
             App.FrmMain.ResetSyM()
         End If
     End Sub
-    Private Sub CobxSMNetworkInstanceSelectedIndexChanged(sender As Object, e As EventArgs) Handles comboboxSMNetworkInstance.SelectedIndexChanged
-        If Not App.SyMNetworkInstance = comboboxSMNetworkInstance.Text Then
-            App.SyMNetworkInstance = comboboxSMNetworkInstance.Text
-            App.SaveSettings()
-            App.FrmMain.ResetSyM()
+    Private Sub CoBxSMNetworkInstanceSelectedIndexChanged(sender As Object, e As EventArgs) Handles comboboxSMNetworkInstance.SelectedIndexChanged
+        If Not SyMNetworkInstance = comboboxSMNetworkInstance.Text Then
+            SyMNetworkInstance = comboboxSMNetworkInstance.Text
+            SaveSettings()
+            FrmMain.ResetSyM()
         End If
     End Sub
-    Private Sub CobxSMOpacitySelectedIndexChanged(sender As Object, e As EventArgs) Handles comboboxSMOpacity.SelectedIndexChanged
-        If Not App.SyMOpacity.ToString = comboboxSMOpacity.Text Then
-            App.SyMOpacity = CByte(Val(comboboxSMOpacity.Text))
-            App.FrmSyM.SetOpacity()
-            App.SaveSettings()
+    Private Sub CoBxSMOpacitySelectedIndexChanged(sender As Object, e As EventArgs) Handles comboboxSMOpacity.SelectedIndexChanged
+        If Not SyMOpacity.ToString = comboboxSMOpacity.Text Then
+            SyMOpacity = CByte(Val(comboboxSMOpacity.Text))
+            FrmSyM.SetOpacity()
+            SaveSettings()
         End If
     End Sub
-    Private Sub CoBoxTheme_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CoBoxTheme.SelectedIndexChanged
+    Private Sub CoBxTheme_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CoBoxTheme.SelectedIndexChanged
         Dim selectedName As String = CoBoxTheme.SelectedItem.ToString()
         Dim selected As Skye.UI.SkyeTheme = Skye.UI.SkyeThemes.GetTheme(selectedName)
         App.Theme = selected
