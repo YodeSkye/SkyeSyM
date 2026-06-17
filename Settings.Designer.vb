@@ -500,7 +500,6 @@
         ' lblHKSM
         ' 
         lblHKSM.Anchor = AnchorStyles.Top
-        lblHKSM.ForeColor = SystemColors.ControlText
         TipMain.SetImage(lblHKSM, Nothing)
         lblHKSM.Location = New Point(4, 1)
         lblHKSM.Margin = New Padding(4, 0, 4, 0)
