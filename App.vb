@@ -191,8 +191,8 @@ Namespace My
 		Friend SyMPinnedProcesses As New List(Of String)
 		Friend HKEnabled As Boolean
 		Friend HKSyM As New HKType
-		Friend Theme As Skye.UI.SkyeTheme = Skye.UI.SkyeThemes.Blossom
-		Friend ThemeAuto As Boolean = False
+		Friend Theme As Skye.UI.SkyeTheme
+		Friend ThemeAuto As Boolean
 
 		' Handlers
 		Private Sub OnThemeChanged(sender As Object, e As EventArgs)
