@@ -1,5 +1,4 @@
 
-Imports System.Diagnostics
 Imports Skye.UI
 Imports SkyeSyM.My
 
@@ -31,7 +30,7 @@ Partial Friend Class Settings
     Private Sub FrmMouseDown(ByVal sender As Object, ByVal e As MouseEventArgs) Handles MyBase.MouseDown
         If e.Button = MouseButtons.Left And Me.WindowState = FormWindowState.Normal Then
             mMove = True
-            mOffset = New Point(-e.X - SystemInformation.FrameBorderSize.Width, -e.Y - SystemInformation.FrameBorderSize.Height - SystemInformation.CaptionHeight)
+            mOffset = New Point(-e.X - SystemInformation.FrameBorderSize.Width * 2, -e.Y - SystemInformation.CaptionHeight - SystemInformation.FrameBorderSize.Height * 2)
         End If
     End Sub
     Private Sub FrmMouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles MyBase.MouseMove
@@ -46,7 +45,7 @@ Partial Friend Class Settings
         mMove = False
     End Sub
     Private Sub FrmMove(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Move
-        If Not mMove AndAlso Me.WindowState = FormWindowState.Normal Then CheckMove(Me.Location)
+        If Not mMove AndAlso WindowState = FormWindowState.Normal Then CheckMove(Location)
     End Sub
 
     ' Control Events
@@ -390,10 +389,11 @@ Partial Friend Class Settings
         Me.SMColorsUndo = Nothing
     End Sub
     Private Sub CheckMove(ByRef location As Point)
-        If location.X + Me.Width > My.Computer.Screen.WorkingArea.Right Then location.X = My.Computer.Screen.WorkingArea.Right - Me.Width
-        If location.Y + Me.Height > My.Computer.Screen.WorkingArea.Bottom Then location.Y = My.Computer.Screen.WorkingArea.Bottom - Me.Height
-        If location.X < My.Computer.Screen.WorkingArea.Left Then location.X = My.Computer.Screen.WorkingArea.Left
-        If location.Y < My.Computer.Screen.WorkingArea.Top Then location.Y = My.Computer.Screen.WorkingArea.Top
+        Dim screen = System.Windows.Forms.Screen.FromControl(Me).WorkingArea
+        If location.X + Width > screen.Right Then location.X = screen.Right - Width + App.AdjustScreenBoundsNormalWindow
+        If location.Y + Height > screen.Bottom Then location.Y = screen.Bottom - Height + App.AdjustScreenBoundsNormalWindow
+        If location.X < screen.Left Then location.X = screen.Left - App.AdjustScreenBoundsNormalWindow
+        If location.Y < screen.Top Then location.Y = screen.Top
     End Sub
     Private Function SyMGetColor(rgb As Integer) As Color
         For Each kc As KnownColor In [Enum].GetValues(Of KnownColor)()

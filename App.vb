@@ -26,6 +26,8 @@ Namespace My
 		Friend Const WinTaskManagerPath As String = "C:\Windows\System32\taskmgr.exe"
 		Friend Const WinResourceMonitorPath As String = "C:\Windows\System32\resmon.exe"
 		Friend Const WinPerformanceMonitorPath As String = "C:\Windows\System32\perfmon.exe"
+		Friend Const AdjustScreenBoundsNormalWindow As Byte = 8 'AdjustScreenBoundsNormalWindow is the number of pixels to adjust the screen bounds for normal windows.
+		Friend Const AdjustScreenBoundsDialogWindow As Byte = 10 'AdjustScreenBoundsDialogWindow is the number of pixels to adjust the screen bounds for dialog windows.
 		Private ReadOnly ctsScreenSaver As New CancellationTokenSource()
 		Private ScreenSaverRunning As Boolean = False
 		Private WorkStationLocked As Boolean = False
