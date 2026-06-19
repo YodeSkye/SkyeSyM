@@ -165,6 +165,7 @@ Partial Friend Class Settings
             SetTheme(selected)
             ShowSettings()
         End If
+        App.SaveSettings()
     End Sub
     Private Sub ChbxSMAutoMinimalClick(sender As Object, e As EventArgs) Handles chbxSMAutoMinimal.Click
         App.SyMAutoMinimal = Not App.SyMAutoMinimal
@@ -183,6 +184,7 @@ Partial Friend Class Settings
         Else
             Skye.UI.ThemeManager.SetTheme(App.Theme)
         End If
+        App.SaveSettings()
     End Sub
     Private Sub BtnCloseClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnClose.Click
         Close()

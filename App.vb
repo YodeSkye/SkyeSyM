@@ -334,6 +334,12 @@ Namespace My
 			SyMLocation.Y = Skye.Common.RegistryHelper.GetInt("SyMLocationY", 0)
 			App.SyMPinnedProcesses.Clear()
 			App.SyMPinnedProcesses.AddRange(Skye.Common.RegistryHelper.GetStringArray("SyMPinnedProcesses", Array.Empty(Of String)()))
+
+			' Theme
+			Dim themeName As String = Skye.Common.RegistryHelper.GetString("Theme", "Light")
+			Theme = SkyeThemes.GetTheme(themeName)
+			ThemeAuto = Skye.Common.RegistryHelper.GetBool("ThemeAuto", True)
+
 #If DEBUG Then
 			GetSettingsDebug()
 #End If
@@ -366,6 +372,10 @@ Namespace My
 			Skye.Common.RegistryHelper.SetInt("SyMLocationX", SyMLocation.X)
 			Skye.Common.RegistryHelper.SetInt("SyMLocationY", SyMLocation.Y)
 			Skye.Common.RegistryHelper.SetStringArray("SyMPinnedProcesses", SyMPinnedProcesses.ToArray)
+
+			' Theme
+			Skye.Common.RegistryHelper.SetString("Theme", Theme.Name)
+			Skye.Common.RegistryHelper.SetBool("ThemeAuto", ThemeAuto)
 
 			Skye.Common.Log.Write("Settings Saved")
 		End Sub
