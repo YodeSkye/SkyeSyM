@@ -76,11 +76,11 @@ Public Class SyMPI
         ' Determine text color
         Dim textColor As Color
         If (e.State And DrawItemState.Selected) = DrawItemState.Selected Then
-            textColor = Color.White
+            textColor = Skye.UI.CurrentTheme.ForeColor
         ElseIf item.IsSystem Then
             textColor = Color.Gray
         Else
-            textColor = Color.Black
+            textColor = Skye.UI.CurrentTheme.ForeColor
         End If
 
         ' Icon rectangle
@@ -89,8 +89,8 @@ Public Class SyMPI
         ' Draw icon (fallback if missing)
         If item.Icon IsNot Nothing Then
             g.DrawIcon(item.Icon, iconRect)
-        Else
-            ControlPaint.DrawBorder(g, iconRect, Color.LightGray, ButtonBorderStyle.Solid)
+            'Else
+            'ControlPaint.DrawBorder(g, iconRect, Color.LightGray, ButtonBorderStyle.Solid)
         End If
 
         ' Text rectangle
