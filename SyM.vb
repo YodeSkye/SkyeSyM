@@ -306,10 +306,10 @@ Partial Friend Class SyM
         Dim name = App.SyMProcessInstance
         If App.SyMPinnedProcesses.Contains(name) Then
             CMIPIPinToggle.Text = "Unpin Current Process"
-            CMIPIPinToggle.Image = Resources.Resources.ImageUnpin16
+            CMIPIPinToggle.Image = My.Resources.Resources.ImageUnpin16
         Else
             CMIPIPinToggle.Text = "Pin Current Process"
-            CMIPIPinToggle.Image = Resources.Resources.ImagePin16
+            CMIPIPinToggle.Image = My.Resources.Resources.ImagePin16
         End If
     End Sub
     Private Sub RefreshPinnedMenu()

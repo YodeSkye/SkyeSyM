@@ -25,7 +25,7 @@ Public Class SyMPI
 
     ' Form Events
     Private Async Sub Frm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Skye.UI.ApplyTheme(Me)
+        Skye.UI.ThemeManager.ApplyTheme(Me)
 
         cts = New CancellationTokenSource()
 
@@ -76,11 +76,11 @@ Public Class SyMPI
         ' Determine text color
         Dim textColor As Color
         If (e.State And DrawItemState.Selected) = DrawItemState.Selected Then
-            textColor = Skye.UI.CurrentTheme.ForeColor
+            textColor = Skye.UI.ThemeManager.CurrentTheme.ForeColor
         ElseIf item.IsSystem Then
             textColor = Color.Gray
         Else
-            textColor = Skye.UI.CurrentTheme.ForeColor
+            textColor = Skye.UI.ThemeManager.CurrentTheme.ForeColor
         End If
 
         ' Icon rectangle

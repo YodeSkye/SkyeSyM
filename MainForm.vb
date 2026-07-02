@@ -20,7 +20,7 @@ Partial Friend Class MainForm
         ' Initialize Locals
         ni = New NotifyIcon With {
             .Text = My.Application.Info.ProductName,
-            .Icon = Resources.Resources.iconApp}
+            .Icon = My.Resources.Resources.iconApp}
         AddHandler ni.MouseUp, AddressOf NIMouseUp
 
         ' Initialize Form

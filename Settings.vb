@@ -162,7 +162,7 @@ Partial Friend Class Settings
         Dim selected As Skye.UI.SkyeTheme = Skye.UI.SkyeThemes.GetTheme(selectedName)
         App.Theme = selected
         If Not App.ThemeAuto Then
-            SetTheme(selected)
+            Skye.UI.ThemeManager.SetTheme(selected)
             ShowSettings()
         End If
         App.SaveSettings()
@@ -336,16 +336,16 @@ Partial Friend Class Settings
             btnHKSMDisable.Enabled = True
             btnHKEnabled.Text = "Disable"
             TipMain.SetText(btnHKEnabled, "Disable HotKeys")
-            TipMain.SetImage(btnHKEnabled, Resources.Resources.ImageHKDisable32)
-            btnHKEnabled.Image = Resources.Resources.ImageHKDisable32
+            TipMain.SetImage(btnHKEnabled, My.Resources.Resources.ImageHKDisable32)
+            btnHKEnabled.Image = My.Resources.Resources.ImageHKDisable32
         Else
             lblHKSM.Enabled = False
             txbxHKSM.Enabled = False
             btnHKSMDisable.Enabled = False
             btnHKEnabled.Text = "Enable"
             TipMain.SetText(btnHKEnabled, "Enable HotKeys")
-            TipMain.SetImage(btnHKEnabled, Resources.Resources.ImageHKEnable32)
-            btnHKEnabled.Image = Resources.Resources.ImageHKEnable32
+            TipMain.SetImage(btnHKEnabled, My.Resources.Resources.ImageHKEnable32)
+            btnHKEnabled.Image = My.Resources.Resources.ImageHKEnable32
         End If
 
         'SyM
