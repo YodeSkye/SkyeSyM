@@ -134,75 +134,75 @@ Inherits System.Windows.Forms.Form
         cmOpacity.Items.AddRange(New ToolStripItem() {cmiOpacity100, cmiOpacity90, cmiOpacity80, cmiOpacity70, cmiOpacity60, cmiOpacity50, cmiOpacity40, cmiOpacity30, cmiOpacity20, cmiOpacity10})
         cmOpacity.Name = "cmOpacity"
         cmOpacity.ShowItemToolTips = False
-        cmOpacity.Size = New Size(125, 264)
+        cmOpacity.Size = New Size(181, 286)
         ' 
         ' cmiOpacity100
         ' 
         cmiOpacity100.Name = "cmiOpacity100"
-        cmiOpacity100.Size = New Size(124, 26)
+        cmiOpacity100.Size = New Size(180, 26)
         cmiOpacity100.Tag = "100"
         cmiOpacity100.Text = "100 %"
         ' 
         ' cmiOpacity90
         ' 
         cmiOpacity90.Name = "cmiOpacity90"
-        cmiOpacity90.Size = New Size(124, 26)
+        cmiOpacity90.Size = New Size(180, 26)
         cmiOpacity90.Tag = "90"
         cmiOpacity90.Text = " 90 %"
         ' 
         ' cmiOpacity80
         ' 
         cmiOpacity80.Name = "cmiOpacity80"
-        cmiOpacity80.Size = New Size(124, 26)
+        cmiOpacity80.Size = New Size(180, 26)
         cmiOpacity80.Tag = "80"
         cmiOpacity80.Text = " 80 %"
         ' 
         ' cmiOpacity70
         ' 
         cmiOpacity70.Name = "cmiOpacity70"
-        cmiOpacity70.Size = New Size(124, 26)
+        cmiOpacity70.Size = New Size(180, 26)
         cmiOpacity70.Tag = "70"
         cmiOpacity70.Text = " 70 %"
         ' 
         ' cmiOpacity60
         ' 
         cmiOpacity60.Name = "cmiOpacity60"
-        cmiOpacity60.Size = New Size(124, 26)
+        cmiOpacity60.Size = New Size(180, 26)
         cmiOpacity60.Tag = "60"
         cmiOpacity60.Text = " 60 %"
         ' 
         ' cmiOpacity50
         ' 
         cmiOpacity50.Name = "cmiOpacity50"
-        cmiOpacity50.Size = New Size(124, 26)
+        cmiOpacity50.Size = New Size(180, 26)
         cmiOpacity50.Tag = "50"
         cmiOpacity50.Text = " 50 %"
         ' 
         ' cmiOpacity40
         ' 
         cmiOpacity40.Name = "cmiOpacity40"
-        cmiOpacity40.Size = New Size(124, 26)
+        cmiOpacity40.Size = New Size(180, 26)
         cmiOpacity40.Tag = "40"
         cmiOpacity40.Text = " 40 %"
         ' 
         ' cmiOpacity30
         ' 
         cmiOpacity30.Name = "cmiOpacity30"
-        cmiOpacity30.Size = New Size(124, 26)
+        cmiOpacity30.Size = New Size(180, 26)
         cmiOpacity30.Tag = "30"
         cmiOpacity30.Text = " 30 %"
         ' 
         ' cmiOpacity20
         ' 
         cmiOpacity20.Name = "cmiOpacity20"
-        cmiOpacity20.Size = New Size(124, 26)
+        cmiOpacity20.Size = New Size(180, 26)
         cmiOpacity20.Tag = "20"
         cmiOpacity20.Text = " 20 %"
         ' 
         ' cmiOpacity10
         ' 
         cmiOpacity10.Name = "cmiOpacity10"
-        cmiOpacity10.Size = New Size(124, 26)
+        cmiOpacity10.Size = New Size(180, 26)
         cmiOpacity10.Tag = "10"
         cmiOpacity10.Text = " 10 %"
         ' 
@@ -211,6 +211,7 @@ Inherits System.Windows.Forms.Form
         cmSM.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         cmSM.Items.AddRange(New ToolStripItem() {cmiQuickHide, cmiClose, toolStripSeparator1, cmiWindowsMonitor, cmiProcessInstance, toolStripSeparator3, cmiAutoMinimal, cmiOpacity})
         cmSM.Name = "cmSM"
+        cmSM.ShowItemToolTips = False
         cmSM.Size = New Size(206, 172)
         ' 
         ' cmiQuickHide
@@ -253,6 +254,7 @@ Inherits System.Windows.Forms.Form
         CMPI.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         CMPI.Items.AddRange(New ToolStripItem() {TSSPIPins, CMIPIMore, CMIPIAttach, CMIPIPinToggle})
         CMPI.Name = "CMPI"
+        CMPI.ShowItemToolTips = False
         CMPI.Size = New Size(261, 88)
         ' 
         ' TSSPIPins

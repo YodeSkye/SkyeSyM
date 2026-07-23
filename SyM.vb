@@ -13,6 +13,7 @@ Partial Friend Class SyM
     Private QuickHideActive As Boolean = False
     Private Picker As SyMPI
     Private tipInfo As New ToolTip
+    Private TipCM As Skye.UI.ToolTipEX ' Tooltip for Context Menu Items
 
     ' Form Events
     Friend Sub New()
@@ -55,6 +56,20 @@ Partial Friend Class SyM
         Me.tipInfo.SetToolTip(Me.lblProcessProcessor, My.App.SyMGetCounterDescription(My.App.SyMCounters.ProcessProcessor))
         Me.tipInfo.SetToolTip(Me.lblProcessMemoryPhysical, My.App.SyMGetCounterDescription(My.App.SyMCounters.ProcessMemoryPhysical))
         Me.tipInfo.SetToolTip(Me.lblProcessMemoryPhysicalPercent, My.App.SyMGetCounterDescription(My.App.SyMCounters.ProcessMemoryPhysicalPercent))
+        TipCM = New Skye.UI.ToolTipEX() With {
+            .Font = App.MenuFont,
+            .ShadowAlpha = 0,
+            .ShadowThickness = 0,
+            .FadeInRate = 25,
+            .FadeOutRate = 25,
+            .HideDelay = 5000,
+            .ShowDelay = 250
+        }
+        App.HookTSItemsForCMTooltip(cmSM, TipCM)
+        Skye.UI.ThemeManager.ApplyToTooltip(TipCM)
+        AddHandler Skye.UI.ThemeManager.ThemeChanged, Sub()
+                                                          Skye.UI.ThemeManager.ApplyToTooltip(TipCM)
+                                                      End Sub
         cmSM.Renderer = New Skye.UI.SkyeMenuRenderer
         CMPI.Renderer = New Skye.UI.SkyeMenuRenderer
         cmOpacity.Renderer = New Skye.UI.SkyeMenuRenderer

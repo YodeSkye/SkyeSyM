@@ -13,6 +13,7 @@ Partial Friend Class MainForm
     Private DCFirstClick As Boolean = True
     Private DCDoubleClick As Boolean = False
     Private WithEvents DCTimer As New Timer
+    Private TipCM As Skye.UI.ToolTipEX ' Tooltip for Context Menu Items
 
     ' Form Events
     Friend Sub New()
@@ -25,6 +26,18 @@ Partial Friend Class MainForm
 
         ' Initialize Form
         InitializeComponent()
+        TipCM = New Skye.UI.ToolTipEX() With {
+            .Font = App.MenuFont,
+            .ShadowAlpha = 0,
+            .ShadowThickness = 0,
+            .FadeInRate = 25,
+            .FadeOutRate = 25,
+            .HideDelay = 5000,
+            .ShowDelay = 250
+        }
+        App.HookTSItemsForCMTooltip(cmSM, TipCM)
+        Skye.UI.ThemeManager.RegisterComponent(TipCM)
+        Skye.UI.ThemeManager.ApplyTheme(Me)
         cmSM.Renderer = New Skye.UI.SkyeMenuRenderer
         components.Add(ni)
         ni.ContextMenuStrip = cmSM

@@ -27,6 +27,7 @@ Inherits System.Windows.Forms.Form
         cmSM.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         cmSM.Items.AddRange(New ToolStripItem() {cmiSM, cmiWindowsMonitor, toolStripSeparator1, cmiHelp, cmiLog, cmiSettings, toolStripSeparator2, cmiExitApp})
         cmSM.Name = "contextmenuWorkSpaceTools"
+        cmSM.ShowItemToolTips = False
         cmSM.Size = New Size(206, 194)
         ' 
         ' cmiSM
@@ -55,7 +56,6 @@ Inherits System.Windows.Forms.Form
         cmiHelp.Name = "cmiHelp"
         cmiHelp.Size = New Size(205, 26)
         cmiHelp.Text = "Help && About"
-        cmiHelp.ToolTipText = "RightClick = Show Maximized"
         ' 
         ' cmiLog
         ' 

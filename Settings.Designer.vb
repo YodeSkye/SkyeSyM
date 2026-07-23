@@ -590,6 +590,8 @@
         ' TipMain
         ' 
         TipMain.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        TipMain.ShadowAlpha = 0
+        TipMain.ShadowThickness = 0
         ' 
         ' LblBehavior
         ' 
