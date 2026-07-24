@@ -414,17 +414,30 @@ Namespace My
 		End Sub
 		Friend Sub ShowLog()
 			If FrmLogVisible Then FrmLog.Close()
-            FrmLog = New Skye.UI.Log.LogViewer With {
-                .Icon = Resources.Resources.iconApp,
-                .StartPosition = FormStartPosition.CenterScreen
-            }
-            Skye.UI.ThemeManager.ApplyTheme(FrmLog)
-            FrmLog.Show()
+			FrmLog = New Skye.UI.Log.LogViewer With {
+				.Icon = Resources.Resources.iconApp,
+				.StartPosition = FormStartPosition.CenterScreen
+			}
+			Skye.UI.ThemeManager.ApplyTheme(FrmLog)
+			FrmLog.Show()
 		End Sub
 		Friend Sub StartFile(filepath As String)
 			Try : Diagnostics.Process.Start(filepath)
 			Catch ex As Exception
 				Skye.Common.Log.Write("Cannot Start '" + filepath + "'" + Chr(13) + ex.ToString)
+				MsgBox("Cannot Start '" + filepath + "'" + vbCr + ex.Message + vbCr + "Please Check Your Settings And Try Again")
+			End Try
+		End Sub
+		Friend Sub StartFileAsAdmin(filepath As String)
+			Try
+				Dim psi As New ProcessStartInfo() With {
+					.FileName = filepath,
+					.UseShellExecute = True,
+					.Verb = "runas"   ' <-- triggers elevation prompt
+				}
+				Process.Start(psi)
+			Catch ex As Exception
+				Skye.Common.Log.Write("Cannot Start '" + filepath + "'" + vbCr + ex.ToString)
 				MsgBox("Cannot Start '" + filepath + "'" + vbCr + ex.Message + vbCr + "Please Check Your Settings And Try Again")
 			End Try
 		End Sub
@@ -695,18 +708,18 @@ Namespace My
 
 			Return snap
 		End Function
-        Private Sub ApplySyMData(snap As SyMSnapshot)
+		Private Sub ApplySyMData(snap As SyMSnapshot)
 
-            FrmMain.ShowDataSystemUpTime(snap.SystemUpTime)
+			FrmMain.ShowDataSystemUpTime(snap.SystemUpTime)
 
-            ' Processor
-            FrmSyM.ShowDataProcessor(snap.Processor, snap.ProcessorRaw, snap.ProcessorUser, snap.ProcessorUserRaw, snap.ProcessorSystem, snap.ProcessorSystemRaw)
+			' Processor
+			FrmSyM.ShowDataProcessor(snap.Processor, snap.ProcessorRaw, snap.ProcessorUser, snap.ProcessorUserRaw, snap.ProcessorSystem, snap.ProcessorSystemRaw)
 
 			' Processes
 			FrmSyM.ShowDataProcesses(snap.Processes)
 
-            ' Memory
-            FrmSyM.ShowDataMemoryPhysical(snap.MemoryPhysicalMB, snap.MemoryPhysicalRaw, snap.MemoryPhysicalFreeRaw)
+			' Memory
+			FrmSyM.ShowDataMemoryPhysical(snap.MemoryPhysicalMB, snap.MemoryPhysicalRaw, snap.MemoryPhysicalFreeRaw)
 			FrmSyM.ShowDataPagingFileUsage(snap.PagingFileUsage)
 
 			' Disk

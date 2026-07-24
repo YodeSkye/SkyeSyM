@@ -16,7 +16,7 @@ Inherits System.Windows.Forms.Form
         lblDisk0 = New Label()
         lblNetworkDownload = New Label()
         cmiOpacity = New ToolStripMenuItem()
-        cmOpacity = New ContextMenuStrip(components)
+        CMOpacity = New ContextMenuStrip(components)
         cmiOpacity100 = New ToolStripMenuItem()
         cmiOpacity90 = New ToolStripMenuItem()
         cmiOpacity80 = New ToolStripMenuItem()
@@ -27,7 +27,7 @@ Inherits System.Windows.Forms.Form
         cmiOpacity30 = New ToolStripMenuItem()
         cmiOpacity20 = New ToolStripMenuItem()
         cmiOpacity10 = New ToolStripMenuItem()
-        cmSM = New ContextMenuStrip(components)
+        CMSM = New ContextMenuStrip(components)
         cmiQuickHide = New ToolStripMenuItem()
         cmiClose = New ToolStripMenuItem()
         toolStripSeparator1 = New ToolStripSeparator()
@@ -64,8 +64,8 @@ Inherits System.Windows.Forms.Form
         pbNetworkDownload = New Skye.UI.DataBar()
         pbNetworkUpload = New Skye.UI.DataBar()
         pbDisk1 = New Skye.UI.DataBar()
-        cmOpacity.SuspendLayout()
-        cmSM.SuspendLayout()
+        CMOpacity.SuspendLayout()
+        CMSM.SuspendLayout()
         CMPI.SuspendLayout()
         CType(picboxProcessor, ComponentModel.ISupportInitialize).BeginInit()
         CType(picboxMemory, ComponentModel.ISupportInitialize).BeginInit()
@@ -121,20 +121,20 @@ Inherits System.Windows.Forms.Form
         ' 
         ' cmiOpacity
         ' 
-        cmiOpacity.DropDown = cmOpacity
+        cmiOpacity.DropDown = CMOpacity
         cmiOpacity.Image = My.Resources.Resources.imageOpacity
         cmiOpacity.Name = "cmiOpacity"
         cmiOpacity.Size = New Size(205, 26)
         cmiOpacity.ToolTipText = "LeftClick = Make Opaque"
         ' 
-        ' cmOpacity
+        ' CMOpacity
         ' 
-        cmOpacity.AllowMerge = False
-        cmOpacity.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        cmOpacity.Items.AddRange(New ToolStripItem() {cmiOpacity100, cmiOpacity90, cmiOpacity80, cmiOpacity70, cmiOpacity60, cmiOpacity50, cmiOpacity40, cmiOpacity30, cmiOpacity20, cmiOpacity10})
-        cmOpacity.Name = "cmOpacity"
-        cmOpacity.ShowItemToolTips = False
-        cmOpacity.Size = New Size(181, 286)
+        CMOpacity.AllowMerge = False
+        CMOpacity.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        CMOpacity.Items.AddRange(New ToolStripItem() {cmiOpacity100, cmiOpacity90, cmiOpacity80, cmiOpacity70, cmiOpacity60, cmiOpacity50, cmiOpacity40, cmiOpacity30, cmiOpacity20, cmiOpacity10})
+        CMOpacity.Name = "cmOpacity"
+        CMOpacity.ShowItemToolTips = False
+        CMOpacity.Size = New Size(181, 286)
         ' 
         ' cmiOpacity100
         ' 
@@ -206,13 +206,13 @@ Inherits System.Windows.Forms.Form
         cmiOpacity10.Tag = "10"
         cmiOpacity10.Text = " 10 %"
         ' 
-        ' cmSM
+        ' CMSM
         ' 
-        cmSM.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        cmSM.Items.AddRange(New ToolStripItem() {cmiQuickHide, cmiClose, toolStripSeparator1, cmiWindowsMonitor, cmiProcessInstance, toolStripSeparator3, cmiAutoMinimal, cmiOpacity})
-        cmSM.Name = "cmSM"
-        cmSM.ShowItemToolTips = False
-        cmSM.Size = New Size(206, 172)
+        CMSM.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        CMSM.Items.AddRange(New ToolStripItem() {cmiQuickHide, cmiClose, toolStripSeparator1, cmiWindowsMonitor, cmiProcessInstance, toolStripSeparator3, cmiAutoMinimal, cmiOpacity})
+        CMSM.Name = "cmSM"
+        CMSM.ShowItemToolTips = False
+        CMSM.Size = New Size(206, 172)
         ' 
         ' cmiQuickHide
         ' 
@@ -254,6 +254,7 @@ Inherits System.Windows.Forms.Form
         CMPI.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         CMPI.Items.AddRange(New ToolStripItem() {TSSPIPins, CMIPIMore, CMIPIAttach, CMIPIPinToggle})
         CMPI.Name = "CMPI"
+        CMPI.OwnerItem = cmiProcessInstance
         CMPI.ShowItemToolTips = False
         CMPI.Size = New Size(261, 88)
         ' 
@@ -562,7 +563,7 @@ Inherits System.Windows.Forms.Form
         BackColor = Color.WhiteSmoke
         CausesValidation = False
         ClientSize = New Size(204, 181)
-        ContextMenuStrip = cmSM
+        ContextMenuStrip = CMSM
         ControlBox = False
         Controls.Add(pbProcessMemoryPhysical)
         Controls.Add(lblProcessMemoryPhysicalPercent)
@@ -605,8 +606,8 @@ Inherits System.Windows.Forms.Form
         SizeGripStyle = SizeGripStyle.Hide
         StartPosition = FormStartPosition.Manual
         TopMost = True
-        cmOpacity.ResumeLayout(False)
-        cmSM.ResumeLayout(False)
+        CMOpacity.ResumeLayout(False)
+        CMSM.ResumeLayout(False)
         CMPI.ResumeLayout(False)
         CType(picboxProcessor, ComponentModel.ISupportInitialize).EndInit()
         CType(picboxMemory, ComponentModel.ISupportInitialize).EndInit()
@@ -631,7 +632,7 @@ Inherits System.Windows.Forms.Form
     Private WithEvents cmiOpacity80 As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents cmiOpacity90 As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents cmiOpacity100 As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents cmOpacity As System.Windows.Forms.ContextMenuStrip
+    Private WithEvents CMOpacity As System.Windows.Forms.ContextMenuStrip
     Private WithEvents cmiProcessInstance As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents pbProcessor As Skye.UI.DataBar
     Private WithEvents pbProcessorUser As Skye.UI.DataBar
@@ -659,7 +660,7 @@ Inherits System.Windows.Forms.Form
     Private WithEvents lblMemoryPhysical As System.Windows.Forms.Label
     Private WithEvents cmiOpacity As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents cmiClose As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents cmSM As System.Windows.Forms.ContextMenuStrip
+    Private WithEvents CMSM As System.Windows.Forms.ContextMenuStrip
     Private WithEvents lblDisk0 As System.Windows.Forms.Label
     Private WithEvents lblProcessor As System.Windows.Forms.Label
     Private WithEvents pbDisk1 As Skye.UI.DataBar

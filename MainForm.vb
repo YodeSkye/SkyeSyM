@@ -96,7 +96,7 @@ Partial Friend Class MainForm
         Select Case e.Button
             Case MouseButtons.Left : My.App.StartFile(My.App.WinTaskManagerPath)
             Case MouseButtons.Right
-                If My.Computer.Keyboard.CtrlKeyDown Then : My.App.StartFile(My.App.WinPerformanceMonitorPath)
+                If My.Computer.Keyboard.CtrlKeyDown Then : My.App.StartFileAsAdmin(My.App.WinPerformanceMonitorPath)
                 Else : My.App.StartFile(My.App.WinResourceMonitorPath)
                 End If
         End Select
@@ -135,7 +135,7 @@ Partial Friend Class MainForm
 
     ' Methods
     Friend Sub ShowSyM(Optional forcehide As Boolean = False)
-        If My.App.FrmSyM.Visible Then
+        If App.FrmSyM.Visible Then
             App.FrmSyM.HideForm()
             ResetSystemUpTime()
             cmiSM.Checked = False

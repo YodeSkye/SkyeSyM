@@ -12,7 +12,7 @@ Partial Friend Class SyM
     Private ctsTopMost As New CancellationTokenSource()
     Private QuickHideActive As Boolean = False
     Private Picker As SyMPI
-    Private tipInfo As New ToolTip
+    Private TipInfo As Skye.UI.ToolTipEX
     Private TipCM As Skye.UI.ToolTipEX ' Tooltip for Context Menu Items
 
     ' Form Events
@@ -41,21 +41,15 @@ Partial Friend Class SyM
         Me.pbNetworkUpload.Maximum = My.App.SyMNetworkUploadMaximum + AdjustDisplayMaximum(My.App.SyMNetworkUploadMaximum)
         Me.pbProcessProcessor.Maximum = 100 + AdjustDisplayMaximum(100)
         Me.pbProcessMemoryPhysical.Maximum = My.App.SyMMemoryPhysicalMaximum + AdjustDisplayMaximum(My.App.SyMMemoryPhysicalMaximum)
-        Me.tipInfo.SetToolTip(Me.lblProcesses, My.App.SyMGetCounterDescription(My.App.SyMCounters.Processes))
-        Me.tipInfo.SetToolTip(Me.lblProcessor, My.App.SyMGetCounterDescription(My.App.SyMCounters.Processor))
-        Me.tipInfo.SetToolTip(Me.picboxProcessor, My.App.SyMGetCounterDescription(My.App.SyMCounters.Processor))
-        Me.tipInfo.SetToolTip(Me.picboxMemory, My.App.SyMGetCounterDescription(My.App.SyMCounters.Memory))
-        Me.tipInfo.SetToolTip(Me.lblMemoryPhysical, My.App.SyMGetCounterDescription(My.App.SyMCounters.MemoryPhysicalGB))
-        Me.tipInfo.SetToolTip(Me.lblMemoryPhysicalPercent, My.App.SyMGetCounterDescription(My.App.SyMCounters.MemoryPhysicalPercent))
-        Me.tipInfo.SetToolTip(Me.lblDisk0, My.App.SyMGetCounterDescription(My.App.SyMCounters.Disk0))
-        Me.tipInfo.SetToolTip(Me.lblDisk1, My.App.SyMGetCounterDescription(My.App.SyMCounters.Disk1))
-        Me.tipInfo.SetToolTip(Me.picboxDisk, My.App.SyMGetCounterDescription(My.App.SyMCounters.Disk))
-        Me.tipInfo.SetToolTip(Me.picboxNetwork, My.App.SyMGetCounterDescription(My.App.SyMCounters.Network))
-        Me.tipInfo.SetToolTip(Me.lblNetworkDownload, My.App.SyMGetCounterDescription(My.App.SyMCounters.NetworkDownload))
-        Me.tipInfo.SetToolTip(Me.lblNetworkUpload, My.App.SyMGetCounterDescription(My.App.SyMCounters.NetworkUpload))
-        Me.tipInfo.SetToolTip(Me.lblProcessProcessor, My.App.SyMGetCounterDescription(My.App.SyMCounters.ProcessProcessor))
-        Me.tipInfo.SetToolTip(Me.lblProcessMemoryPhysical, My.App.SyMGetCounterDescription(My.App.SyMCounters.ProcessMemoryPhysical))
-        Me.tipInfo.SetToolTip(Me.lblProcessMemoryPhysicalPercent, My.App.SyMGetCounterDescription(My.App.SyMCounters.ProcessMemoryPhysicalPercent))
+        TipInfo = New Skye.UI.ToolTipEX() With {
+            .Font = App.MenuFont,
+            .ShadowAlpha = 0,
+            .ShadowThickness = 0,
+            .FadeInRate = 25,
+            .FadeOutRate = 25,
+            .HideDelay = 1000000,
+            .ShowDelay = 250
+        }
         TipCM = New Skye.UI.ToolTipEX() With {
             .Font = App.MenuFont,
             .ShadowAlpha = 0,
@@ -65,14 +59,32 @@ Partial Friend Class SyM
             .HideDelay = 5000,
             .ShowDelay = 250
         }
-        App.HookTSItemsForCMTooltip(cmSM, TipCM)
+        App.HookTSItemsForCMTooltip(CMSM, TipCM)
+        Skye.UI.ThemeManager.ApplyToTooltip(TipInfo)
         Skye.UI.ThemeManager.ApplyToTooltip(TipCM)
         AddHandler Skye.UI.ThemeManager.ThemeChanged, Sub()
+                                                          Skye.UI.ThemeManager.ApplyToTooltip(TipInfo)
                                                           Skye.UI.ThemeManager.ApplyToTooltip(TipCM)
                                                       End Sub
-        cmSM.Renderer = New Skye.UI.SkyeMenuRenderer
+        CMSM.Renderer = New Skye.UI.SkyeMenuRenderer
         CMPI.Renderer = New Skye.UI.SkyeMenuRenderer
-        cmOpacity.Renderer = New Skye.UI.SkyeMenuRenderer
+        CMOpacity.Renderer = New Skye.UI.SkyeMenuRenderer
+
+        Me.TipInfo.SetText(Me.lblProcesses, My.App.SyMGetCounterDescription(My.App.SyMCounters.Processes))
+        Me.TipInfo.SetText(Me.lblProcessor, My.App.SyMGetCounterDescription(My.App.SyMCounters.Processor))
+        Me.TipInfo.SetText(Me.picboxProcessor, My.App.SyMGetCounterDescription(My.App.SyMCounters.Processor))
+        Me.TipInfo.SetText(Me.picboxMemory, My.App.SyMGetCounterDescription(My.App.SyMCounters.Memory))
+        Me.TipInfo.SetText(Me.lblMemoryPhysical, My.App.SyMGetCounterDescription(My.App.SyMCounters.MemoryPhysicalGB))
+        Me.TipInfo.SetText(Me.lblMemoryPhysicalPercent, My.App.SyMGetCounterDescription(My.App.SyMCounters.MemoryPhysicalPercent))
+        Me.TipInfo.SetText(Me.lblDisk0, My.App.SyMGetCounterDescription(My.App.SyMCounters.Disk0))
+        Me.TipInfo.SetText(Me.lblDisk1, My.App.SyMGetCounterDescription(My.App.SyMCounters.Disk1))
+        Me.TipInfo.SetText(Me.picboxDisk, My.App.SyMGetCounterDescription(My.App.SyMCounters.Disk))
+        Me.TipInfo.SetText(Me.picboxNetwork, My.App.SyMGetCounterDescription(My.App.SyMCounters.Network))
+        Me.TipInfo.SetText(Me.lblNetworkDownload, My.App.SyMGetCounterDescription(My.App.SyMCounters.NetworkDownload))
+        Me.TipInfo.SetText(Me.lblNetworkUpload, My.App.SyMGetCounterDescription(My.App.SyMCounters.NetworkUpload))
+        Me.TipInfo.SetText(Me.lblProcessProcessor, My.App.SyMGetCounterDescription(My.App.SyMCounters.ProcessProcessor))
+        Me.TipInfo.SetText(Me.lblProcessMemoryPhysical, My.App.SyMGetCounterDescription(My.App.SyMCounters.ProcessMemoryPhysical))
+        Me.TipInfo.SetText(Me.lblProcessMemoryPhysicalPercent, My.App.SyMGetCounterDescription(My.App.SyMCounters.ProcessMemoryPhysicalPercent))
 
         'Initialize Colors
         SetForeColor(True)
@@ -146,7 +158,7 @@ Partial Friend Class SyM
     End Sub
 
     ' Control Events
-    Private Sub CMSMOpening(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles cmSM.Opening
+    Private Sub CMSMOpening(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles CMSM.Opening
         Select Case My.App.SyMAutoMinimal
             Case True
                 Me.cmiAutoMinimal.Checked = True
@@ -170,7 +182,7 @@ Partial Friend Class SyM
     Private Sub CMIOpacityMouseUp(sender As Object, e As MouseEventArgs) Handles cmiOpacity.MouseUp
         If e.Button = MouseButtons.Left Then
             My.App.SyMOpacity = 100
-            If Me.cmSM.Visible Then Me.cmSM.Close()
+            If Me.CMSM.Visible Then Me.CMSM.Close()
             Me.SetOpacity(True)
             App.FrmSettings?.ShowSettings()
         End If
@@ -187,7 +199,7 @@ Partial Friend Class SyM
         Select Case e.Button
             Case MouseButtons.Left : My.App.StartFile(My.App.WinTaskManagerPath)
             Case MouseButtons.Right
-                If My.Computer.Keyboard.CtrlKeyDown Then : My.App.StartFile(My.App.WinPerformanceMonitorPath)
+                If My.Computer.Keyboard.CtrlKeyDown Then : My.App.StartFileAsAdmin(My.App.WinPerformanceMonitorPath)
                 Else : My.App.StartFile(My.App.WinResourceMonitorPath)
                 End If
         End Select
@@ -234,7 +246,7 @@ Partial Friend Class SyM
 
                 If IsDisposed OrElse Not IsHandleCreated Then Exit While
 
-                If Not (cmSM.Visible Or CMPI.Visible) Then
+                If Not (CMSM.Visible Or CMPI.Visible Or (TipInfo IsNot Nothing AndAlso TipInfo.IsVisible)) Then
                     If Not QuickHideActive Then
                         ResetBackColor()
                         SetOpacity()
@@ -621,9 +633,9 @@ Partial Friend Class SyM
         Me.pbProcessorUser.Value = datauser
         Me.pbProcessorSystem.Value = datasystem
         Me.lblProcessor.Text = data.ToString + "%"
-        Me.tipInfo.SetToolTip(Me.pbProcessor, My.App.SyMGetCounterDescription(My.App.SyMCounters.Processor) + VisualBasic.vbCr + data.ToString + "% (" + dataraw.ToString + ")")
-        Me.tipInfo.SetToolTip(Me.pbProcessorUser, My.App.SyMGetCounterDescription(My.App.SyMCounters.ProcessorUser) + VisualBasic.vbCr + datauser.ToString + "% (" + datauserraw.ToString + ")")
-        Me.tipInfo.SetToolTip(Me.pbProcessorSystem, My.App.SyMGetCounterDescription(My.App.SyMCounters.ProcessorSystem) + VisualBasic.vbCr + datasystem.ToString + "% (" + datasystemraw.ToString + ")")
+        Me.TipInfo.SetText(Me.pbProcessor, My.App.SyMGetCounterDescription(My.App.SyMCounters.Processor) + VisualBasic.vbCr + data.ToString + "% (" + dataraw.ToString + ")")
+        Me.TipInfo.SetText(Me.pbProcessorUser, My.App.SyMGetCounterDescription(My.App.SyMCounters.ProcessorUser) + VisualBasic.vbCr + datauser.ToString + "% (" + datauserraw.ToString + ")")
+        Me.TipInfo.SetText(Me.pbProcessorSystem, My.App.SyMGetCounterDescription(My.App.SyMCounters.ProcessorSystem) + VisualBasic.vbCr + datasystem.ToString + "% (" + datasystemraw.ToString + ")")
     End Sub
     Friend Sub ShowDataProcesses(data As Integer)
         Me.lblProcesses.Text = data.ToString + "P"
@@ -632,40 +644,40 @@ Partial Friend Class SyM
         Me.pbMemoryPhysical.Value = My.App.SyMMemoryPhysicalMaximum - datafreememory
         Me.lblMemoryPhysical.Text = (datausedmemoryraw / My.App.GBConversion).ToString("N2") + "GB"
         Me.lblMemoryPhysicalPercent.Text = CInt((My.App.SyMMemoryPhysicalMaximum - datafreememory) / My.App.SyMMemoryPhysicalMaximum * 100).ToString + "%"
-        Me.tipInfo.SetToolTip(Me.pbMemoryPhysical, My.App.SyMGetCounterDescription(My.App.SyMCounters.MemoryPhysical) + VisualBasic.vbCr + (My.App.SyMMemoryPhysicalMaximum - datafreememory).ToString + " MB (" + (My.App.SyMMemoryPhysicalMaximumRaw - CULng(datafreememoryraw)).ToString("N0") + ")" + VisualBasic.vbCr + Me.lblMemoryPhysicalPercent.Text + VisualBasic.vbCr + "Calculated From Physical Memory Available" + VisualBasic.vbCr + datafreememory.ToString + " MB (" + CULng(datafreememoryraw).ToString("N0") + ")" + VisualBasic.vbCr + CInt(datafreememory / My.App.SyMMemoryPhysicalMaximum * 100).ToString + "%")
+        Me.TipInfo.SetText(Me.pbMemoryPhysical, My.App.SyMGetCounterDescription(My.App.SyMCounters.MemoryPhysical) + VisualBasic.vbCr + (My.App.SyMMemoryPhysicalMaximum - datafreememory).ToString + " MB (" + (My.App.SyMMemoryPhysicalMaximumRaw - CULng(datafreememoryraw)).ToString("N0") + ")" + VisualBasic.vbCr + Me.lblMemoryPhysicalPercent.Text + VisualBasic.vbCr + "Calculated From Physical Memory Available" + VisualBasic.vbCr + datafreememory.ToString + " MB (" + CULng(datafreememoryraw).ToString("N0") + ")" + VisualBasic.vbCr + CInt(datafreememory / My.App.SyMMemoryPhysicalMaximum * 100).ToString + "%")
     End Sub
     Friend Sub ShowDataDisk0(data As Integer, dataraw As Single)
         Me.pbDisk0.Value = data
         Me.lblDisk0.Text = data.ToString + "%"
-        Me.tipInfo.SetToolTip(Me.pbDisk0, My.App.SyMGetCounterDescription(My.App.SyMCounters.Disk0) + VisualBasic.vbCr + data.ToString + "% (" + dataraw.ToString + ")")
+        Me.TipInfo.SetText(Me.pbDisk0, My.App.SyMGetCounterDescription(My.App.SyMCounters.Disk0) + VisualBasic.vbCr + data.ToString + "% (" + dataraw.ToString + ")")
     End Sub
     Friend Sub ShowDataDisk1(data As Integer, dataraw As Single)
         Me.pbDisk1.Value = data
         Me.lblDisk1.Text = data.ToString + "%"
-        Me.tipInfo.SetToolTip(Me.pbDisk1, My.App.SyMGetCounterDescription(My.App.SyMCounters.Disk1) + VisualBasic.vbCr + data.ToString + "% (" + dataraw.ToString + ")")
+        Me.TipInfo.SetText(Me.pbDisk1, My.App.SyMGetCounterDescription(My.App.SyMCounters.Disk1) + VisualBasic.vbCr + data.ToString + "% (" + dataraw.ToString + ")")
     End Sub
     Friend Sub ShowDataNetworkDownload(data As Integer, dataraw As Single)
         Me.pbNetworkDownload.Value = data
         Me.lblNetworkDownload.Text = data.ToString + " KB/sec"
-        Me.tipInfo.SetToolTip(Me.pbNetworkDownload, My.App.SyMGetCounterDescription(My.App.SyMCounters.NetworkDownload) + VisualBasic.vbCr + CInt(dataraw / My.App.KBConversion).ToString + " KB/sec (" + dataraw.ToString("N3") + ")")
+        Me.TipInfo.SetText(Me.pbNetworkDownload, My.App.SyMGetCounterDescription(My.App.SyMCounters.NetworkDownload) + VisualBasic.vbCr + CInt(dataraw / My.App.KBConversion).ToString + " KB/sec (" + dataraw.ToString("N3") + ")")
     End Sub
     Friend Sub ShowDataNetworkUpload(data As Integer, dataraw As Single)
         Me.pbNetworkUpload.Value = data
         Me.lblNetworkUpload.Text = data.ToString + " KB/sec"
-        Me.tipInfo.SetToolTip(Me.pbNetworkUpload, My.App.SyMGetCounterDescription(My.App.SyMCounters.NetworkUpload) + VisualBasic.vbCr + CInt(dataraw / My.App.KBConversion).ToString + " KB/sec (" + dataraw.ToString("N3") + ")")
+        Me.TipInfo.SetText(Me.pbNetworkUpload, My.App.SyMGetCounterDescription(My.App.SyMCounters.NetworkUpload) + VisualBasic.vbCr + CInt(dataraw / My.App.KBConversion).ToString + " KB/sec (" + dataraw.ToString("N3") + ")")
     End Sub
     Friend Sub ShowDataPagingFileUsage(data As Integer)
-        Dim tiptext = tipInfo.GetToolTip(pbMemoryPhysical)
+        Dim tiptext = TipInfo.GetText(pbMemoryPhysical)
         tiptext &= vbCr & "Paging File Utilization" & vbCr & data.ToString & "%"
-        tipInfo.SetToolTip(pbMemoryPhysical, tiptext)
+        TipInfo.SetText(pbMemoryPhysical, tiptext)
     End Sub
     Friend Sub ShowDataProcessProcessor(data As Integer, dataraw As Single)
         Me.lblProcessInstance.Text = My.App.SyMProcessInstance.ToUpper
-        Me.tipInfo.SetToolTip(Me.lblProcessInstance, My.App.SyMProcessInstance)
-        Me.tipInfo.SetToolTip(Me.picboxProcessInstance, My.App.SyMProcessInstance)
+        Me.TipInfo.SetText(Me.lblProcessInstance, My.App.SyMProcessInstance)
+        Me.TipInfo.SetText(Me.picboxProcessInstance, My.App.SyMProcessInstance)
         Me.pbProcessProcessor.Value = data
         Me.lblProcessProcessor.Text = data.ToString + "%"
-        Me.tipInfo.SetToolTip(Me.pbProcessProcessor, My.App.SyMGetCounterDescription(My.App.SyMCounters.ProcessProcessor) + VisualBasic.vbCr + data.ToString + "% (" + dataraw.ToString + ")")
+        Me.TipInfo.SetText(Me.pbProcessProcessor, My.App.SyMGetCounterDescription(My.App.SyMCounters.ProcessProcessor) + VisualBasic.vbCr + data.ToString + "% (" + dataraw.ToString + ")")
     End Sub
     Friend Sub ShowDataProcessID(data As Integer)
         If Not Environment.Is64BitOperatingSystem Then
@@ -698,31 +710,31 @@ Partial Friend Class SyM
             p.Dispose()
         End Try
 
-        Me.tipInfo.SetToolTip(Me.lblProcessInstance, Me.tipInfo.GetToolTip(Me.lblProcessInstance) & " (" & data.ToString & ")" & bText)
-        Me.tipInfo.SetToolTip(Me.picboxProcessInstance, Me.tipInfo.GetToolTip(Me.picboxProcessInstance) & " (" & data.ToString & ")" & bText)
+        Me.TipInfo.SetText(Me.lblProcessInstance, Me.TipInfo.GetText(Me.lblProcessInstance) & " (" & data.ToString & ")" & bText)
+        Me.TipInfo.SetText(Me.picboxProcessInstance, Me.TipInfo.GetText(Me.picboxProcessInstance) & " (" & data.ToString & ")" & bText)
 
     End Sub
     Friend Sub ShowDataProcessPriority(data As Integer)
-        Me.tipInfo.SetToolTip(Me.lblProcessInstance, Me.tipInfo.GetToolTip(Me.lblProcessInstance) + VisualBasic.vbCr + My.App.SyMGetProcessPriority(data) + " (" + data.ToString + ")")
-        Me.tipInfo.SetToolTip(Me.picboxProcessInstance, Me.tipInfo.GetToolTip(Me.picboxProcessInstance) + VisualBasic.vbCr + My.App.SyMGetProcessPriority(data) + " (" + data.ToString + ")")
+        Me.TipInfo.SetText(Me.lblProcessInstance, Me.TipInfo.GetText(Me.lblProcessInstance) + VisualBasic.vbCr + My.App.SyMGetProcessPriority(data) + " (" + data.ToString + ")")
+        Me.TipInfo.SetText(Me.picboxProcessInstance, Me.TipInfo.GetText(Me.picboxProcessInstance) + VisualBasic.vbCr + My.App.SyMGetProcessPriority(data) + " (" + data.ToString + ")")
     End Sub
     Friend Sub ShowDataProcessTime(data As Integer)
-        Me.tipInfo.SetToolTip(Me.lblProcessInstance, Me.tipInfo.GetToolTip(Me.lblProcessInstance) + VisualBasic.vbCr + My.App.SyMGetCounterDescription(My.App.SyMCounters.ProcessTime) + " = " + TimeSpan.FromSeconds(data).ToString + " (" + data.ToString + ")")
-        Me.tipInfo.SetToolTip(Me.picboxProcessInstance, Me.tipInfo.GetToolTip(Me.picboxProcessInstance) + VisualBasic.vbCr + My.App.SyMGetCounterDescription(My.App.SyMCounters.ProcessTime) + " = " + TimeSpan.FromSeconds(data).ToString + " (" + data.ToString + ")")
+        Me.TipInfo.SetText(Me.lblProcessInstance, Me.TipInfo.GetText(Me.lblProcessInstance) + VisualBasic.vbCr + My.App.SyMGetCounterDescription(My.App.SyMCounters.ProcessTime) + " = " + TimeSpan.FromSeconds(data).ToString + " (" + data.ToString + ")")
+        Me.TipInfo.SetText(Me.picboxProcessInstance, Me.TipInfo.GetText(Me.picboxProcessInstance) + VisualBasic.vbCr + My.App.SyMGetCounterDescription(My.App.SyMCounters.ProcessTime) + " = " + TimeSpan.FromSeconds(data).ToString + " (" + data.ToString + ")")
     End Sub
     Friend Sub ShowDataProcessThreads(data As Integer)
         Me.lblProcessThreads.Text = data.ToString + "T"
-        Me.tipInfo.SetToolTip(Me.lblProcessThreads, data.ToString + " " + My.App.SyMGetCounterDescription(My.App.SyMCounters.ProcessThreads))
+        Me.TipInfo.SetText(Me.lblProcessThreads, data.ToString + " " + My.App.SyMGetCounterDescription(My.App.SyMCounters.ProcessThreads))
     End Sub
     Friend Sub ShowDataProcessHandles(data As Integer)
-        Me.tipInfo.SetToolTip(Me.lblProcessThreads, Me.tipInfo.GetToolTip(Me.lblProcessThreads) + VisualBasic.vbCr + data.ToString + " " + My.App.SyMGetCounterDescription(My.App.SyMCounters.ProcessHandles))
+        Me.TipInfo.SetText(Me.lblProcessThreads, Me.TipInfo.GetText(Me.lblProcessThreads) + VisualBasic.vbCr + data.ToString + " " + My.App.SyMGetCounterDescription(My.App.SyMCounters.ProcessHandles))
     End Sub
     Friend Sub ShowDataProcessMemoryPhysical(data As Integer, dataraw As Single)
         Me.pbProcessMemoryPhysical.Value = data
         Me.pbProcessMemoryPhysical.Maximum = Me.pbMemoryPhysical.Value + AdjustDisplayMaximum(My.App.SyMMemoryPhysicalMaximum)
         Me.lblProcessMemoryPhysical.Text = data.ToString + "MB"
         Me.lblProcessMemoryPhysicalPercent.Text = CInt(data / Me.pbMemoryPhysical.Value * 100).ToString + "%"
-        Me.tipInfo.SetToolTip(Me.pbProcessMemoryPhysical, My.App.SyMGetCounterDescription(My.App.SyMCounters.ProcessMemoryPhysical) + VisualBasic.vbCr + CInt(dataraw / My.App.MBConversion).ToString + " MB (" + dataraw.ToString("N0") + ")" + VisualBasic.vbCr + Me.lblProcessMemoryPhysicalPercent.Text + " of " + Me.lblMemoryPhysicalPercent.Text + " Overall Usage")
+        Me.TipInfo.SetText(Me.pbProcessMemoryPhysical, My.App.SyMGetCounterDescription(My.App.SyMCounters.ProcessMemoryPhysical) + VisualBasic.vbCr + CInt(dataraw / My.App.MBConversion).ToString + " MB (" + dataraw.ToString("N0") + ")" + VisualBasic.vbCr + Me.lblProcessMemoryPhysicalPercent.Text + " of " + Me.lblMemoryPhysicalPercent.Text + " Overall Usage")
     End Sub
 
 End Class
