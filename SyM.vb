@@ -115,6 +115,12 @@ Partial Friend Class SyM
     End Sub
     Private Sub Frm_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         ctsTopMost.Cancel()
+        TipInfo?.HideTooltip()
+        TipInfo?.Dispose()
+    End Sub
+    Protected Overrides Sub OnDeactivate(e As EventArgs)
+        MyBase.OnDeactivate(e)
+        TipInfo.HideTooltip()
     End Sub
     Private Sub FrmVisibleChanged(sender As Object, e As EventArgs) Handles MyBase.VisibleChanged
         My.App.SyMSetLoop()
@@ -129,6 +135,7 @@ Partial Friend Class SyM
     Private Sub FrmMouseLeave(sender As Object, e As EventArgs) Handles picboxProcessor.MouseLeave, picboxProcessInstance.MouseLeave, picboxNetwork.MouseLeave, picboxMemory.MouseLeave, picboxDisk.MouseLeave, MyBase.MouseLeave, lblProcessThreads.MouseLeave, lblProcessProcessor.MouseLeave, lblProcessor.MouseLeave, lblProcessMemoryPhysicalPercent.MouseLeave, lblProcessMemoryPhysical.MouseLeave, lblProcessInstance.MouseLeave, lblProcesses.MouseLeave, lblNetworkUpload.MouseLeave, lblNetworkDownload.MouseLeave, lblMemoryPhysicalPercent.MouseLeave, lblMemoryPhysical.MouseLeave, lblDisk0.MouseLeave, lblDisk0.MouseLeave, lblDisk1.MouseLeave
         ResetBackColor()
         SetOpacity()
+        TipInfo.HideTooltip()
     End Sub
     Private Sub FrmMouseDown(sender As Object, e As MouseEventArgs) Handles picboxProcessor.MouseDown, picboxProcessInstance.MouseDown, picboxNetwork.MouseDown, picboxMemory.MouseDown, picboxDisk.MouseDown, pbProcessProcessor.MouseDown, pbProcessorUser.MouseDown, pbProcessorSystem.MouseDown, pbProcessor.MouseDown, pbProcessMemoryPhysical.MouseDown, pbNetworkUpload.MouseDown, pbNetworkDownload.MouseDown, pbMemoryPhysical.MouseDown, pbDisk0.MouseDown, MyBase.MouseDown, lblProcessThreads.MouseDown, lblProcessProcessor.MouseDown, lblProcessor.MouseDown, lblProcessMemoryPhysicalPercent.MouseDown, lblProcessMemoryPhysical.MouseDown, lblProcessInstance.MouseDown, lblProcesses.MouseDown, lblNetworkUpload.MouseDown, lblNetworkDownload.MouseDown, lblMemoryPhysicalPercent.MouseDown, lblMemoryPhysical.MouseDown, lblDisk0.MouseDown, pbDisk0.MouseDown, lblDisk0.MouseDown, pbDisk1.MouseDown, lblDisk1.MouseDown
         Static senderCtrl As Control
@@ -414,6 +421,7 @@ Partial Friend Class SyM
         Me.Show()
     End Sub
     Friend Sub HideForm()
+        TipInfo.HideTooltip()
         Me.Hide()
         ResetMonitor()
     End Sub
