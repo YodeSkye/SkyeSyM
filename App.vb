@@ -84,6 +84,15 @@ Namespace My
 			Low = 4
 			NA = 0
 		End Enum
+		Public Enum NetUnit
+			Auto
+			ByteKB  ' Kilobytes per second
+			ByteMB  ' Megabytes per second
+			ByteGB  ' Gigabytes per second
+			BitKb   ' Kilobits per second
+			BitMb   ' Megabits per second
+			BitGb   ' Gigabits per second
+		End Enum
 		Friend Structure SyMColors
 			Dim Background As Color
 			Dim ForegroundOnBackground As Color
@@ -184,8 +193,9 @@ Namespace My
 		Friend SyMUpdateInterval As UInt16 '250ms-60000ms
 		Friend SyMQuickHideInterval As Byte 'Range 5-60, Default 5
 		Friend SyMOpacity As Byte '10%-100%, 10% Increments
-		Friend SyMNetworkDownloadMaximum As UInt16
-		Friend SyMNetworkUploadMaximum As UInt16
+		Friend SyMNetworkUnits As NetUnit
+		Friend SyMNetworkDownloadMaximum As Integer
+		Friend SyMNetworkUploadMaximum As Integer
 		Friend SyMNetworkInstance As String
 		Friend SyMColor As SyMColors
 		Friend SyMLocation As Point
@@ -278,7 +288,12 @@ Namespace My
 			Skye.Common.RegistryHelper.BaseKey = "Software\\" + My.Application.Info.ProductName 'BaseKey is the path to the registry key where application settings are stored.
 #End If
 			Skye.Common.Log.Write(My.Application.Info.ProductName + " Started...")
-			GetSettings()
+            GetSettings()
+#If DEBUG Then
+            SyMNetworkUnits = NetUnit.BitMb
+			SyMNetworkDownloadMaximum = 128000000
+			SyMNetworkUploadMaximum = 32000000
+#End If
 			If ThemeAuto Then
 				Skye.UI.ThemeManager.SetTheme(Skye.UI.ThemeManager.DetectWindowsTheme())
 			Else
@@ -743,8 +758,8 @@ Namespace My
 				Case SyMCounters.Disk2 : Return "Disk Utilization For E:"
 				Case SyMCounters.Disk3 : Return "Disk Utilization For F:"
 				Case SyMCounters.Network : Return "Network Activity"
-				Case SyMCounters.NetworkDownload : Return "Network Download Activity (" + My.App.SyMNetworkDownloadMaximum.ToString + " KB/sec MAX)"
-				Case SyMCounters.NetworkUpload : Return "Network Upload Activity (" + My.App.SyMNetworkUploadMaximum.ToString + " KB/sec MAX)"
+				Case SyMCounters.NetworkDownload : Return "Network Download Activity (" + FormatNetSpeed(SyMNetworkDownloadMaximum, SyMNetworkUnits) + " MAX)"
+				Case SyMCounters.NetworkUpload : Return "Network Upload Activity (" + FormatNetSpeed(SyMNetworkUploadMaximum, SyMNetworkUnits) + " MAX)"
 				Case SyMCounters.ProcessProcessor : Return "Processor Time"
 				Case SyMCounters.ProcessMemoryPhysical : Return "Physical Memory Utilization (" + My.App.SyMMemoryPhysicalMaximum.ToString + " MB MAX)"
 				Case SyMCounters.ProcessMemoryPhysicalPercent : Return "Physical Memory Relative Utilization"
@@ -759,6 +774,19 @@ Namespace My
 		Friend Function SyMGetProcessPriority(data As Integer) As String
 			Try : SyMGetProcessPriority = [Enum].GetName(GetType(My.App.SyMProcessPriority), data).ToString
 			Catch : SyMGetProcessPriority = "UnKnown"
+			End Try
+		End Function
+		Friend Function SyMGetProcessInstanceNames() As String()
+			Try
+				For Each pcc As Diagnostics.PerformanceCounterCategory In Diagnostics.PerformanceCounterCategory.GetCategories
+					If pcc.CategoryName = "Process" Then
+						SyMGetProcessInstanceNames = pcc.GetInstanceNames
+						Array.Sort(SyMGetProcessInstanceNames)
+						Exit Function
+					End If
+				Next
+				SyMGetProcessInstanceNames = New String() {"< No Instances >"}
+			Catch : SyMGetProcessInstanceNames = New String() {"< No Instances >"}
 			End Try
 		End Function
 		Friend Function SyMGetNetworkInstanceNames() As String()
@@ -776,18 +804,65 @@ Namespace My
 				Return New String() {"< No Instances >"}
 			End Try
 		End Function
-		Friend Function SyMGetProcessInstanceNames() As String()
-			Try
-				For Each pcc As Diagnostics.PerformanceCounterCategory In Diagnostics.PerformanceCounterCategory.GetCategories
-					If pcc.CategoryName = "Process" Then
-						SyMGetProcessInstanceNames = pcc.GetInstanceNames
-						Array.Sort(SyMGetProcessInstanceNames)
-						Exit Function
+		Public Function GetNetSpeed(bytesPerSec As Single, unit As NetUnit) As Integer
+
+			Select Case unit
+				' AUTO (KB → MB → GB)
+				Case NetUnit.Auto
+					If bytesPerSec < 1024 * 1024 Then
+						Return CInt(bytesPerSec / 1024)
+					ElseIf bytesPerSec < 1024 * 1024 * 1000 Then
+						Return CInt(bytesPerSec / 1024 / 1024)
+					Else
+						Return CInt(bytesPerSec / 1024 / 1024 / 1024)
 					End If
-				Next
-				SyMGetProcessInstanceNames = New String() {"< No Instances >"}
-			Catch : SyMGetProcessInstanceNames = New String() {"< No Instances >"}
-			End Try
+				' BYTES → KB / MB / GB
+				Case NetUnit.ByteKB
+					Return CInt(bytesPerSec / 1024)
+				Case NetUnit.ByteMB
+					Return CInt(bytesPerSec / 1024 / 1024)
+				Case NetUnit.ByteGB
+					Return CInt(bytesPerSec / 1024 / 1024 / 1024)
+				' BITS → Kb / Mb / Gb
+				Case NetUnit.BitKb
+					Return CInt((bytesPerSec * 8) / 1000)
+				Case NetUnit.BitMb
+					Return CInt((bytesPerSec * 8) / 1000 / 1000)
+				Case NetUnit.BitGb
+					Return CInt((bytesPerSec * 8) / 1000 / 1000 / 1000)
+			End Select
+
+			Return CInt(bytesPerSec)
+		End Function
+		Public Function FormatNetSpeed(bytesPerSec As Single, unit As NetUnit) As String
+
+			Select Case unit
+				' AUTO (KB → MB → GB)
+				Case NetUnit.Auto
+					If bytesPerSec < 1024 * 1024 Then
+						Return (bytesPerSec / 1024).ToString("0.0") & " KB/s"
+					ElseIf bytesPerSec < 1024 * 1024 * 1000 Then
+						Return (bytesPerSec / 1024 / 1024).ToString("0.0") & " MB/s"
+					Else
+						Return (bytesPerSec / 1024 / 1024 / 1024).ToString("0.00") & " GB/s"
+					End If
+				' BYTES → KB / MB / GB
+				Case NetUnit.ByteKB
+					Return (bytesPerSec / 1024).ToString("0.0") & " KB/s"
+				Case NetUnit.ByteMB
+					Return (bytesPerSec / 1024 / 1024).ToString("0.0") & " MB/s"
+				Case NetUnit.ByteGB
+					Return (bytesPerSec / 1024 / 1024 / 1024).ToString("0.00") & " GB/s"
+				' BITS → Kb / Mb / Gb
+				Case NetUnit.BitKb
+					Return ((bytesPerSec * 8) / 1000).ToString("0.0") & " Kb/s"
+				Case NetUnit.BitMb
+					Return ((bytesPerSec * 8) / 1000 / 1000).ToString("0.0") & " Mb/s"
+				Case NetUnit.BitGb
+					Return ((bytesPerSec * 8) / 1000 / 1000 / 1000).ToString("0.00") & " Gb/s"
+			End Select
+
+			Return bytesPerSec.ToString("0.0") & " B/s"
 		End Function
 
 		' CUSTOM CONTEXTMENU TOOLTIPS

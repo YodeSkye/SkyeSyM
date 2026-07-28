@@ -37,8 +37,10 @@ Partial Friend Class SyM
         Me.pbMemoryPhysical.Maximum = My.App.SyMMemoryPhysicalMaximum + AdjustDisplayMaximum(My.App.SyMMemoryPhysicalMaximum)
         Me.pbDisk0.Maximum = 100 + AdjustDisplayMaximum(100)
         Me.pbDisk1.Maximum = 100 + AdjustDisplayMaximum(100)
-        Me.pbNetworkDownload.Maximum = My.App.SyMNetworkDownloadMaximum + AdjustDisplayMaximum(My.App.SyMNetworkDownloadMaximum)
-        Me.pbNetworkUpload.Maximum = My.App.SyMNetworkUploadMaximum + AdjustDisplayMaximum(My.App.SyMNetworkUploadMaximum)
+        'Me.pbNetworkDownload.Maximum = My.App.SyMNetworkDownloadMaximum + AdjustDisplayMaximum(My.App.SyMNetworkDownloadMaximum)
+        'Me.pbNetworkUpload.Maximum = My.App.SyMNetworkUploadMaximum + AdjustDisplayMaximum(My.App.SyMNetworkUploadMaximum)
+        Me.pbNetworkDownload.Maximum = App.GetNetSpeed(App.SyMNetworkDownloadMaximum, App.SyMNetworkUnits) + AdjustDisplayMaximum(App.SyMNetworkDownloadMaximum)
+        Me.pbNetworkUpload.Maximum = App.GetNetSpeed(App.SyMNetworkUploadMaximum, App.SyMNetworkUnits) + AdjustDisplayMaximum(App.SyMNetworkUploadMaximum)
         Me.pbProcessProcessor.Maximum = 100 + AdjustDisplayMaximum(100)
         Me.pbProcessMemoryPhysical.Maximum = My.App.SyMMemoryPhysicalMaximum + AdjustDisplayMaximum(My.App.SyMMemoryPhysicalMaximum)
         TipInfo = New Skye.UI.ToolTipEX() With {
@@ -80,8 +82,8 @@ Partial Friend Class SyM
         Me.TipInfo.SetText(Me.lblDisk1, My.App.SyMGetCounterDescription(My.App.SyMCounters.Disk1))
         Me.TipInfo.SetText(Me.picboxDisk, My.App.SyMGetCounterDescription(My.App.SyMCounters.Disk))
         Me.TipInfo.SetText(Me.picboxNetwork, My.App.SyMGetCounterDescription(My.App.SyMCounters.Network))
-        Me.TipInfo.SetText(Me.lblNetworkDownload, My.App.SyMGetCounterDescription(My.App.SyMCounters.NetworkDownload))
-        Me.TipInfo.SetText(Me.lblNetworkUpload, My.App.SyMGetCounterDescription(My.App.SyMCounters.NetworkUpload))
+        Me.TipInfo.SetText(Me.lblNetworkDownload, App.SyMGetCounterDescription(App.SyMCounters.NetworkDownload))
+        Me.TipInfo.SetText(Me.lblNetworkUpload, App.SyMGetCounterDescription(App.SyMCounters.NetworkUpload))
         Me.TipInfo.SetText(Me.lblProcessProcessor, My.App.SyMGetCounterDescription(My.App.SyMCounters.ProcessProcessor))
         Me.TipInfo.SetText(Me.lblProcessMemoryPhysical, My.App.SyMGetCounterDescription(My.App.SyMCounters.ProcessMemoryPhysical))
         Me.TipInfo.SetText(Me.lblProcessMemoryPhysicalPercent, My.App.SyMGetCounterDescription(My.App.SyMCounters.ProcessMemoryPhysicalPercent))
@@ -665,14 +667,20 @@ Partial Friend Class SyM
         Me.TipInfo.SetText(Me.pbDisk1, My.App.SyMGetCounterDescription(My.App.SyMCounters.Disk1) + VisualBasic.vbCr + data.ToString + "% (" + dataraw.ToString + ")")
     End Sub
     Friend Sub ShowDataNetworkDownload(data As Integer, dataraw As Single)
+        'Me.pbNetworkDownload.Value = data
+        'Me.lblNetworkDownload.Text = data.ToString + " KB/sec"
+        'Me.TipInfo.SetText(Me.pbNetworkDownload, My.App.SyMGetCounterDescription(My.App.SyMCounters.NetworkDownload) + VisualBasic.vbCr + CInt(dataraw / My.App.KBConversion).ToString + " KB/sec (" + dataraw.ToString("N3") + ")")
         Me.pbNetworkDownload.Value = data
-        Me.lblNetworkDownload.Text = data.ToString + " KB/sec"
-        Me.TipInfo.SetText(Me.pbNetworkDownload, My.App.SyMGetCounterDescription(My.App.SyMCounters.NetworkDownload) + VisualBasic.vbCr + CInt(dataraw / My.App.KBConversion).ToString + " KB/sec (" + dataraw.ToString("N3") + ")")
+        Me.lblNetworkDownload.Text = App.FormatNetSpeed(dataraw, App.SyMNetworkUnits)
+        Me.TipInfo.SetText(Me.pbNetworkDownload, My.App.SyMGetCounterDescription(My.App.SyMCounters.NetworkDownload) + VisualBasic.vbCr + App.FormatNetSpeed(dataraw, App.SyMNetworkUnits) + " (" + dataraw.ToString("N3") + ")")
     End Sub
     Friend Sub ShowDataNetworkUpload(data As Integer, dataraw As Single)
+        'Me.pbNetworkUpload.Value = data
+        'Me.lblNetworkUpload.Text = data.ToString + " KB/sec"
+        'Me.TipInfo.SetText(Me.pbNetworkUpload, My.App.SyMGetCounterDescription(My.App.SyMCounters.NetworkUpload) + VisualBasic.vbCr + CInt(dataraw / My.App.KBConversion).ToString + " KB/sec (" + dataraw.ToString("N3") + ")")
         Me.pbNetworkUpload.Value = data
-        Me.lblNetworkUpload.Text = data.ToString + " KB/sec"
-        Me.TipInfo.SetText(Me.pbNetworkUpload, My.App.SyMGetCounterDescription(My.App.SyMCounters.NetworkUpload) + VisualBasic.vbCr + CInt(dataraw / My.App.KBConversion).ToString + " KB/sec (" + dataraw.ToString("N3") + ")")
+        Me.lblNetworkUpload.Text = App.FormatNetSpeed(dataraw, App.SyMNetworkUnits)
+        Me.TipInfo.SetText(Me.pbNetworkUpload, My.App.SyMGetCounterDescription(My.App.SyMCounters.NetworkUpload) + VisualBasic.vbCr + App.FormatNetSpeed(dataraw, App.SyMNetworkUnits) + " (" + dataraw.ToString("N3") + ")")
     End Sub
     Friend Sub ShowDataPagingFileUsage(data As Integer)
         Dim tiptext = TipInfo.GetText(pbMemoryPhysical)
