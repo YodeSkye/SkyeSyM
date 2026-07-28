@@ -39,8 +39,8 @@ Partial Friend Class SyM
         Me.pbDisk1.Maximum = 100 + AdjustDisplayMaximum(100)
         'Me.pbNetworkDownload.Maximum = My.App.SyMNetworkDownloadMaximum + AdjustDisplayMaximum(My.App.SyMNetworkDownloadMaximum)
         'Me.pbNetworkUpload.Maximum = My.App.SyMNetworkUploadMaximum + AdjustDisplayMaximum(My.App.SyMNetworkUploadMaximum)
-        Me.pbNetworkDownload.Maximum = App.GetNetSpeed(App.SyMNetworkDownloadMaximum, App.SyMNetworkUnits) + AdjustDisplayMaximum(App.SyMNetworkDownloadMaximum)
-        Me.pbNetworkUpload.Maximum = App.GetNetSpeed(App.SyMNetworkUploadMaximum, App.SyMNetworkUnits) + AdjustDisplayMaximum(App.SyMNetworkUploadMaximum)
+        Me.pbNetworkDownload.Maximum = App.SyMNetworkDownloadMaximum + AdjustDisplayMaximum(App.SyMNetworkDownloadMaximum)
+        Me.pbNetworkUpload.Maximum = App.SyMNetworkUploadMaximum + AdjustDisplayMaximum(App.SyMNetworkUploadMaximum)
         Me.pbProcessProcessor.Maximum = 100 + AdjustDisplayMaximum(100)
         Me.pbProcessMemoryPhysical.Maximum = My.App.SyMMemoryPhysicalMaximum + AdjustDisplayMaximum(My.App.SyMMemoryPhysicalMaximum)
         TipInfo = New Skye.UI.ToolTipEX() With {
@@ -670,7 +670,7 @@ Partial Friend Class SyM
         'Me.pbNetworkDownload.Value = data
         'Me.lblNetworkDownload.Text = data.ToString + " KB/sec"
         'Me.TipInfo.SetText(Me.pbNetworkDownload, My.App.SyMGetCounterDescription(My.App.SyMCounters.NetworkDownload) + VisualBasic.vbCr + CInt(dataraw / My.App.KBConversion).ToString + " KB/sec (" + dataraw.ToString("N3") + ")")
-        Me.pbNetworkDownload.Value = data
+        Me.pbNetworkDownload.Value = CInt(dataraw)
         Me.lblNetworkDownload.Text = App.FormatNetSpeed(dataraw, App.SyMNetworkUnits)
         Me.TipInfo.SetText(Me.pbNetworkDownload, My.App.SyMGetCounterDescription(My.App.SyMCounters.NetworkDownload) + VisualBasic.vbCr + App.FormatNetSpeed(dataraw, App.SyMNetworkUnits) + " (" + dataraw.ToString("N3") + ")")
     End Sub
@@ -678,7 +678,7 @@ Partial Friend Class SyM
         'Me.pbNetworkUpload.Value = data
         'Me.lblNetworkUpload.Text = data.ToString + " KB/sec"
         'Me.TipInfo.SetText(Me.pbNetworkUpload, My.App.SyMGetCounterDescription(My.App.SyMCounters.NetworkUpload) + VisualBasic.vbCr + CInt(dataraw / My.App.KBConversion).ToString + " KB/sec (" + dataraw.ToString("N3") + ")")
-        Me.pbNetworkUpload.Value = data
+        Me.pbNetworkUpload.Value = CInt(dataraw)
         Me.lblNetworkUpload.Text = App.FormatNetSpeed(dataraw, App.SyMNetworkUnits)
         Me.TipInfo.SetText(Me.pbNetworkUpload, My.App.SyMGetCounterDescription(My.App.SyMCounters.NetworkUpload) + VisualBasic.vbCr + App.FormatNetSpeed(dataraw, App.SyMNetworkUnits) + " (" + dataraw.ToString("N3") + ")")
     End Sub

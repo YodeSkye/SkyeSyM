@@ -290,9 +290,9 @@ Namespace My
 			Skye.Common.Log.Write(My.Application.Info.ProductName + " Started...")
             GetSettings()
 #If DEBUG Then
-            SyMNetworkUnits = NetUnit.BitMb
-			SyMNetworkDownloadMaximum = 128000000
-			SyMNetworkUploadMaximum = 32000000
+			SyMNetworkUnits = NetUnit.ByteKB
+			SyMNetworkDownloadMaximum = 9604000
+			SyMNetworkUploadMaximum = 1280000
 #End If
 			If ThemeAuto Then
 				Skye.UI.ThemeManager.SetTheme(Skye.UI.ThemeManager.DetectWindowsTheme())
