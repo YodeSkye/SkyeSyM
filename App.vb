@@ -4,10 +4,10 @@ Imports Skye.UI
 
 Namespace My
 
-	Friend Module App
+    Friend Module App
 
-		' Declarations
-		Friend FrmMain As MainForm
+        ' DECLARATIONS
+        Friend FrmMain As MainForm
 		Friend FrmHelp As Help
 		Friend FrmLog As Skye.UI.Log.LogViewer
 		Friend FrmSettings As Settings
@@ -267,7 +267,7 @@ Namespace My
 			End Try
 		End Sub
 
-		' Methods
+		' METHODS
 		Friend Sub Initialize()
 			Debug.Print(My.Application.Info.ProductName + " Starting...")
 #If DEBUG Then
@@ -487,47 +487,36 @@ Namespace My
 
 		' SyM
 		Friend Sub SyMSet(Optional forceterminate As Boolean = False)
-			Skye.Common.Log.Write("SyMSet: Begin")
 
 			' Stop loop
-			Skye.Common.Log.Write("SyMSet: Stopping loop")
 			StopSyMLoop()
 			Thread.Sleep(100) ' Extra safety gap before touching counters
 
 			' Disconnect loop from form BEFORE closing it
-			Skye.Common.Log.Write("SyMSet: Disconnecting form")
 			Dim oldForm = FrmSyM
 			FrmSyM = Nothing
 
 			' Close old SyM form
 			If oldForm IsNot Nothing Then
-				Skye.Common.Log.Write("SyMSet: Closing old form")
 				Try
 					oldForm.Close()
 				Catch ex As Exception
 					Skye.Common.Log.Write("SyMSet: Error closing form: " & ex.Message)
 				End Try
-			Else
-				Skye.Common.Log.Write("SyMSet: No old form to close")
 			End If
 
 			' Dispose counters
-			Skye.Common.Log.Write("SyMSet: Disposing counters")
 			Try
 				DisposeSyMCounters()
 			Catch ex As Exception
 				Skye.Common.Log.Write("SyMSet: Error disposing counters: " & ex.Message)
 			End Try
 
-			Skye.Common.Log.Write("System Monitor UnLoaded")
+			If oldForm IsNot Nothing Then Skye.Common.Log.Write("System Monitor UnLoaded")
 
-			If forceterminate Then
-				Skye.Common.Log.Write("SyMSet: forceterminate=True, exiting")
-				Exit Sub
-			End If
+			If forceterminate Then Exit Sub
 
 			' Recreate counters
-			Skye.Common.Log.Write("SyMSet: Initializing counters")
 			Try
 				InitializeSyMCounters()
 			Catch ex As Exception
@@ -535,7 +524,6 @@ Namespace My
 			End Try
 
 			' Recreate SyM form
-			Skye.Common.Log.Write("SyMSet: Creating new SyM form")
 			Try
 				FrmSyM = New SyM()
 			Catch ex As Exception
@@ -627,13 +615,10 @@ Namespace My
 		Friend Sub SyMSetLoop(Optional forceterminate As Boolean = False)
 			If FrmSyM Is Nothing Then Exit Sub
 
-			' If SyM is visible and loop is not running, start it
-			If FrmSyM.Visible AndAlso ctsSyM Is Nothing AndAlso Not forceterminate Then
+			If FrmSyM.Visible AndAlso ctsSyM Is Nothing AndAlso Not forceterminate Then ' If SyM is visible and loop is not running, start it
 				StartSyMLoop()
-				Skye.Common.Log.Write("System Monitor Loop ON")
 			ElseIf ctsSyM IsNot Nothing Then ' If loop is running, stop it
 				StopSyMLoop()
-				Skye.Common.Log.Write("System Monitor Loop OFF")
 			End If
 
 		End Sub
@@ -805,7 +790,7 @@ Namespace My
 			End Try
 		End Function
 
-		' Custom ContextMenu ToolTips
+		' CUSTOM CONTEXTMENU TOOLTIPS
 		Friend Sub HookTSItemsForCMTooltip(ts As ToolStrip, tip As ToolTipEX)
 			For Each item As ToolStripItem In ts.Items
 				AddHandler item.MouseEnter,
