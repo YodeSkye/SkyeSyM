@@ -28,6 +28,7 @@
         lblSMColorBarForeground = New Label()
         lblSMColorBackground = New Label()
         textboxSMQuickHideInterval = New TextBox()
+        CMForTextBoxes = New ContextMenuStrip(components)
         lblSMQuickHideInterval = New Label()
         lblSMOpacity = New Label()
         textboxSMNetworkDownloadMaximum = New TextBox()
@@ -316,6 +317,7 @@
         ' textboxSMQuickHideInterval
         ' 
         textboxSMQuickHideInterval.BorderStyle = BorderStyle.FixedSingle
+        textboxSMQuickHideInterval.ContextMenuStrip = CMForTextBoxes
         TipMain.SetImage(textboxSMQuickHideInterval, Nothing)
         textboxSMQuickHideInterval.Location = New Point(372, 102)
         textboxSMQuickHideInterval.Margin = New Padding(4)
@@ -325,6 +327,13 @@
         textboxSMQuickHideInterval.TabIndex = 12
         TipMain.SetText(textboxSMQuickHideInterval, "How long the System Monitor should remain hidden after initiating Quick Hide, in seconds")
         textboxSMQuickHideInterval.TextAlign = HorizontalAlignment.Center
+        ' 
+        ' CMForTextBoxes
+        ' 
+        TipMain.SetImage(CMForTextBoxes, Nothing)
+        CMForTextBoxes.Name = "CMForTextBoxes"
+        CMForTextBoxes.Size = New Size(61, 4)
+        TipMain.SetText(CMForTextBoxes, Nothing)
         ' 
         ' lblSMQuickHideInterval
         ' 
@@ -353,12 +362,13 @@
         ' textboxSMNetworkDownloadMaximum
         ' 
         textboxSMNetworkDownloadMaximum.BorderStyle = BorderStyle.FixedSingle
+        textboxSMNetworkDownloadMaximum.ContextMenuStrip = CMForTextBoxes
         TipMain.SetImage(textboxSMNetworkDownloadMaximum, Nothing)
-        textboxSMNetworkDownloadMaximum.Location = New Point(215, 215)
+        textboxSMNetworkDownloadMaximum.Location = New Point(216, 216)
         textboxSMNetworkDownloadMaximum.Margin = New Padding(4)
         textboxSMNetworkDownloadMaximum.MaxLength = 5
         textboxSMNetworkDownloadMaximum.Name = "textboxSMNetworkDownloadMaximum"
-        textboxSMNetworkDownloadMaximum.Size = New Size(100, 29)
+        textboxSMNetworkDownloadMaximum.Size = New Size(125, 29)
         textboxSMNetworkDownloadMaximum.TabIndex = 16
         TipMain.SetText(textboxSMNetworkDownloadMaximum, "Network Download Maximum")
         textboxSMNetworkDownloadMaximum.TextAlign = HorizontalAlignment.Center
@@ -366,12 +376,13 @@
         ' textboxSMNetworkUploadMaximum
         ' 
         textboxSMNetworkUploadMaximum.BorderStyle = BorderStyle.FixedSingle
+        textboxSMNetworkUploadMaximum.ContextMenuStrip = CMForTextBoxes
         TipMain.SetImage(textboxSMNetworkUploadMaximum, Nothing)
-        textboxSMNetworkUploadMaximum.Location = New Point(323, 215)
+        textboxSMNetworkUploadMaximum.Location = New Point(349, 216)
         textboxSMNetworkUploadMaximum.Margin = New Padding(4)
         textboxSMNetworkUploadMaximum.MaxLength = 5
         textboxSMNetworkUploadMaximum.Name = "textboxSMNetworkUploadMaximum"
-        textboxSMNetworkUploadMaximum.Size = New Size(100, 29)
+        textboxSMNetworkUploadMaximum.Size = New Size(125, 29)
         textboxSMNetworkUploadMaximum.TabIndex = 18
         TipMain.SetText(textboxSMNetworkUploadMaximum, "Network Upload Maximum")
         textboxSMNetworkUploadMaximum.TextAlign = HorizontalAlignment.Center
@@ -379,6 +390,7 @@
         ' textboxSMUpdateInterval
         ' 
         textboxSMUpdateInterval.BorderStyle = BorderStyle.FixedSingle
+        textboxSMUpdateInterval.ContextMenuStrip = CMForTextBoxes
         TipMain.SetImage(textboxSMUpdateInterval, Nothing)
         textboxSMUpdateInterval.Location = New Point(248, 102)
         textboxSMUpdateInterval.Margin = New Padding(4)
@@ -392,10 +404,10 @@
         ' lblSMNetworkInstance
         ' 
         TipMain.SetImage(lblSMNetworkInstance, Nothing)
-        lblSMNetworkInstance.Location = New Point(430, 189)
+        lblSMNetworkInstance.Location = New Point(481, 190)
         lblSMNetworkInstance.Margin = New Padding(4, 0, 4, 0)
         lblSMNetworkInstance.Name = "lblSMNetworkInstance"
-        lblSMNetworkInstance.Size = New Size(145, 26)
+        lblSMNetworkInstance.Size = New Size(172, 26)
         lblSMNetworkInstance.TabIndex = 108
         lblSMNetworkInstance.Text = "Interface"
         TipMain.SetText(lblSMNetworkInstance, "Network Interface to Monitor")
@@ -404,24 +416,24 @@
         ' lblSMNetworkDownloadMaximum
         ' 
         TipMain.SetImage(lblSMNetworkDownloadMaximum, Nothing)
-        lblSMNetworkDownloadMaximum.Location = New Point(216, 189)
+        lblSMNetworkDownloadMaximum.Location = New Point(216, 191)
         lblSMNetworkDownloadMaximum.Margin = New Padding(4, 0, 4, 0)
         lblSMNetworkDownloadMaximum.Name = "lblSMNetworkDownloadMaximum"
-        lblSMNetworkDownloadMaximum.Size = New Size(100, 26)
+        lblSMNetworkDownloadMaximum.Size = New Size(125, 26)
         lblSMNetworkDownloadMaximum.TabIndex = 106
-        lblSMNetworkDownloadMaximum.Text = "Down Max"
+        lblSMNetworkDownloadMaximum.Text = "Download Max"
         TipMain.SetText(lblSMNetworkDownloadMaximum, "Network Download Maximum")
         lblSMNetworkDownloadMaximum.TextAlign = ContentAlignment.BottomCenter
         ' 
         ' lblSMNetworkUploadMaximum
         ' 
         TipMain.SetImage(lblSMNetworkUploadMaximum, Nothing)
-        lblSMNetworkUploadMaximum.Location = New Point(325, 189)
+        lblSMNetworkUploadMaximum.Location = New Point(349, 191)
         lblSMNetworkUploadMaximum.Margin = New Padding(4, 0, 4, 0)
         lblSMNetworkUploadMaximum.Name = "lblSMNetworkUploadMaximum"
-        lblSMNetworkUploadMaximum.Size = New Size(99, 26)
+        lblSMNetworkUploadMaximum.Size = New Size(125, 26)
         lblSMNetworkUploadMaximum.TabIndex = 104
-        lblSMNetworkUploadMaximum.Text = "Up Max"
+        lblSMNetworkUploadMaximum.Text = "Upload Max"
         TipMain.SetText(lblSMNetworkUploadMaximum, "Network Upload Maximum")
         lblSMNetworkUploadMaximum.TextAlign = ContentAlignment.BottomCenter
         ' 
@@ -705,17 +717,18 @@
         comboboxSMNetworkInstance.DropDownStyle = ComboBoxStyle.DropDownList
         comboboxSMNetworkInstance.FormattingEnabled = True
         TipMain.SetImage(comboboxSMNetworkInstance, Nothing)
-        comboboxSMNetworkInstance.Location = New Point(430, 214)
+        comboboxSMNetworkInstance.Location = New Point(481, 215)
         comboboxSMNetworkInstance.Name = "comboboxSMNetworkInstance"
-        comboboxSMNetworkInstance.Size = New Size(373, 30)
+        comboboxSMNetworkInstance.Size = New Size(327, 30)
         comboboxSMNetworkInstance.TabIndex = 164
         TipMain.SetText(comboboxSMNetworkInstance, "Network Interface to Monitor")
         ' 
         ' CoBoxSMNetworkUnit
         ' 
+        CoBoxSMNetworkUnit.DropDownStyle = ComboBoxStyle.DropDownList
         CoBoxSMNetworkUnit.FormattingEnabled = True
         TipMain.SetImage(CoBoxSMNetworkUnit, Nothing)
-        CoBoxSMNetworkUnit.Location = New Point(18, 214)
+        CoBoxSMNetworkUnit.Location = New Point(18, 215)
         CoBoxSMNetworkUnit.Name = "CoBoxSMNetworkUnit"
         CoBoxSMNetworkUnit.Size = New Size(191, 30)
         CoBoxSMNetworkUnit.TabIndex = 165
@@ -724,14 +737,14 @@
         ' LblSMNetworkUnit
         ' 
         TipMain.SetImage(LblSMNetworkUnit, Nothing)
-        LblSMNetworkUnit.Location = New Point(20, 189)
+        LblSMNetworkUnit.Location = New Point(18, 190)
         LblSMNetworkUnit.Margin = New Padding(4, 0, 4, 0)
         LblSMNetworkUnit.Name = "LblSMNetworkUnit"
         LblSMNetworkUnit.Size = New Size(189, 26)
         LblSMNetworkUnit.TabIndex = 166
         LblSMNetworkUnit.Text = "Unit"
         TipMain.SetText(LblSMNetworkUnit, "Network Unit")
-        LblSMNetworkUnit.TextAlign = ContentAlignment.BottomCenter
+        LblSMNetworkUnit.TextAlign = ContentAlignment.BottomLeft
         ' 
         ' Settings
         ' 
@@ -769,6 +782,7 @@
         Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         Icon = My.Resources.Resources.iconApp
         TipMain.SetImage(Me, Nothing)
+        KeyPreview = True
         Margin = New Padding(4)
         MaximizeBox = False
         Name = "Settings"
@@ -832,4 +846,5 @@
     Friend WithEvents comboboxSMNetworkInstance As Skye.UI.ComboBox
     Friend WithEvents CoBoxSMNetworkUnit As Skye.UI.ComboBox
     Private WithEvents LblSMNetworkUnit As Label
+    Friend WithEvents CMForTextBoxes As ContextMenuStrip
 End Class

@@ -61,6 +61,28 @@ Partial Friend Class Settings
     Private Sub FrmMove(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Move
         If Not mMove AndAlso WindowState = FormWindowState.Normal Then CheckMove(Location)
     End Sub
+    Private Sub Form_KeyDown(sender As Object, e As KeyEventArgs) Handles MyBase.KeyDown
+        If e.Control AndAlso TypeOf Me.ActiveControl Is TextBox Then
+            Dim txt As TextBox = DirectCast(Me.ActiveControl, TextBox)
+            Select Case e.KeyCode
+                Case Keys.C
+                    txt.Copy()
+                    e.SuppressKeyPress = True
+                Case Keys.V
+                    txt.Paste()
+                    e.SuppressKeyPress = True
+                Case Keys.X
+                    txt.Cut()
+                    e.SuppressKeyPress = True
+                Case Keys.A
+                    txt.SelectAll()
+                    e.SuppressKeyPress = True
+                Case Keys.Z
+                    txt.Undo()
+                    e.SuppressKeyPress = True
+            End Select
+        End If
+    End Sub
 
     ' Control Events
     Private Sub LblSMOpacityMouseUp(sender As Object, e As MouseEventArgs) Handles lblSMOpacity.MouseUp
@@ -74,8 +96,8 @@ Partial Friend Class Settings
     Private Sub TxbxNumbersOnlyKeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles textboxSMUpdateInterval.KeyDown, textboxSMQuickHideInterval.KeyDown, textboxSMNetworkUploadMaximum.KeyDown, textboxSMNetworkDownloadMaximum.KeyDown
         nonNumberEntered = False
         If (e.KeyCode < Keys.D0 Or e.KeyCode > Keys.D9) And (e.KeyCode < Keys.NumPad0 Or e.KeyCode > Keys.NumPad9) Then
-            If e.KeyCode <> Keys.Delete And e.KeyCode <> Keys.Back And e.KeyCode <> Keys.Enter Then : nonNumberEntered = True
-            ElseIf e.KeyCode = Keys.Enter OrElse e.keycode = Keys.OemPeriod Then
+            If e.KeyCode <> Keys.Delete And e.KeyCode <> Keys.Back And e.KeyCode <> Keys.Enter And e.KeyCode <> Keys.OemPeriod Then : nonNumberEntered = True
+            ElseIf e.KeyCode = Keys.Enter Then
                 e.SuppressKeyPress = True
                 e.Handled = True
                 Validate()
