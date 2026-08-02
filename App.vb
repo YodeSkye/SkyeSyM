@@ -1,13 +1,18 @@
 
+Imports System.ComponentModel
+Imports System.Net.NetworkInformation
+Imports System.Reflection
+Imports System.Runtime.CompilerServices
+Imports System.Runtime.InteropServices
 Imports System.Threading
 Imports Skye.UI
 
 Namespace My
 
-    Friend Module App
+	Friend Module App
 
-        ' DECLARATIONS
-        Friend FrmMain As MainForm
+		' DECLARATIONS
+		Friend FrmMain As MainForm
 		Friend FrmHelp As Help
 		Friend FrmLog As Skye.UI.Log.LogViewer
 		Friend FrmSettings As Settings
@@ -85,13 +90,13 @@ Namespace My
 			NA = 0
 		End Enum
 		Public Enum NetUnit
-			Auto
-			ByteKB  ' Kilobytes per second
-			ByteMB  ' Megabytes per second
-			ByteGB  ' Gigabytes per second
-			BitKb   ' Kilobits per second
-			BitMb   ' Megabits per second
-			BitGb   ' Gigabits per second
+			<Description("Auto")> Auto
+			<Description("KB/s (Kilobytes)")> ByteKB
+			<Description("MB/s (Megabytes)")> ByteMB
+			<Description("GB/s (Gigabytes)")> ByteGB
+			<Description("Kbps (Kilobits)")> BitKb
+			<Description("Mbps (Megabits)")> BitMb
+			<Description("Gbps (Gigabits)")> BitGb
 		End Enum
 		Friend Structure SyMColors
 			Dim Background As Color
@@ -153,10 +158,8 @@ Namespace My
 			Public Disk1 As Integer
 
 			' Network
-			Public NetworkDownloadRaw As Single
-			Public NetworkDownloadKB As Integer
-			Public NetworkUploadRaw As Single
-			Public NetworkUploadKB As Integer
+			Public NetworkDownloadRaw As Long
+			Public NetworkUploadRaw As Long
 
 			' Instance (Process)
 			Public ProcCPU As Integer
@@ -169,6 +172,84 @@ Namespace My
 			Public ProcMemRaw As Single
 			Public ProcMemMB As Integer
 		End Class
+		Public Class NetworkInterfaceMonitor
+			Implements IDisposable
+
+			Private _nic As NetworkInterface
+			Private _disposedValue As Boolean
+			Private _lastBytesReceived As Long
+			Private _lastDownTime As DateTime = DateTime.MinValue
+			Private _lastBytesSent As Long
+			Private _lastUpTime As DateTime = DateTime.MinValue
+			Private ReadOnly disposedValue As Boolean
+
+			Public Sub New(ByVal adapterName As String)
+				_nic = NetworkInterface.GetAllNetworkInterfaces().FirstOrDefault(Function(n As NetworkInterface) n.Name = adapterName)
+			End Sub
+			Protected Overridable Sub Dispose(ByVal disposing As Boolean)
+				If Not _disposedValue Then
+					If disposing Then
+						' Release managed resources
+						_nic = Nothing
+					End If
+					_disposedValue = True
+				End If
+			End Sub
+			Public Sub Dispose() Implements IDisposable.Dispose
+				Dispose(True)
+				GC.SuppressFinalize(Me)
+			End Sub
+
+			Public Function GetDownloadBytesPerSecond() As Long
+				If _nic Is Nothing Then Return 0
+
+				Dim currentBytes As Long = _nic.GetIPv4Statistics().BytesReceived
+				Dim currentTime As DateTime = DateTime.Now
+
+				' Handle first run baseline
+				If _lastDownTime = DateTime.MinValue Then
+					_lastBytesReceived = currentBytes
+					_lastDownTime = currentTime
+					Return 0
+				End If
+
+				Dim seconds As Double = (currentTime - _lastDownTime).TotalSeconds
+				If seconds <= 0 Then Return 0
+
+				Dim rate As Long = CLng((currentBytes - _lastBytesReceived) / seconds)
+
+				' Save state for the next call
+				_lastBytesReceived = currentBytes
+				_lastDownTime = currentTime
+
+				Return rate
+			End Function
+			Public Function GetUploadBytesPerSecond() As Long
+				If _nic Is Nothing Then Return 0
+
+				Dim currentBytes As Long = _nic.GetIPv4Statistics().BytesSent
+				Dim currentTime As DateTime = DateTime.Now
+
+				' Handle first run baseline
+				If _lastUpTime = DateTime.MinValue Then
+					_lastBytesSent = currentBytes
+					_lastUpTime = currentTime
+					Return 0
+				End If
+
+				Dim seconds As Double = (currentTime - _lastUpTime).TotalSeconds
+				If seconds <= 0 Then Return 0
+
+				Dim rate As Long = CLng((currentBytes - _lastBytesSent) / seconds)
+
+				' Save state for the next call
+				_lastBytesSent = currentBytes
+				_lastUpTime = currentTime
+
+				Return rate
+			End Function
+
+		End Class
 		Private SyMpcSystemUpTime As Diagnostics.PerformanceCounter
 		Private SyMpcPagingFileUsage As Diagnostics.PerformanceCounter
 		Private SyMpcProcesses As Diagnostics.PerformanceCounter
@@ -177,8 +258,7 @@ Namespace My
 		Private SyMpcMemoryPhysical As Diagnostics.PerformanceCounter
 		Private SyMpcDisk0 As Diagnostics.PerformanceCounter
 		Private SyMpcDisk1 As Diagnostics.PerformanceCounter
-		Private SyMpcNetworkDownload As Diagnostics.PerformanceCounter
-		Private SyMpcNetworkUpload As Diagnostics.PerformanceCounter
+		Private SyMNetInterfaceMonitor As NetworkInterfaceMonitor
 		Private SyMpcProcessProcessor As Diagnostics.PerformanceCounter
 		Private SyMpcProcessMemoryPhysical As Diagnostics.PerformanceCounter
 		Private SyMpcProcessThreads As Diagnostics.PerformanceCounter
@@ -193,9 +273,9 @@ Namespace My
 		Friend SyMUpdateInterval As UInt16 '250ms-60000ms
 		Friend SyMQuickHideInterval As Byte 'Range 5-60, Default 5
 		Friend SyMOpacity As Byte '10%-100%, 10% Increments
-		Friend SyMNetworkUnits As NetUnit
-		Friend SyMNetworkDownloadMaximum As Integer
-		Friend SyMNetworkUploadMaximum As Integer
+		Friend SyMNetworkUnits As NetUnit = NetUnit.BitMb
+		Friend SyMNetworkDownloadMaximum As Long
+		Friend SyMNetworkUploadMaximum As Long
 		Friend SyMNetworkInstance As String
 		Friend SyMColor As SyMColors
 		Friend SyMLocation As Point
@@ -288,7 +368,7 @@ Namespace My
 			Skye.Common.RegistryHelper.BaseKey = "Software\\" + My.Application.Info.ProductName 'BaseKey is the path to the registry key where application settings are stored.
 #End If
 			Skye.Common.Log.Write(My.Application.Info.ProductName + " Started...")
-            GetSettings()
+			GetSettings()
 #If DEBUG Then
 			SyMNetworkUnits = NetUnit.ByteKB
 			SyMNetworkDownloadMaximum = 9604000
@@ -334,8 +414,8 @@ Namespace My
 			SyMOpacity = CByte(Skye.Common.RegistryHelper.GetInt("SyMOpacity", 100))
 			If SyMOpacity < 10 OrElse SyMOpacity > 100 Then SyMOpacity = 100
 			SyMOpacity = CByte((SyMOpacity \ 10) * 10)
-			SyMNetworkDownloadMaximum = CUShort(Skye.Common.RegistryHelper.GetInt("SyMNetworkDownloadMaximum", 32))
-			SyMNetworkUploadMaximum = CUShort(Skye.Common.RegistryHelper.GetInt("SyMNetworkUploadMaximum", 32))
+			SyMNetworkDownloadMaximum = Skye.Common.RegistryHelper.GetLong("SyMNetworkDownloadMaximum", 32)
+			SyMNetworkUploadMaximum = Skye.Common.RegistryHelper.GetLong("SyMNetworkUploadMaximum", 32)
 			SyMNetworkInstance = Skye.Common.RegistryHelper.GetString("SyMNetworkInstance", String.Empty)
 			SyMColor = New SyMColors With {
 				.Background = Color.FromArgb(Skye.Common.RegistryHelper.GetInt("SyMColorBackground", SyMColors.Defaults.Background.ToArgb)),
@@ -375,8 +455,8 @@ Namespace My
 			Skye.Common.RegistryHelper.SetInt("SyMUpdateInterval", SyMUpdateInterval)
 			Skye.Common.RegistryHelper.SetInt("SyMQuickHideInterval", SyMQuickHideInterval)
 			Skye.Common.RegistryHelper.SetInt("SyMOpacity", SyMOpacity)
-			Skye.Common.RegistryHelper.SetInt("SyMNetworkDownloadMaximum", SyMNetworkDownloadMaximum)
-			Skye.Common.RegistryHelper.SetInt("SyMNetworkUploadMaximum", SyMNetworkUploadMaximum)
+			Skye.Common.RegistryHelper.SetLong("SyMNetworkDownloadMaximum", SyMNetworkDownloadMaximum)
+			Skye.Common.RegistryHelper.SetLong("SyMNetworkUploadMaximum", SyMNetworkUploadMaximum)
 			Skye.Common.RegistryHelper.SetString("SyMNetworkInstance", SyMNetworkInstance)
 			Skye.Common.RegistryHelper.SetInt("SyMColorBackground", SyMColor.Background.ToArgb)
 			Skye.Common.RegistryHelper.SetInt("SyMColorForegroundOnBackground", SyMColor.ForegroundOnBackground.ToArgb)
@@ -565,8 +645,9 @@ Namespace My
 			SyMpcDisk0 = New PerformanceCounter("PhysicalDisk", "% Disk Time", "0 C:", True)
 			SyMpcDisk1 = New PerformanceCounter("PhysicalDisk", "% Disk Time", "1 D:", True)
 
-			SyMpcNetworkDownload = New PerformanceCounter("Network Interface", "Bytes Received/sec", SyMNetworkInstance, True)
-			SyMpcNetworkUpload = New PerformanceCounter("Network Interface", "Bytes Sent/sec", SyMNetworkInstance, True)
+			'SyMpcNetworkDownload = New PerformanceCounter("Network Interface", "Bytes Received/sec", SyMNetworkInstance, True)
+			'SyMpcNetworkUpload = New PerformanceCounter("Network Interface", "Bytes Sent/sec", SyMNetworkInstance, True)
+			SyMNetInterfaceMonitor = New NetworkInterfaceMonitor(SyMNetworkInstance)
 
 			SyMpcProcessProcessor = New PerformanceCounter("Process", "% Processor Time", SyMProcessInstance, True)
 			SyMpcProcessMemoryPhysical = New PerformanceCounter("Process", "Working Set", SyMProcessInstance, True)
@@ -586,8 +667,6 @@ Namespace My
 				SyMpcMemoryPhysical,
 				SyMpcDisk0,
 				SyMpcDisk1,
-				SyMpcNetworkDownload,
-				SyMpcNetworkUpload,
 				SyMpcProcessProcessor,
 				SyMpcProcessMemoryPhysical,
 				SyMpcProcessThreads,
@@ -611,8 +690,6 @@ Namespace My
 				SyMpcMemoryPhysical,
 				SyMpcDisk0,
 				SyMpcDisk1,
-				SyMpcNetworkDownload,
-				SyMpcNetworkUpload,
 				SyMpcProcessProcessor,
 				SyMpcProcessMemoryPhysical,
 				SyMpcProcessThreads,
@@ -626,7 +703,9 @@ Namespace My
 					Try : pc.Dispose() : Catch : End Try
 				End If
 			Next
-		End Sub
+            SyMNetInterfaceMonitor?.Dispose()
+            SyMNetInterfaceMonitor = Nothing
+        End Sub
 		Friend Sub SyMSetLoop(Optional forceterminate As Boolean = False)
 			If FrmSyM Is Nothing Then Exit Sub
 
@@ -683,14 +762,16 @@ Namespace My
 			snap.Disk1 = Math.Min(100, CInt(snap.Disk1Raw))
 
 			' Network Download
-			Try : snap.NetworkDownloadRaw = SyMpcNetworkDownload.NextValue() : Catch : snap.NetworkDownloadRaw = 0 : End Try
-			snap.NetworkDownloadKB = CInt(snap.NetworkDownloadRaw / KBConversion)
-			snap.NetworkDownloadKB = Math.Min(snap.NetworkDownloadKB, My.App.SyMNetworkDownloadMaximum)
+			'Try : snap.NetworkDownloadRaw = SyMpcNetworkDownload.NextValue() : Catch : snap.NetworkDownloadRaw = 0 : End Try
+			'snap.NetworkDownloadKB = CInt(snap.NetworkDownloadRaw / KBConversion)
+			'snap.NetworkDownloadKB = CInt(Math.Min(snap.NetworkDownloadKB, My.App.SyMNetworkDownloadMaximum))
+			Try : snap.NetworkDownloadRaw = SyMNetInterfaceMonitor.GetDownloadBytesPerSecond : Catch : snap.NetworkDownloadRaw = 0 : End Try
 
 			' Network Upload
-			Try : snap.NetworkUploadRaw = SyMpcNetworkUpload.NextValue() : Catch : snap.NetworkUploadRaw = 0 : End Try
-			snap.NetworkUploadKB = CInt(snap.NetworkUploadRaw / KBConversion)
-			snap.NetworkUploadKB = Math.Min(snap.NetworkUploadKB, My.App.SyMNetworkUploadMaximum)
+			'Try : snap.NetworkUploadRaw = SyMpcNetworkUpload.NextValue() : Catch : snap.NetworkUploadRaw = 0 : End Try
+			'snap.NetworkUploadKB = CInt(snap.NetworkUploadRaw / KBConversion)
+			'snap.NetworkUploadKB = CInt(Math.Min(snap.NetworkUploadKB, My.App.SyMNetworkUploadMaximum))
+			Try : snap.NetworkUploadRaw = SyMNetInterfaceMonitor.GetUploadBytesPerSecond : Catch : snap.NetworkUploadRaw = 0 : End Try
 
 			' Instance (Process)
 			Try : snap.ProcCPURaw = SyMpcProcessProcessor.NextValue() : Catch : snap.ProcCPURaw = 0 : End Try
@@ -727,8 +808,8 @@ Namespace My
 			FrmSyM.ShowDataDisk1(snap.Disk1, snap.Disk1Raw)
 
 			' Network
-			FrmSyM.ShowDataNetworkDownload(snap.NetworkDownloadKB, snap.NetworkDownloadRaw)
-			FrmSyM.ShowDataNetworkUpload(snap.NetworkUploadKB, snap.NetworkUploadRaw)
+			FrmSyM.ShowDataNetworkDownload(snap.NetworkDownloadRaw)
+			FrmSyM.ShowDataNetworkUpload(snap.NetworkUploadRaw)
 
 			' Instance
 			FrmSyM.ShowDataProcessProcessor(snap.ProcCPU, snap.ProcCPURaw)
@@ -804,40 +885,88 @@ Namespace My
 				Return New String() {"< No Instances >"}
 			End Try
 		End Function
-		Public Function GetNetSpeed(bytesPerSec As Single, unit As NetUnit) As Integer
+		Friend Function SyMGetNetworkAdapterNames() As String()
+			Try
+				' Grab only interfaces that are UP, NOT Loopback, and actively have IPv4/IPv6 properties
+				Dim names As String() = NetworkInterface.GetAllNetworkInterfaces() _
+				.Where(Function(n As NetworkInterface)
+						   ' 1. Interface must be connected/online
+						   If n.OperationalStatus <> OperationalStatus.Up Then Return False
+
+						   ' 2. Skip local loopback (127.0.0.1)
+						   If n.NetworkInterfaceType = NetworkInterfaceType.Loopback Then Return False
+
+						   ' 3. Must have an active IP address assigned (filters out dormant miniports/QoS layers)
+						   Dim ipProps As IPInterfaceProperties = n.GetIPProperties()
+						   If ipProps Is Nothing OrElse ipProps.UnicastAddresses.Count = 0 Then Return False
+
+						   ' 4. Filter out system driver noise by description keyword
+						   Dim desc As String = n.Description.ToLower()
+						   If desc.Contains("qos") OrElse
+							  desc.Contains("isatap") OrElse
+							  desc.Contains("teredo") OrElse
+							  desc.Contains("pseudo") Then
+							   Return False
+						   End If
+
+						   Return True
+					   End Function) _
+				.Select(Function(n As NetworkInterface) n.Name) _
+				.ToArray()
+
+				If names Is Nothing OrElse names.Length = 0 Then
+					Return New String() {"< No Adapters >"}
+				End If
+
+				Array.Sort(names)
+				Return names
+			Catch ex As Exception
+				Return New String() {"< No Adapters >"}
+			End Try
+		End Function
+		<Extension()>
+		Public Function GetDescription(ByVal value As [Enum]) As String
+			Dim field As FieldInfo = value.GetType().GetField(value.ToString())
+
+			If field IsNot Nothing Then
+				Dim descAttr As DescriptionAttribute = CType(Attribute.GetCustomAttribute(field, GetType(DescriptionAttribute)), DescriptionAttribute)
+				If descAttr IsNot Nothing Then
+					Return descAttr.Description
+				End If
+			End If
+
+			' Fallback to default .ToString() if no description is found
+			Return value.ToString()
+		End Function
+		Public Function GetRawSpeed(ByVal userValue As Double, ByVal sourceUnit As NetUnit) As Long
+            Select Case sourceUnit
+				Case NetUnit.Auto : Return CLng((userValue * 1000000.0) / 8.0) ' Assume Mb/sec for Auto
+				Case NetUnit.ByteKB : Return CLng(userValue * 1024.0)
+				Case NetUnit.ByteMB : Return CLng(userValue * 1024.0 * 1024.0)
+				Case NetUnit.ByteGB : Return CLng(userValue * 1024.0 * 1024.0 * 1024.0)
+				Case NetUnit.BitKb : Return CLng((userValue * 1000.0) / 8.0)
+				Case NetUnit.BitMb : Return CLng((userValue * 1000000.0) / 8.0)
+				Case NetUnit.BitGb : Return CLng((userValue * 1000000000.0) / 8.0)
+				Case Else : Return CLng(userValue)
+			End Select
+		End Function
+		Public Function GetNetSpeed(bytesPerSec As Long, unit As NetUnit) As Double
 
 			Select Case unit
-				' AUTO (KB → MB → GB)
-				Case NetUnit.Auto
-					If bytesPerSec < 1024 * 1024 Then
-						Return CInt(bytesPerSec / 1024)
-					ElseIf bytesPerSec < 1024 * 1024 * 1000 Then
-						Return CInt(bytesPerSec / 1024 / 1024)
-					Else
-						Return CInt(bytesPerSec / 1024 / 1024 / 1024)
-					End If
-				' BYTES → KB / MB / GB
-				Case NetUnit.ByteKB
-					Return CInt(bytesPerSec / 1024)
-				Case NetUnit.ByteMB
-					Return CInt(bytesPerSec / 1024 / 1024)
-				Case NetUnit.ByteGB
-					Return CInt(bytesPerSec / 1024 / 1024 / 1024)
-				' BITS → Kb / Mb / Gb
-				Case NetUnit.BitKb
-					Return CInt((bytesPerSec * 8) / 1000)
-				Case NetUnit.BitMb
-					Return CInt((bytesPerSec * 8) / 1000 / 1000)
-				Case NetUnit.BitGb
-					Return CInt((bytesPerSec * 8) / 1000 / 1000 / 1000)
+				Case NetUnit.Auto : Return (bytesPerSec * 8) / 1000 / 1000 ' Assume Mb/sec for Auto
+				Case NetUnit.ByteKB : Return bytesPerSec / 1024
+				Case NetUnit.ByteMB : Return bytesPerSec / 1024 / 1024
+				Case NetUnit.ByteGB : Return bytesPerSec / 1024 / 1024 / 1024
+				Case NetUnit.BitKb : Return (bytesPerSec * 8) / 1000
+				Case NetUnit.BitMb : Return (bytesPerSec * 8) / 1000 / 1000
+				Case NetUnit.BitGb : Return (bytesPerSec * 8) / 1000 / 1000 / 1000
 			End Select
 
-			Return CInt(bytesPerSec)
+			Return CDbl(bytesPerSec)
 		End Function
-		Public Function FormatNetSpeed(bytesPerSec As Single, unit As NetUnit) As String
+		Public Function FormatNetSpeed(bytesPerSec As Double, unit As NetUnit) As String
 
 			Select Case unit
-				' AUTO (KB → MB → GB)
 				Case NetUnit.Auto
 					If bytesPerSec < 1024 * 1024 Then
 						Return (bytesPerSec / 1024).ToString("0.0") & " KB/s"
@@ -846,14 +975,12 @@ Namespace My
 					Else
 						Return (bytesPerSec / 1024 / 1024 / 1024).ToString("0.00") & " GB/s"
 					End If
-				' BYTES → KB / MB / GB
 				Case NetUnit.ByteKB
 					Return (bytesPerSec / 1024).ToString("0.0") & " KB/s"
 				Case NetUnit.ByteMB
 					Return (bytesPerSec / 1024 / 1024).ToString("0.0") & " MB/s"
 				Case NetUnit.ByteGB
 					Return (bytesPerSec / 1024 / 1024 / 1024).ToString("0.00") & " GB/s"
-				' BITS → Kb / Mb / Gb
 				Case NetUnit.BitKb
 					Return ((bytesPerSec * 8) / 1000).ToString("0.0") & " Kb/s"
 				Case NetUnit.BitMb

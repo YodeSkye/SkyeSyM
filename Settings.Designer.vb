@@ -57,6 +57,8 @@
         ChkBoxThemeAuto = New CheckBox()
         comboboxSMOpacity = New Skye.UI.ComboBox()
         comboboxSMNetworkInstance = New Skye.UI.ComboBox()
+        CoBoxSMNetworkUnit = New Skye.UI.ComboBox()
+        LblSMNetworkUnit = New Label()
         panelSMColors.SuspendLayout()
         panel1.SuspendLayout()
         SuspendLayout()
@@ -352,26 +354,26 @@
         ' 
         textboxSMNetworkDownloadMaximum.BorderStyle = BorderStyle.FixedSingle
         TipMain.SetImage(textboxSMNetworkDownloadMaximum, Nothing)
-        textboxSMNetworkDownloadMaximum.Location = New Point(18, 215)
+        textboxSMNetworkDownloadMaximum.Location = New Point(215, 215)
         textboxSMNetworkDownloadMaximum.Margin = New Padding(4)
         textboxSMNetworkDownloadMaximum.MaxLength = 5
         textboxSMNetworkDownloadMaximum.Name = "textboxSMNetworkDownloadMaximum"
-        textboxSMNetworkDownloadMaximum.Size = New Size(152, 29)
+        textboxSMNetworkDownloadMaximum.Size = New Size(100, 29)
         textboxSMNetworkDownloadMaximum.TabIndex = 16
-        TipMain.SetText(textboxSMNetworkDownloadMaximum, "Network Download Maximum in KBs")
+        TipMain.SetText(textboxSMNetworkDownloadMaximum, "Network Download Maximum")
         textboxSMNetworkDownloadMaximum.TextAlign = HorizontalAlignment.Center
         ' 
         ' textboxSMNetworkUploadMaximum
         ' 
         textboxSMNetworkUploadMaximum.BorderStyle = BorderStyle.FixedSingle
         TipMain.SetImage(textboxSMNetworkUploadMaximum, Nothing)
-        textboxSMNetworkUploadMaximum.Location = New Point(178, 215)
+        textboxSMNetworkUploadMaximum.Location = New Point(323, 215)
         textboxSMNetworkUploadMaximum.Margin = New Padding(4)
         textboxSMNetworkUploadMaximum.MaxLength = 5
         textboxSMNetworkUploadMaximum.Name = "textboxSMNetworkUploadMaximum"
-        textboxSMNetworkUploadMaximum.Size = New Size(152, 29)
+        textboxSMNetworkUploadMaximum.Size = New Size(100, 29)
         textboxSMNetworkUploadMaximum.TabIndex = 18
-        TipMain.SetText(textboxSMNetworkUploadMaximum, "Network Upload Maximum in KBs")
+        TipMain.SetText(textboxSMNetworkUploadMaximum, "Network Upload Maximum")
         textboxSMNetworkUploadMaximum.TextAlign = HorizontalAlignment.Center
         ' 
         ' textboxSMUpdateInterval
@@ -390,37 +392,37 @@
         ' lblSMNetworkInstance
         ' 
         TipMain.SetImage(lblSMNetworkInstance, Nothing)
-        lblSMNetworkInstance.Location = New Point(339, 189)
+        lblSMNetworkInstance.Location = New Point(430, 189)
         lblSMNetworkInstance.Margin = New Padding(4, 0, 4, 0)
         lblSMNetworkInstance.Name = "lblSMNetworkInstance"
         lblSMNetworkInstance.Size = New Size(145, 26)
         lblSMNetworkInstance.TabIndex = 108
-        lblSMNetworkInstance.Text = "Network Instance"
-        TipMain.SetText(lblSMNetworkInstance, Nothing)
+        lblSMNetworkInstance.Text = "Interface"
+        TipMain.SetText(lblSMNetworkInstance, "Network Interface to Monitor")
         lblSMNetworkInstance.TextAlign = ContentAlignment.BottomLeft
         ' 
         ' lblSMNetworkDownloadMaximum
         ' 
         TipMain.SetImage(lblSMNetworkDownloadMaximum, Nothing)
-        lblSMNetworkDownloadMaximum.Location = New Point(18, 163)
+        lblSMNetworkDownloadMaximum.Location = New Point(216, 189)
         lblSMNetworkDownloadMaximum.Margin = New Padding(4, 0, 4, 0)
         lblSMNetworkDownloadMaximum.Name = "lblSMNetworkDownloadMaximum"
-        lblSMNetworkDownloadMaximum.Size = New Size(154, 52)
+        lblSMNetworkDownloadMaximum.Size = New Size(100, 26)
         lblSMNetworkDownloadMaximum.TabIndex = 106
-        lblSMNetworkDownloadMaximum.Text = "Network Download Activity Maximum"
-        TipMain.SetText(lblSMNetworkDownloadMaximum, Nothing)
+        lblSMNetworkDownloadMaximum.Text = "Down Max"
+        TipMain.SetText(lblSMNetworkDownloadMaximum, "Network Download Maximum")
         lblSMNetworkDownloadMaximum.TextAlign = ContentAlignment.BottomCenter
         ' 
         ' lblSMNetworkUploadMaximum
         ' 
         TipMain.SetImage(lblSMNetworkUploadMaximum, Nothing)
-        lblSMNetworkUploadMaximum.Location = New Point(178, 163)
+        lblSMNetworkUploadMaximum.Location = New Point(325, 189)
         lblSMNetworkUploadMaximum.Margin = New Padding(4, 0, 4, 0)
         lblSMNetworkUploadMaximum.Name = "lblSMNetworkUploadMaximum"
-        lblSMNetworkUploadMaximum.Size = New Size(154, 52)
+        lblSMNetworkUploadMaximum.Size = New Size(99, 26)
         lblSMNetworkUploadMaximum.TabIndex = 104
-        lblSMNetworkUploadMaximum.Text = "Network Upload Activity Maximum"
-        TipMain.SetText(lblSMNetworkUploadMaximum, Nothing)
+        lblSMNetworkUploadMaximum.Text = "Up Max"
+        TipMain.SetText(lblSMNetworkUploadMaximum, "Network Upload Maximum")
         lblSMNetworkUploadMaximum.TextAlign = ContentAlignment.BottomCenter
         ' 
         ' lblSMUpdateInterval
@@ -703,11 +705,33 @@
         comboboxSMNetworkInstance.DropDownStyle = ComboBoxStyle.DropDownList
         comboboxSMNetworkInstance.FormattingEnabled = True
         TipMain.SetImage(comboboxSMNetworkInstance, Nothing)
-        comboboxSMNetworkInstance.Location = New Point(340, 214)
+        comboboxSMNetworkInstance.Location = New Point(430, 214)
         comboboxSMNetworkInstance.Name = "comboboxSMNetworkInstance"
-        comboboxSMNetworkInstance.Size = New Size(463, 30)
+        comboboxSMNetworkInstance.Size = New Size(373, 30)
         comboboxSMNetworkInstance.TabIndex = 164
-        TipMain.SetText(comboboxSMNetworkInstance, Nothing)
+        TipMain.SetText(comboboxSMNetworkInstance, "Network Interface to Monitor")
+        ' 
+        ' CoBoxSMNetworkUnit
+        ' 
+        CoBoxSMNetworkUnit.FormattingEnabled = True
+        TipMain.SetImage(CoBoxSMNetworkUnit, Nothing)
+        CoBoxSMNetworkUnit.Location = New Point(18, 214)
+        CoBoxSMNetworkUnit.Name = "CoBoxSMNetworkUnit"
+        CoBoxSMNetworkUnit.Size = New Size(191, 30)
+        CoBoxSMNetworkUnit.TabIndex = 165
+        TipMain.SetText(CoBoxSMNetworkUnit, "Network Unit")
+        ' 
+        ' LblSMNetworkUnit
+        ' 
+        TipMain.SetImage(LblSMNetworkUnit, Nothing)
+        LblSMNetworkUnit.Location = New Point(20, 189)
+        LblSMNetworkUnit.Margin = New Padding(4, 0, 4, 0)
+        LblSMNetworkUnit.Name = "LblSMNetworkUnit"
+        LblSMNetworkUnit.Size = New Size(189, 26)
+        LblSMNetworkUnit.TabIndex = 166
+        LblSMNetworkUnit.Text = "Unit"
+        TipMain.SetText(LblSMNetworkUnit, "Network Unit")
+        LblSMNetworkUnit.TextAlign = ContentAlignment.BottomCenter
         ' 
         ' Settings
         ' 
@@ -716,6 +740,7 @@
         AutoSizeMode = AutoSizeMode.GrowAndShrink
         AutoValidate = AutoValidate.EnablePreventFocusChange
         ClientSize = New Size(820, 661)
+        Controls.Add(CoBoxSMNetworkUnit)
         Controls.Add(comboboxSMNetworkInstance)
         Controls.Add(comboboxSMOpacity)
         Controls.Add(ChkBoxThemeAuto)
@@ -740,6 +765,7 @@
         Controls.Add(lblSMNetworkDownloadMaximum)
         Controls.Add(lblSMNetworkUploadMaximum)
         Controls.Add(lblSMUpdateInterval)
+        Controls.Add(LblSMNetworkUnit)
         Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         Icon = My.Resources.Resources.iconApp
         TipMain.SetImage(Me, Nothing)
@@ -804,4 +830,6 @@
     Friend WithEvents ChkBoxThemeAuto As CheckBox
     Friend WithEvents comboboxSMOpacity As Skye.UI.ComboBox
     Friend WithEvents comboboxSMNetworkInstance As Skye.UI.ComboBox
+    Friend WithEvents CoBoxSMNetworkUnit As Skye.UI.ComboBox
+    Private WithEvents LblSMNetworkUnit As Label
 End Class

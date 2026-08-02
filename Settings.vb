@@ -10,6 +10,18 @@ Partial Friend Class Settings
     Private mMove As Boolean = False
     Private mOffset, mPosition As Point
     Private nonNumberEntered As Boolean
+    Public Class NetUnitItem
+        Public ReadOnly Property Value As NetUnit
+        Public ReadOnly Property Display As String
+
+        Public Sub New(ByVal unit As NetUnit)
+            Me.Value = unit
+            Me.Display = unit.GetDescription()
+        End Sub
+        Public Overrides Function ToString() As String
+            Return Me.Display
+        End Function
+    End Class
 
     ' Form Events
     Friend Sub New()
@@ -24,6 +36,7 @@ Partial Friend Class Settings
         For Each thm In SkyeThemes.AllThemes
             CoBoxTheme.Items.Add(thm.Name)
         Next
+        PopulateNetUnitComboBox()
         ShowSettings()
 
     End Sub
@@ -61,7 +74,7 @@ Partial Friend Class Settings
         nonNumberEntered = False
         If (e.KeyCode < Keys.D0 Or e.KeyCode > Keys.D9) And (e.KeyCode < Keys.NumPad0 Or e.KeyCode > Keys.NumPad9) Then
             If e.KeyCode <> Keys.Delete And e.KeyCode <> Keys.Back And e.KeyCode <> Keys.Enter Then : nonNumberEntered = True
-            ElseIf e.KeyCode = Keys.Enter Then
+            ElseIf e.KeyCode = Keys.Enter OrElse e.keycode = Keys.OemPeriod Then
                 e.SuppressKeyPress = True
                 e.Handled = True
                 Validate()
@@ -122,25 +135,73 @@ Partial Friend Class Settings
         End If
     End Sub
     Private Sub TxbxSMNetworkDownloadMaximumValidating(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles textboxSMNetworkDownloadMaximum.Validating
-        If CInt(Val(Me.textboxSMNetworkDownloadMaximum.Text)) > UInt16.MaxValue Then Me.textboxSMNetworkDownloadMaximum.Text = UInt16.MaxValue.ToString
+        Dim userVal As Double = 0.0
+
+        ' Parse Double safely without Val() hacks
+        If Double.TryParse(textboxSMNetworkDownloadMaximum.Text.Trim(), userVal) Then
+            ' Prevent negative values
+            If userVal < 0.0 Then userVal = 0.0
+
+            ' Calculate target raw speed and clamp if it exceeds Long.MaxValue
+            Try
+                Dim rawCheck As Long = App.GetRawSpeed(userVal, App.SyMNetworkUnits)
+            Catch ex As OverflowException
+                ' Number was too big for a Long - clamp user text to MaxValue
+                textboxSMNetworkDownloadMaximum.Text = Long.MaxValue.ToString()
+            End Try
+        Else
+            ' Fallback to 0 if text isn't a valid number
+            textboxSMNetworkDownloadMaximum.Text = "0"
+        End If
     End Sub
     Private Sub TxbxSMNetworkDownloadMaximumValidated(sender As Object, e As EventArgs) Handles textboxSMNetworkDownloadMaximum.Validated
-        If Not App.SyMNetworkDownloadMaximum = Int(Val(textboxSMNetworkDownloadMaximum.Text)) Then
-            App.SyMNetworkDownloadMaximum = CUShort(Val(textboxSMNetworkDownloadMaximum.Text))
+        Dim userVal As Double = 0.0
+        Dim result = Double.TryParse(textboxSMNetworkDownloadMaximum.Text.Trim(), userVal)
+
+        Dim newRawSpeed As Long = App.GetRawSpeed(userVal, App.SyMNetworkUnits)
+
+        ' Only update and reset if the raw Bytes/Sec actually changed
+        If App.SyMNetworkDownloadMaximum <> newRawSpeed Then
+            App.SyMNetworkDownloadMaximum = newRawSpeed
             App.SaveSettings()
-            textboxSMNetworkDownloadMaximum.SelectAll()
             App.FrmMain.ResetSyM()
         End If
     End Sub
     Private Sub TxbxSMNetworkUploadMaximumValidating(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles textboxSMNetworkUploadMaximum.Validating
-        If CInt(Val(Me.textboxSMNetworkUploadMaximum.Text)) > UInt16.MaxValue Then Me.textboxSMNetworkUploadMaximum.Text = UInt16.MaxValue.ToString
+        Dim userVal As Double = 0.0
+
+        If Double.TryParse(textboxSMNetworkUploadMaximum.Text.Trim(), userVal) Then
+            If userVal < 0.0 Then userVal = 0.0
+
+            Try
+                Dim rawCheck As Long = App.GetRawSpeed(userVal, App.SyMNetworkUnits)
+            Catch ex As OverflowException
+                textboxSMNetworkUploadMaximum.Text = Long.MaxValue.ToString()
+            End Try
+        Else
+            textboxSMNetworkUploadMaximum.Text = "0"
+        End If
     End Sub
     Private Sub TxbxSMNetworkUploadMaximumValidated(sender As Object, e As EventArgs) Handles textboxSMNetworkUploadMaximum.Validated
-        If Not App.SyMNetworkUploadMaximum = Int(Val(textboxSMNetworkUploadMaximum.Text)) Then
-            App.SyMNetworkUploadMaximum = CUShort(Val(textboxSMNetworkUploadMaximum.Text))
+        Dim userVal As Double = 0.0
+        Dim result = Double.TryParse(textboxSMNetworkUploadMaximum.Text.Trim(), userVal)
+
+        ' FIXED: Use GetRawSpeed here instead of CUShort!
+        Dim newRawSpeed As Long = App.GetRawSpeed(userVal, App.SyMNetworkUnits)
+
+        If App.SyMNetworkUploadMaximum <> newRawSpeed Then
+            App.SyMNetworkUploadMaximum = newRawSpeed
             App.SaveSettings()
-            textboxSMNetworkUploadMaximum.SelectAll()
             App.FrmMain.ResetSyM()
+        End If
+    End Sub
+    Private Sub CoBoxSMNetworkUnit_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CoBoxSMNetworkUnit.SelectedIndexChanged
+        Dim selectedUnit As App.NetUnit = CType(CoBoxSMNetworkUnit.SelectedIndex, NetUnit)
+        If Not App.SyMNetworkUnits = selectedUnit Then
+            App.SyMNetworkUnits = selectedUnit
+            SaveSettings()
+            FrmMain.ResetSyM()
+            ShowSettings()
         End If
     End Sub
     Private Sub CoBxSMNetworkInstanceSelectedIndexChanged(sender As Object, e As EventArgs) Handles comboboxSMNetworkInstance.SelectedIndexChanged
@@ -354,10 +415,11 @@ Partial Friend Class Settings
         textboxSMUpdateInterval.Text = App.SyMUpdateInterval.ToString
         textboxSMQuickHideInterval.Text = App.SyMQuickHideInterval.ToString
         comboboxSMOpacity.SelectedItem = App.SyMOpacity.ToString
-        textboxSMNetworkDownloadMaximum.Text = App.SyMNetworkDownloadMaximum.ToString
-        textboxSMNetworkUploadMaximum.Text = App.SyMNetworkUploadMaximum.ToString
+        CoBoxSMNetworkUnit.SelectedIndex = CInt(App.SyMNetworkUnits)
+        textboxSMNetworkDownloadMaximum.Text = App.GetNetSpeed(App.SyMNetworkDownloadMaximum, App.SyMNetworkUnits).ToString("0.##")
+        textboxSMNetworkUploadMaximum.Text = App.GetNetSpeed(App.SyMNetworkUploadMaximum, App.SyMNetworkUnits).ToString("0.##")
         comboboxSMNetworkInstance.Items.Clear()
-        comboboxSMNetworkInstance.Items.AddRange(App.SyMGetNetworkInstanceNames)
+        comboboxSMNetworkInstance.Items.AddRange(App.SyMGetNetworkAdapterNames)
         comboboxSMNetworkInstance.SelectedItem = App.SyMNetworkInstance
         btnSMColorBackground.BackColor = App.SyMColor.Background
         btnSMColorForegroundOnBackground.BackColor = App.SyMColor.ForegroundOnBackground
@@ -374,6 +436,20 @@ Partial Friend Class Settings
 
         ResumeLayout()
         btnClose.Select()
+    End Sub
+    Public Sub PopulateNetUnitComboBox()
+        ' Clear binding and items completely before re-populating
+        CoBoxSMNetworkUnit.DataSource = Nothing
+        CoBoxSMNetworkUnit.Items.Clear()
+
+        Dim items As List(Of NetUnitItem) = [Enum].GetValues(Of NetUnit)() _
+        .Select(Function(unit As NetUnit) New NetUnitItem(unit)) _
+        .ToList()
+
+        ' Set properties before DataSource
+        CoBoxSMNetworkUnit.DisplayMember = "Display"
+        CoBoxSMNetworkUnit.ValueMember = "Value"
+        CoBoxSMNetworkUnit.DataSource = items
     End Sub
     Private Sub SetThemesList()
         If App.ThemeAuto Then

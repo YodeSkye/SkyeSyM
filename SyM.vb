@@ -31,18 +31,16 @@ Partial Friend Class SyM
         SetProcessInstanceImage()
         ResetMonitor()
         RefreshPinnedMenu()
-        Me.pbProcessor.Maximum = 100 + AdjustDisplayMaximum(100)
-        Me.pbProcessorUser.Maximum = 100 + AdjustDisplayMaximum(100)
-        Me.pbProcessorSystem.Maximum = 100 + AdjustDisplayMaximum(100)
-        Me.pbMemoryPhysical.Maximum = My.App.SyMMemoryPhysicalMaximum + AdjustDisplayMaximum(My.App.SyMMemoryPhysicalMaximum)
-        Me.pbDisk0.Maximum = 100 + AdjustDisplayMaximum(100)
-        Me.pbDisk1.Maximum = 100 + AdjustDisplayMaximum(100)
-        'Me.pbNetworkDownload.Maximum = My.App.SyMNetworkDownloadMaximum + AdjustDisplayMaximum(My.App.SyMNetworkDownloadMaximum)
-        'Me.pbNetworkUpload.Maximum = My.App.SyMNetworkUploadMaximum + AdjustDisplayMaximum(My.App.SyMNetworkUploadMaximum)
-        Me.pbNetworkDownload.Maximum = App.SyMNetworkDownloadMaximum + AdjustDisplayMaximum(App.SyMNetworkDownloadMaximum)
-        Me.pbNetworkUpload.Maximum = App.SyMNetworkUploadMaximum + AdjustDisplayMaximum(App.SyMNetworkUploadMaximum)
-        Me.pbProcessProcessor.Maximum = 100 + AdjustDisplayMaximum(100)
-        Me.pbProcessMemoryPhysical.Maximum = My.App.SyMMemoryPhysicalMaximum + AdjustDisplayMaximum(My.App.SyMMemoryPhysicalMaximum)
+        Me.pbProcessor.Maximum = 100
+        Me.pbProcessorUser.Maximum = 100
+        Me.pbProcessorSystem.Maximum = 100
+        Me.pbMemoryPhysical.Maximum = My.App.SyMMemoryPhysicalMaximum
+        Me.pbDisk0.Maximum = 100
+        Me.pbDisk1.Maximum = 100
+        Me.pbNetworkDownload.Maximum = 100
+        Me.pbNetworkUpload.Maximum = 100
+        Me.pbProcessProcessor.Maximum = 100
+        Me.pbProcessMemoryPhysical.Maximum = My.App.SyMMemoryPhysicalMaximum
         TipInfo = New Skye.UI.ToolTipEX() With {
             .Font = App.MenuFont,
             .ShadowAlpha = 0,
@@ -502,10 +500,6 @@ Partial Friend Class SyM
         If location.X < My.Computer.Screen.WorkingArea.Left Then location.X = My.Computer.Screen.WorkingArea.Left
         If location.Y < My.Computer.Screen.WorkingArea.Top Then location.Y = My.Computer.Screen.WorkingArea.Top
     End Sub
-    Private Function AdjustDisplayMaximum(maxvalue As Integer) As Integer
-        AdjustDisplayMaximum = 0
-        'AdjustDisplayMaximum = CInt((maxvalue / 64) * 2)
-    End Function
     Private Function MouseInFormBounds() As Boolean
         If Control.MousePosition.X > Me.Location.X AndAlso Control.MousePosition.X < Me.Location.X + Me.Width - 1 AndAlso Control.MousePosition.Y > Me.Location.Y AndAlso Control.MousePosition.Y < Me.Location.Y + Me.Height - 1 Then : Return True
         Else : Return False
@@ -636,6 +630,23 @@ Partial Friend Class SyM
 
         Return Nothing
     End Function
+    ''' <summary>
+    ''' Calculates a 0-100 percentage for a TrackBar from raw bytes/sec against a maximum bytes/sec.
+    ''' </summary>
+    ''' <param name="currentRawData">Current rate in Bytes/Sec (Long)</param>
+    ''' <param name="maxRawData">Max expected rate in Bytes/Sec (Long)</param>
+    ''' <returns>Integer between 0 and 100</returns>
+    Public Function GetPercentage(ByVal currentRawData As Long, ByVal maxRawData As Long) As Integer
+        ' Prevent division by zero or invalid max settings
+        If maxRawData <= 0L Then Return 0
+
+        ' Calculate percentage using Double math for precision
+        Dim percent As Double = (CDbl(currentRawData) / CDbl(maxRawData)) * 100.0
+        ' Clamp strictly between 0 and 100, then convert to Integer for the TrackBar
+        Dim clampedPercent As Integer = CInt(Math.Min(100.0, Math.Max(0.0, percent)))
+
+        Return clampedPercent
+    End Function
 
     ' Show Data
     Friend Sub ShowDataProcessor(data As Integer, dataraw As Single, datauser As Integer, datauserraw As Single, datasystem As Integer, datasystemraw As Single)
@@ -666,19 +677,13 @@ Partial Friend Class SyM
         Me.lblDisk1.Text = data.ToString + "%"
         Me.TipInfo.SetText(Me.pbDisk1, My.App.SyMGetCounterDescription(My.App.SyMCounters.Disk1) + VisualBasic.vbCr + data.ToString + "% (" + dataraw.ToString + ")")
     End Sub
-    Friend Sub ShowDataNetworkDownload(data As Integer, dataraw As Single)
-        'Me.pbNetworkDownload.Value = data
-        'Me.lblNetworkDownload.Text = data.ToString + " KB/sec"
-        'Me.TipInfo.SetText(Me.pbNetworkDownload, My.App.SyMGetCounterDescription(My.App.SyMCounters.NetworkDownload) + VisualBasic.vbCr + CInt(dataraw / My.App.KBConversion).ToString + " KB/sec (" + dataraw.ToString("N3") + ")")
-        Me.pbNetworkDownload.Value = CInt(dataraw)
+    Friend Sub ShowDataNetworkDownload(dataraw As Long)
+        Me.pbNetworkDownload.Value = GetPercentage(dataraw, App.SyMNetworkDownloadMaximum)
         Me.lblNetworkDownload.Text = App.FormatNetSpeed(dataraw, App.SyMNetworkUnits)
         Me.TipInfo.SetText(Me.pbNetworkDownload, My.App.SyMGetCounterDescription(My.App.SyMCounters.NetworkDownload) + VisualBasic.vbCr + App.FormatNetSpeed(dataraw, App.SyMNetworkUnits) + " (" + dataraw.ToString("N3") + ")")
     End Sub
-    Friend Sub ShowDataNetworkUpload(data As Integer, dataraw As Single)
-        'Me.pbNetworkUpload.Value = data
-        'Me.lblNetworkUpload.Text = data.ToString + " KB/sec"
-        'Me.TipInfo.SetText(Me.pbNetworkUpload, My.App.SyMGetCounterDescription(My.App.SyMCounters.NetworkUpload) + VisualBasic.vbCr + CInt(dataraw / My.App.KBConversion).ToString + " KB/sec (" + dataraw.ToString("N3") + ")")
-        Me.pbNetworkUpload.Value = CInt(dataraw)
+    Friend Sub ShowDataNetworkUpload(dataraw As Long)
+        Me.pbNetworkUpload.Value = GetPercentage(dataraw, App.SyMNetworkUploadMaximum)
         Me.lblNetworkUpload.Text = App.FormatNetSpeed(dataraw, App.SyMNetworkUnits)
         Me.TipInfo.SetText(Me.pbNetworkUpload, My.App.SyMGetCounterDescription(My.App.SyMCounters.NetworkUpload) + VisualBasic.vbCr + App.FormatNetSpeed(dataraw, App.SyMNetworkUnits) + " (" + dataraw.ToString("N3") + ")")
     End Sub
@@ -747,7 +752,7 @@ Partial Friend Class SyM
     End Sub
     Friend Sub ShowDataProcessMemoryPhysical(data As Integer, dataraw As Single)
         Me.pbProcessMemoryPhysical.Value = data
-        Me.pbProcessMemoryPhysical.Maximum = Me.pbMemoryPhysical.Value + AdjustDisplayMaximum(My.App.SyMMemoryPhysicalMaximum)
+        Me.pbProcessMemoryPhysical.Maximum = Me.pbMemoryPhysical.Value
         Me.lblProcessMemoryPhysical.Text = data.ToString + "MB"
         Me.lblProcessMemoryPhysicalPercent.Text = CInt(data / Me.pbMemoryPhysical.Value * 100).ToString + "%"
         Me.TipInfo.SetText(Me.pbProcessMemoryPhysical, My.App.SyMGetCounterDescription(My.App.SyMCounters.ProcessMemoryPhysical) + VisualBasic.vbCr + CInt(dataraw / My.App.MBConversion).ToString + " MB (" + dataraw.ToString("N0") + ")" + VisualBasic.vbCr + Me.lblProcessMemoryPhysicalPercent.Text + " of " + Me.lblMemoryPhysicalPercent.Text + " Overall Usage")

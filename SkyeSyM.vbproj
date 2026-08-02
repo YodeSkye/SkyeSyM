@@ -74,7 +74,7 @@
     <Compile Update="SyM.Designer.vb">
       <DependentUpon>SyM.vb</DependentUpon>
     </Compile>
-    <PackageReference Include="SkyeLibrary" Version="1.5.10" />
+    <PackageReference Include="SkyeLibrary" Version="1.5.20" />
   </ItemGroup>
   <ItemGroup>
     <Import Include="Microsoft" />
