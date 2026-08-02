@@ -10,6 +10,7 @@ Partial Friend Class Settings
     Private mMove As Boolean = False
     Private mOffset, mPosition As Point
     Private nonNumberEntered As Boolean
+    Private _isUpdatingUI As Boolean = False
     Public Class NetUnitItem
         Public ReadOnly Property Value As NetUnit
         Public ReadOnly Property Display As String
@@ -153,19 +154,20 @@ Partial Friend Class Settings
             ' Fallback to 0 if text isn't a valid number
             textboxSMNetworkDownloadMaximum.Text = "0"
         End If
+
     End Sub
     Private Sub TxbxSMNetworkDownloadMaximumValidated(sender As Object, e As EventArgs) Handles textboxSMNetworkDownloadMaximum.Validated
+        If _isUpdatingUI Then Return
         Dim userVal As Double = 0.0
         Dim result = Double.TryParse(textboxSMNetworkDownloadMaximum.Text.Trim(), userVal)
-
         Dim newRawSpeed As Long = App.GetRawSpeed(userVal, App.SyMNetworkUnits)
 
-        ' Only update and reset if the raw Bytes/Sec actually changed
         If App.SyMNetworkDownloadMaximum <> newRawSpeed Then
             App.SyMNetworkDownloadMaximum = newRawSpeed
             App.SaveSettings()
             App.FrmMain.ResetSyM()
         End If
+
     End Sub
     Private Sub TxbxSMNetworkUploadMaximumValidating(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles textboxSMNetworkUploadMaximum.Validating
         Dim userVal As Double = 0.0
@@ -181,12 +183,12 @@ Partial Friend Class Settings
         Else
             textboxSMNetworkUploadMaximum.Text = "0"
         End If
+
     End Sub
     Private Sub TxbxSMNetworkUploadMaximumValidated(sender As Object, e As EventArgs) Handles textboxSMNetworkUploadMaximum.Validated
+        If _isUpdatingUI Then Return
         Dim userVal As Double = 0.0
         Dim result = Double.TryParse(textboxSMNetworkUploadMaximum.Text.Trim(), userVal)
-
-        ' FIXED: Use GetRawSpeed here instead of CUShort!
         Dim newRawSpeed As Long = App.GetRawSpeed(userVal, App.SyMNetworkUnits)
 
         If App.SyMNetworkUploadMaximum <> newRawSpeed Then
@@ -194,17 +196,30 @@ Partial Friend Class Settings
             App.SaveSettings()
             App.FrmMain.ResetSyM()
         End If
+
     End Sub
     Private Sub CoBoxSMNetworkUnit_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CoBoxSMNetworkUnit.SelectedIndexChanged
-        Dim selectedUnit As App.NetUnit = CType(CoBoxSMNetworkUnit.SelectedIndex, NetUnit)
-        If Not App.SyMNetworkUnits = selectedUnit Then
+        If _isUpdatingUI Then Return
+        If CoBoxSMNetworkUnit.SelectedValue Is Nothing Then Return
+        If TypeOf CoBoxSMNetworkUnit.SelectedValue IsNot NetUnit Then Return
+        Dim selectedUnit As NetUnit = DirectCast(CoBoxSMNetworkUnit.SelectedValue, NetUnit)
+
+        If App.SyMNetworkUnits <> selectedUnit Then
             App.SyMNetworkUnits = selectedUnit
-            SaveSettings()
-            FrmMain.ResetSyM()
+            App.SaveSettings()
+
+            ' Update max speed textboxes to match the new unit scale
+            'textboxSMNetworkDownloadMaximum.Text = App.GetNetSpeed(App.SyMNetworkDownloadMaximum, App.SyMNetworkUnits).ToString("0.##")
+            'textboxSMNetworkUploadMaximum.Text = App.GetNetSpeed(App.SyMNetworkUploadMaximum, App.SyMNetworkUnits).ToString("0.##")
+
+            App.FrmMain.ResetSyM()
+
             ShowSettings()
         End If
+
     End Sub
     Private Sub CoBxSMNetworkInstanceSelectedIndexChanged(sender As Object, e As EventArgs) Handles comboboxSMNetworkInstance.SelectedIndexChanged
+        If _isUpdatingUI Then Return
         If Not SyMNetworkInstance = comboboxSMNetworkInstance.Text Then
             SyMNetworkInstance = comboboxSMNetworkInstance.Text
             SaveSettings()
@@ -212,6 +227,7 @@ Partial Friend Class Settings
         End If
     End Sub
     Private Sub CoBxSMOpacitySelectedIndexChanged(sender As Object, e As EventArgs) Handles comboboxSMOpacity.SelectedIndexChanged
+        If _isUpdatingUI Then Return
         If Not SyMOpacity.ToString = comboboxSMOpacity.Text Then
             SyMOpacity = CByte(Val(comboboxSMOpacity.Text))
             FrmSyM.SetOpacity()
@@ -219,6 +235,7 @@ Partial Friend Class Settings
         End If
     End Sub
     Private Sub CoBxTheme_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CoBoxTheme.SelectedIndexChanged
+        If _isUpdatingUI Then Return
         Dim selectedName As String = CoBoxTheme.SelectedItem.ToString()
         Dim selected As Skye.UI.SkyeTheme = Skye.UI.SkyeThemes.GetTheme(selectedName)
         App.Theme = selected
@@ -382,6 +399,7 @@ Partial Friend Class Settings
 
     ' Methods
     Friend Sub ShowSettings()
+        _isUpdatingUI = True
         SuspendLayout()
 
         'HotKeys
@@ -415,7 +433,9 @@ Partial Friend Class Settings
         textboxSMUpdateInterval.Text = App.SyMUpdateInterval.ToString
         textboxSMQuickHideInterval.Text = App.SyMQuickHideInterval.ToString
         comboboxSMOpacity.SelectedItem = App.SyMOpacity.ToString
-        CoBoxSMNetworkUnit.SelectedIndex = CInt(App.SyMNetworkUnits)
+
+        Debug.Print(App.SyMNetworkUnits.ToString)
+        CoBoxSMNetworkUnit.SelectedValue = App.SyMNetworkUnits
         textboxSMNetworkDownloadMaximum.Text = App.GetNetSpeed(App.SyMNetworkDownloadMaximum, App.SyMNetworkUnits).ToString("0.##")
         textboxSMNetworkUploadMaximum.Text = App.GetNetSpeed(App.SyMNetworkUploadMaximum, App.SyMNetworkUnits).ToString("0.##")
         comboboxSMNetworkInstance.Items.Clear()
@@ -436,8 +456,11 @@ Partial Friend Class Settings
 
         ResumeLayout()
         btnClose.Select()
+        _isUpdatingUI = False
     End Sub
     Public Sub PopulateNetUnitComboBox()
+        RemoveHandler CoBoxSMNetworkUnit.SelectedIndexChanged, AddressOf CoBoxSMNetworkUnit_SelectedIndexChanged
+
         ' Clear binding and items completely before re-populating
         CoBoxSMNetworkUnit.DataSource = Nothing
         CoBoxSMNetworkUnit.Items.Clear()
@@ -450,6 +473,8 @@ Partial Friend Class Settings
         CoBoxSMNetworkUnit.DisplayMember = "Display"
         CoBoxSMNetworkUnit.ValueMember = "Value"
         CoBoxSMNetworkUnit.DataSource = items
+
+        AddHandler CoBoxSMNetworkUnit.SelectedIndexChanged, AddressOf CoBoxSMNetworkUnit_SelectedIndexChanged
     End Sub
     Private Sub SetThemesList()
         If App.ThemeAuto Then

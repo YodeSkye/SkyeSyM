@@ -273,7 +273,7 @@ Namespace My
 		Friend SyMUpdateInterval As UInt16 '250ms-60000ms
 		Friend SyMQuickHideInterval As Byte 'Range 5-60, Default 5
 		Friend SyMOpacity As Byte '10%-100%, 10% Increments
-		Friend SyMNetworkUnits As NetUnit = NetUnit.BitMb
+		Friend SyMNetworkUnits As NetUnit
 		Friend SyMNetworkDownloadMaximum As Long
 		Friend SyMNetworkUploadMaximum As Long
 		Friend SyMNetworkInstance As String
@@ -369,11 +369,6 @@ Namespace My
 #End If
 			Skye.Common.Log.Write(My.Application.Info.ProductName + " Started...")
 			GetSettings()
-#If DEBUG Then
-			SyMNetworkUnits = NetUnit.ByteKB
-			SyMNetworkDownloadMaximum = 9604000
-			SyMNetworkUploadMaximum = 1280000
-#End If
 			If ThemeAuto Then
 				Skye.UI.ThemeManager.SetTheme(Skye.UI.ThemeManager.DetectWindowsTheme())
 			Else
@@ -414,6 +409,7 @@ Namespace My
 			SyMOpacity = CByte(Skye.Common.RegistryHelper.GetInt("SyMOpacity", 100))
 			If SyMOpacity < 10 OrElse SyMOpacity > 100 Then SyMOpacity = 100
 			SyMOpacity = CByte((SyMOpacity \ 10) * 10)
+			SyMNetworkUnits = CType(Skye.Common.RegistryHelper.GetInt("SyMNetworkUnits", CInt(NetUnit.BitMb)), NetUnit)
 			SyMNetworkDownloadMaximum = Skye.Common.RegistryHelper.GetLong("SyMNetworkDownloadMaximum", 32)
 			SyMNetworkUploadMaximum = Skye.Common.RegistryHelper.GetLong("SyMNetworkUploadMaximum", 32)
 			SyMNetworkInstance = Skye.Common.RegistryHelper.GetString("SyMNetworkInstance", String.Empty)
@@ -436,9 +432,9 @@ Namespace My
 			Theme = SkyeThemes.GetTheme(themeName)
 			ThemeAuto = Skye.Common.RegistryHelper.GetBool("ThemeAuto", True)
 
-#If DEBUG Then
-			GetSettingsDebug()
-#End If
+			'#If DEBUG Then
+			'			GetSettingsDebug()
+			'#End If
 			Skye.Common.Log.Write("Settings Loaded")
 		End Sub
 		Friend Sub SaveSettings()
@@ -455,6 +451,7 @@ Namespace My
 			Skye.Common.RegistryHelper.SetInt("SyMUpdateInterval", SyMUpdateInterval)
 			Skye.Common.RegistryHelper.SetInt("SyMQuickHideInterval", SyMQuickHideInterval)
 			Skye.Common.RegistryHelper.SetInt("SyMOpacity", SyMOpacity)
+			Skye.Common.RegistryHelper.SetInt("SyMNetworkUnits", CInt(SyMNetworkUnits))
 			Skye.Common.RegistryHelper.SetLong("SyMNetworkDownloadMaximum", SyMNetworkDownloadMaximum)
 			Skye.Common.RegistryHelper.SetLong("SyMNetworkUploadMaximum", SyMNetworkUploadMaximum)
 			Skye.Common.RegistryHelper.SetString("SyMNetworkInstance", SyMNetworkInstance)
@@ -536,27 +533,27 @@ Namespace My
 				MsgBox("Cannot Start '" + filepath + "'" + vbCr + ex.Message + vbCr + "Please Check Your Settings And Try Again")
 			End Try
 		End Sub
-		<Diagnostics.ConditionalAttribute("DEBUG")> Private Sub GetSettingsDebug()
-			'SkyeSM
-			'HotKeys (HK)
-			HKEnabled = True
-			'If HKEnabled Then
-			'	HKSyM.Key = CType(262227, Keys)
-			'	HKSyM.KeyCode = 83
-			'	HKSyM.KeyMod = 1
-			'End If
-			'System Monitor (SM)
-			SyMNetworkDownloadMaximum = 640
-			SyMNetworkUploadMaximum = 128
-			'SMNetworkInstance = "Realtek PCIe GBE Family Controller"
-			SyMUpdateInterval = 1000
-			SyMLocation = New Point(800, 75)
-			'SMOpacity = 100
-			SyMQuickHideInterval = 5
-			SyMAutoMinimal = False
-			SyMColor.Foreground = Color.FromArgb(254, 0, 0)
-			SyMColor.BarBackground = Color.FromArgb(192, 192, 192)
-		End Sub
+		'<Diagnostics.ConditionalAttribute("DEBUG")> Private Sub GetSettingsDebug()
+		'	'SkyeSM
+		'	'HotKeys (HK)
+		'	HKEnabled = True
+		'	'If HKEnabled Then
+		'	'	HKSyM.Key = CType(262227, Keys)
+		'	'	HKSyM.KeyCode = 83
+		'	'	HKSyM.KeyMod = 1
+		'	'End If
+		'	'System Monitor (SM)
+		'	'SyMNetworkDownloadMaximum = 640
+		'	'SyMNetworkUploadMaximum = 128
+		'	'SMNetworkInstance = "Realtek PCIe GBE Family Controller"
+		'	SyMUpdateInterval = 1000
+		'	SyMLocation = New Point(800, 75)
+		'	'SMOpacity = 100
+		'	SyMQuickHideInterval = 5
+		'	SyMAutoMinimal = False
+		'	SyMColor.Foreground = Color.FromArgb(254, 0, 0)
+		'	SyMColor.BarBackground = Color.FromArgb(192, 192, 192)
+		'End Sub
 
 		' HK
 		Friend Sub HKRegister(Optional mode As Boolean = True)
@@ -645,8 +642,6 @@ Namespace My
 			SyMpcDisk0 = New PerformanceCounter("PhysicalDisk", "% Disk Time", "0 C:", True)
 			SyMpcDisk1 = New PerformanceCounter("PhysicalDisk", "% Disk Time", "1 D:", True)
 
-			'SyMpcNetworkDownload = New PerformanceCounter("Network Interface", "Bytes Received/sec", SyMNetworkInstance, True)
-			'SyMpcNetworkUpload = New PerformanceCounter("Network Interface", "Bytes Sent/sec", SyMNetworkInstance, True)
 			SyMNetInterfaceMonitor = New NetworkInterfaceMonitor(SyMNetworkInstance)
 
 			SyMpcProcessProcessor = New PerformanceCounter("Process", "% Processor Time", SyMProcessInstance, True)
@@ -762,15 +757,9 @@ Namespace My
 			snap.Disk1 = Math.Min(100, CInt(snap.Disk1Raw))
 
 			' Network Download
-			'Try : snap.NetworkDownloadRaw = SyMpcNetworkDownload.NextValue() : Catch : snap.NetworkDownloadRaw = 0 : End Try
-			'snap.NetworkDownloadKB = CInt(snap.NetworkDownloadRaw / KBConversion)
-			'snap.NetworkDownloadKB = CInt(Math.Min(snap.NetworkDownloadKB, My.App.SyMNetworkDownloadMaximum))
 			Try : snap.NetworkDownloadRaw = SyMNetInterfaceMonitor.GetDownloadBytesPerSecond : Catch : snap.NetworkDownloadRaw = 0 : End Try
 
 			' Network Upload
-			'Try : snap.NetworkUploadRaw = SyMpcNetworkUpload.NextValue() : Catch : snap.NetworkUploadRaw = 0 : End Try
-			'snap.NetworkUploadKB = CInt(snap.NetworkUploadRaw / KBConversion)
-			'snap.NetworkUploadKB = CInt(Math.Min(snap.NetworkUploadKB, My.App.SyMNetworkUploadMaximum))
 			Try : snap.NetworkUploadRaw = SyMNetInterfaceMonitor.GetUploadBytesPerSecond : Catch : snap.NetworkUploadRaw = 0 : End Try
 
 			' Instance (Process)
@@ -870,21 +859,21 @@ Namespace My
 			Catch : SyMGetProcessInstanceNames = New String() {"< No Instances >"}
 			End Try
 		End Function
-		Friend Function SyMGetNetworkInstanceNames() As String()
-			Try
-				Dim nicCat As New Diagnostics.PerformanceCounterCategory("Network Interface")
-				Dim names = nicCat.GetInstanceNames()
-				If names Is Nothing OrElse names.Length = 0 Then
-					Return New String() {"< No Instances >"}
-				End If
+		'Friend Function SyMGetNetworkInstanceNames() As String()
+		'	Try
+		'		Dim nicCat As New Diagnostics.PerformanceCounterCategory("Network Interface")
+		'		Dim names = nicCat.GetInstanceNames()
+		'		If names Is Nothing OrElse names.Length = 0 Then
+		'			Return New String() {"< No Instances >"}
+		'		End If
 
-				Array.Sort(names)
-				Return names
+		'		Array.Sort(names)
+		'		Return names
 
-			Catch ex As Exception
-				Return New String() {"< No Instances >"}
-			End Try
-		End Function
+		'	Catch ex As Exception
+		'		Return New String() {"< No Instances >"}
+		'	End Try
+		'End Function
 		Friend Function SyMGetNetworkAdapterNames() As String()
 			Try
 				' Grab only interfaces that are UP, NOT Loopback, and actively have IPv4/IPv6 properties
