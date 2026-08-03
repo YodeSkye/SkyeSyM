@@ -828,8 +828,8 @@ Namespace My
 				Case SyMCounters.Disk2 : Return "Disk Utilization For E:"
 				Case SyMCounters.Disk3 : Return "Disk Utilization For F:"
 				Case SyMCounters.Network : Return "Network Activity"
-				Case SyMCounters.NetworkDownload : Return "Network Download Activity (" + FormatNetSpeed(SyMNetworkDownloadMaximum, SyMNetworkUnits) + " MAX)"
-				Case SyMCounters.NetworkUpload : Return "Network Upload Activity (" + FormatNetSpeed(SyMNetworkUploadMaximum, SyMNetworkUnits) + " MAX)"
+				Case SyMCounters.NetworkDownload : Return "Network Download Activity" ' (" + FormatNetSpeed(SyMNetworkDownloadMaximum, SyMNetworkUnits) + " MAX)"
+				Case SyMCounters.NetworkUpload : Return "Network Upload Activity" ' (" + FormatNetSpeed(SyMNetworkUploadMaximum, SyMNetworkUnits) + " MAX)"
 				Case SyMCounters.ProcessProcessor : Return "Processor Time"
 				Case SyMCounters.ProcessMemoryPhysical : Return "Physical Memory Utilization (" + My.App.SyMMemoryPhysicalMaximum.ToString + " MB MAX)"
 				Case SyMCounters.ProcessMemoryPhysicalPercent : Return "Physical Memory Relative Utilization"
@@ -859,21 +859,6 @@ Namespace My
 			Catch : SyMGetProcessInstanceNames = New String() {"< No Instances >"}
 			End Try
 		End Function
-		'Friend Function SyMGetNetworkInstanceNames() As String()
-		'	Try
-		'		Dim nicCat As New Diagnostics.PerformanceCounterCategory("Network Interface")
-		'		Dim names = nicCat.GetInstanceNames()
-		'		If names Is Nothing OrElse names.Length = 0 Then
-		'			Return New String() {"< No Instances >"}
-		'		End If
-
-		'		Array.Sort(names)
-		'		Return names
-
-		'	Catch ex As Exception
-		'		Return New String() {"< No Instances >"}
-		'	End Try
-		'End Function
 		Friend Function SyMGetNetworkAdapterNames() As String()
 			Try
 				' Grab only interfaces that are UP, NOT Loopback, and actively have IPv4/IPv6 properties
@@ -953,7 +938,14 @@ Namespace My
 
 			Return CDbl(bytesPerSec)
 		End Function
+		''' <summary>
+		''' Formats network speed using the specified unit.
+		''' </summary>
 		Public Function FormatNetSpeed(bytesPerSec As Double, unit As NetUnit) As String
+			' If Auto, resolve the effective unit first
+			If unit = NetUnit.Auto Then
+				unit = GetAutoUnit(bytesPerSec)
+			End If
 
 			Select Case unit
 				Case NetUnit.Auto
@@ -979,6 +971,18 @@ Namespace My
 			End Select
 
 			Return bytesPerSec.ToString("0.0") & " B/s"
+		End Function
+		''' <summary>
+		''' Determines the best NetUnit for a given speed when set to Auto.
+		''' </summary>
+		Public Function GetAutoUnit(bytesPerSec As Double) As NetUnit
+			If bytesPerSec < 1024 * 1024 Then
+				Return NetUnit.ByteKB
+			ElseIf bytesPerSec < 1024 * 1024 * 1000 Then
+				Return NetUnit.ByteMB
+			Else
+				Return NetUnit.ByteGB
+			End If
 		End Function
 
 		' CUSTOM CONTEXTMENU TOOLTIPS

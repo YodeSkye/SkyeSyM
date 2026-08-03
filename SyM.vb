@@ -80,8 +80,10 @@ Partial Friend Class SyM
         Me.TipInfo.SetText(Me.lblDisk1, My.App.SyMGetCounterDescription(My.App.SyMCounters.Disk1))
         Me.TipInfo.SetText(Me.picboxDisk, My.App.SyMGetCounterDescription(My.App.SyMCounters.Disk))
         Me.TipInfo.SetText(Me.picboxNetwork, My.App.SyMGetCounterDescription(My.App.SyMCounters.Network))
-        Me.TipInfo.SetText(Me.lblNetworkDownload, App.SyMGetCounterDescription(App.SyMCounters.NetworkDownload))
-        Me.TipInfo.SetText(Me.lblNetworkUpload, App.SyMGetCounterDescription(App.SyMCounters.NetworkUpload))
+
+        'Me.TipInfo.SetText(Me.lblNetworkDownload, App.SyMGetCounterDescription(App.SyMCounters.NetworkDownload))
+        'Me.TipInfo.SetText(Me.lblNetworkUpload, App.SyMGetCounterDescription(App.SyMCounters.NetworkUpload))
+
         Me.TipInfo.SetText(Me.lblProcessProcessor, My.App.SyMGetCounterDescription(My.App.SyMCounters.ProcessProcessor))
         Me.TipInfo.SetText(Me.lblProcessMemoryPhysical, My.App.SyMGetCounterDescription(My.App.SyMCounters.ProcessMemoryPhysical))
         Me.TipInfo.SetText(Me.lblProcessMemoryPhysicalPercent, My.App.SyMGetCounterDescription(My.App.SyMCounters.ProcessMemoryPhysicalPercent))
@@ -678,14 +680,36 @@ Partial Friend Class SyM
         Me.TipInfo.SetText(Me.pbDisk1, My.App.SyMGetCounterDescription(My.App.SyMCounters.Disk1) + VisualBasic.vbCr + data.ToString + "% (" + dataraw.ToString + ")")
     End Sub
     Friend Sub ShowDataNetworkDownload(dataraw As Long)
+        ' 1. Determine effective unit based on live speed
+        Dim effectiveUnit As NetUnit = App.SyMNetworkUnits
+        If effectiveUnit = NetUnit.Auto Then
+            effectiveUnit = App.GetAutoUnit(dataraw)
+        End If
+        ' 2. Format current and max with the exact same unit
+        Dim formattedCurrent As String = App.FormatNetSpeed(dataraw, effectiveUnit)
+        Dim formattedMax As String = App.FormatNetSpeed(App.SyMNetworkDownloadMaximum, effectiveUnit)
         Me.pbNetworkDownload.Value = GetPercentage(dataraw, App.SyMNetworkDownloadMaximum)
-        Me.lblNetworkDownload.Text = App.FormatNetSpeed(dataraw, App.SyMNetworkUnits)
-        Me.TipInfo.SetText(Me.pbNetworkDownload, My.App.SyMGetCounterDescription(My.App.SyMCounters.NetworkDownload) + VisualBasic.vbCr + App.FormatNetSpeed(dataraw, App.SyMNetworkUnits) + " (" + dataraw.ToString("N3") + ")")
+        Me.lblNetworkDownload.Text = formattedCurrent
+        ' 3. Combine clean title, formatted MAX, and current speed
+        Dim title As String = App.SyMGetCounterDescription(App.SyMCounters.NetworkDownload)
+        Me.TipInfo.SetText(Me.lblNetworkDownload, $"{title} ({formattedMax} MAX)")
+        Me.TipInfo.SetText(Me.pbNetworkDownload, $"{title} ({formattedMax} MAX){Environment.NewLine}{formattedCurrent} ({dataraw:N3})")
     End Sub
     Friend Sub ShowDataNetworkUpload(dataraw As Long)
+        ' 1. Determine effective unit based on live speed
+        Dim effectiveUnit As NetUnit = App.SyMNetworkUnits
+        If effectiveUnit = NetUnit.Auto Then
+            effectiveUnit = App.GetAutoUnit(dataraw)
+        End If
+        ' 2. Format current and max with the exact same unit
+        Dim formattedCurrent As String = App.FormatNetSpeed(dataraw, effectiveUnit)
+        Dim formattedMax As String = App.FormatNetSpeed(App.SyMNetworkUploadMaximum, effectiveUnit)
         Me.pbNetworkUpload.Value = GetPercentage(dataraw, App.SyMNetworkUploadMaximum)
-        Me.lblNetworkUpload.Text = App.FormatNetSpeed(dataraw, App.SyMNetworkUnits)
-        Me.TipInfo.SetText(Me.pbNetworkUpload, My.App.SyMGetCounterDescription(My.App.SyMCounters.NetworkUpload) + VisualBasic.vbCr + App.FormatNetSpeed(dataraw, App.SyMNetworkUnits) + " (" + dataraw.ToString("N3") + ")")
+        Me.lblNetworkUpload.Text = formattedCurrent
+        ' 3. Combine clean title, formatted MAX, and current speed
+        Dim title As String = App.SyMGetCounterDescription(App.SyMCounters.NetworkUpload)
+        Me.TipInfo.SetText(Me.lblNetworkUpload, $"{title} ({formattedMax} MAX)")
+        Me.TipInfo.SetText(Me.pbNetworkUpload, $"{title} ({formattedMax} MAX){Environment.NewLine}{formattedCurrent} ({dataraw:N3})")
     End Sub
     Friend Sub ShowDataPagingFileUsage(data As Integer)
         Dim tiptext = TipInfo.GetText(pbMemoryPhysical)
