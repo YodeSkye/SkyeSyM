@@ -491,6 +491,7 @@ Namespace My
 			message += Chr(13) + Chr(13) + "System Monitor -- " + SyMGetCounterDescription(SyMCounters.PagingFileUsage) + " is the percent of total paging capacity currently utilized. This includes all Paging Files currently defined."
 			message += Chr(13) + Chr(13) + "System Monitor -- A System Process is an App or Service run from anywhere in the Windows Install Folder."
 			message += Chr(13) + Chr(13) + "System Monitor -- Your best bet for text color when the System Monitor is 'Minimal' is a red color. To hide the text completely in 'Minimal' mode, set the Foreground color to RGB:254,0,0."
+			message += Chr(13) + Chr(13) + "Settings -- When Network Unit is set to Auto, the maximum download and upload limits are displayed and configured in Mbps."
 			message += Chr(13) + Chr(13) + "Settings -- Auto Close means the System Monitor will automatically close when the computer is locked or the screen saver is activated."
 			message += Chr(13) + Chr(13) + "Settings -- The QuickHide Interval is the amount of time it takes for the System Monitor to come back after it is hidden. This setting also applies to the Stay On Top feature."
 			message += Chr(13) + Chr(13) + "SkyeSM -- Tray Icon Click Actions -->" + vbCr + vbTab + vbTab + "LeftClick = Toggle System Monitor" + vbCr + vbTab + vbTab + "DoubleLeftClick = Show Settings"
@@ -533,27 +534,6 @@ Namespace My
 				MsgBox("Cannot Start '" + filepath + "'" + vbCr + ex.Message + vbCr + "Please Check Your Settings And Try Again")
 			End Try
 		End Sub
-		'<Diagnostics.ConditionalAttribute("DEBUG")> Private Sub GetSettingsDebug()
-		'	'SkyeSM
-		'	'HotKeys (HK)
-		'	HKEnabled = True
-		'	'If HKEnabled Then
-		'	'	HKSyM.Key = CType(262227, Keys)
-		'	'	HKSyM.KeyCode = 83
-		'	'	HKSyM.KeyMod = 1
-		'	'End If
-		'	'System Monitor (SM)
-		'	'SyMNetworkDownloadMaximum = 640
-		'	'SyMNetworkUploadMaximum = 128
-		'	'SMNetworkInstance = "Realtek PCIe GBE Family Controller"
-		'	SyMUpdateInterval = 1000
-		'	SyMLocation = New Point(800, 75)
-		'	'SMOpacity = 100
-		'	SyMQuickHideInterval = 5
-		'	SyMAutoMinimal = False
-		'	SyMColor.Foreground = Color.FromArgb(254, 0, 0)
-		'	SyMColor.BarBackground = Color.FromArgb(192, 192, 192)
-		'End Sub
 
 		' HK
 		Friend Sub HKRegister(Optional mode As Boolean = True)
@@ -939,6 +919,18 @@ Namespace My
 			Return CDbl(bytesPerSec)
 		End Function
 		''' <summary>
+		''' Determines the best NetUnit for a given speed when set to Auto.
+		''' </summary>
+		Public Function GetAutoUnit(bytesPerSec As Double) As NetUnit
+			If bytesPerSec < 1024 * 1024 Then
+				Return NetUnit.ByteKB
+			ElseIf bytesPerSec < 1024 * 1024 * 1000 Then
+				Return NetUnit.ByteMB
+			Else
+				Return NetUnit.ByteGB
+			End If
+		End Function
+		''' <summary>
 		''' Formats network speed using the specified unit.
 		''' </summary>
 		Public Function FormatNetSpeed(bytesPerSec As Double, unit As NetUnit) As String
@@ -971,18 +963,6 @@ Namespace My
 			End Select
 
 			Return bytesPerSec.ToString("0.0") & " B/s"
-		End Function
-		''' <summary>
-		''' Determines the best NetUnit for a given speed when set to Auto.
-		''' </summary>
-		Public Function GetAutoUnit(bytesPerSec As Double) As NetUnit
-			If bytesPerSec < 1024 * 1024 Then
-				Return NetUnit.ByteKB
-			ElseIf bytesPerSec < 1024 * 1024 * 1000 Then
-				Return NetUnit.ByteMB
-			Else
-				Return NetUnit.ByteGB
-			End If
 		End Function
 
 		' CUSTOM CONTEXTMENU TOOLTIPS
